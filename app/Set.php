@@ -13,7 +13,7 @@ class Set extends Model
         return $this()->belongsTo('App\Company');
 
     }
-    public function category()
+    public function category1()
     {
         return $this()->belongsTo('App\Category');
 
