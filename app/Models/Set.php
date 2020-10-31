@@ -6,15 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Set extends Model
 {
-    protected $fillable = ['slug', 'title', 'description', 'category_id', 'company_id'];
+    protected $fillable = [
+        'slug',
+        'title',
+        'description',
+        'category_id',
+        'company_id'
+    ];
 
-    public function company()
+    public function company(): belongsTo
     {
-        return $this()->belongsTo('App\Company');
+        return $this->belongsTo('App\Company');
     }
 
-    public function category()
+    public function category(): belongsTo
     {
-        return $this()->belongsTo('App\Category');
+        return $this->belongsTo('App\Category');
     }
 }
