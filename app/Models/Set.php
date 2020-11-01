@@ -1,8 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Set extends Model
 {
@@ -10,17 +12,18 @@ class Set extends Model
         'slug',
         'title',
         'description',
+        'code',
         'category_id',
         'company_id'
     ];
 
-    public function company(): belongsTo
+    public function company(): BelongsTo
     {
-        return $this->belongsTo('App\Company');
+        return $this->belongsTo(Company::class);
     }
 
-    public function category(): belongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo('App\Category');
+        return $this->belongsTo(Category::class);
     }
 }

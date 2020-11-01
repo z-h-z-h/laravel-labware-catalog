@@ -1,9 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Company extends Model
 {
     protected $fillable = [
@@ -12,13 +13,14 @@ class Company extends Model
         'description'
     ];
 
-    public function sets(): hasMany
+    public function sets(): HasMany
     {
-        return $this->hasMany('App\Set');
+        return $this->hasMany(Set::class);
     }
 
-    public function categories(): hasMany
+    public function categories(): HasMany
     {
-        return $this->hasMany('App\Category');
+        return $this->hasMany(Category::class);
     }
 }
+

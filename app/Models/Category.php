@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Category extends Model
 {
@@ -14,8 +15,8 @@ class Category extends Model
         'company_id'
     ];
 
-    public function company(): belongsTo
+    public function company(): BelongsTo
     {
-        return $this->belongsTo('App\Company');
+        return $this->belongsTo(Company::class);
     }
 }
