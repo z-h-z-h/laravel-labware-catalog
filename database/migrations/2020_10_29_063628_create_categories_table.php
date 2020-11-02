@@ -24,7 +24,7 @@ class CreateCategoriesTable extends Migration
         });
     }
 
-    /**php
+    /**
      * Reverse the migrations.
      *
      * @return void
