@@ -1,0 +1,43 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Category;
+use App\Models\Company;
+use App\Models\Set;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+class SetFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Set::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $companyId = Company::factory();
+        $categoryId = Category::factory();
+        $title = $this->faker->sentence(1);
+        $code = $this->faker->randomNumber();
+        $slug = Str::slug($title);
+        $description = $this->faker->realText();
+
+        return [
+            'company_id' => $companyId,
+            'category_id' => $categoryId,
+            'title' => $title,
+            'code' => $code,
+            'slug' => $slug,
+            'description' => $description
+        ];
+    }
+}
