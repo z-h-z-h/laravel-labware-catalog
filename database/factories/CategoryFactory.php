@@ -24,12 +24,12 @@ class CategoryFactory extends Factory
     public function definition()
     {
 
-        $companyId = Company::factory();
+        //$companyId = Company::factory();
         $title = $this->faker->sentence(1);
         $slug = Str::slug($title);
         $description = $this->faker->realText();
         return [
-            'company_id' => $companyId,
+            //'company_id' => $companyId,
             'title' => $title,
             'slug' => $slug,
             'description' => $description
@@ -38,7 +38,7 @@ class CategoryFactory extends Factory
     public function nestedCategory()
     {
         return $this->state(
-            ['parent_id' => Category::factory()]
+            ['parent_id' => Category::find()]
         );
     }
 }
