@@ -26,13 +26,12 @@ class CategoryFactory extends Factory
 
 
         $title = $this->faker->sentence(1);
-        $slug = Str::slug($title);
-        $description = $this->faker->realText();
+
         return [
 
             'title' => $title,
-            'slug' => $slug,
-            'description' => $description
+            'slug' => Str::slug($title),
+            'description' => $this->faker->realText()
         ];
     }
   }

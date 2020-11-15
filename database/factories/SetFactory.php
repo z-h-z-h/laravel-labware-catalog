@@ -26,16 +26,12 @@ class SetFactory extends Factory
     {
 
         $title = $this->faker->sentence(1);
-        $code = $this->faker->randomNumber();
-        $slug = Str::slug($title);
-        $description = $this->faker->realText();
 
         return [
-
             'title' => $title,
-            'code' => $code,
-            'slug' => $slug,
-            'description' => $description
+            'code' => $this->faker->randomNumber(),
+            'slug' => Str::slug($title),
+            'description' => $this->faker->realText()
         ];
     }
 
