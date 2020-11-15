@@ -24,16 +24,14 @@ class SetFactory extends Factory
      */
     public function definition()
     {
-        //$companyId = Company::factory();
-        //$categoryId = Category::factory();
+
         $title = $this->faker->sentence(1);
         $code = $this->faker->randomNumber();
         $slug = Str::slug($title);
         $description = $this->faker->realText();
 
         return [
-            //'company_id' => $companyId,
-            //'category_id' => $categoryId,
+
             'title' => $title,
             'code' => $code,
             'slug' => $slug,
