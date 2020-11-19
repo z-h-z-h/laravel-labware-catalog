@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreignId('company_id');
+
             $table->string('slug');
             $table->string('title');
             $table->text('description');

@@ -25,21 +25,21 @@ class DatabaseSeeder extends Seeder
 
 
             $categoryIds = Category::factory()
-                ->count(2)
+                ->count(1)
                 ->create(['company_id' => $companyId])
                 ->pluck('id')
                 ->toArray();
 
             foreach ($categoryIds as $categoryId) {
                 $nestedCategoryIds = Category::factory()
-                    ->count(3)
+                    ->count(4)
                     ->create(['company_id' => $companyId, 'parent_id' => $categoryId])
                     ->pluck('id')
                     ->toArray();
                 foreach ($nestedCategoryIds as $nestedCategoryId) {
                     Set::factory()
-                        ->count(4)
-                        ->create(['company_id' => $companyId, 'category_id' => $nestedCategoryId]);
+                        ->count(3)
+                        ->create(['category_id' => $nestedCategoryId]);
                 }
             }
 
@@ -49,3 +49,4 @@ class DatabaseSeeder extends Seeder
 
     }
 }
+

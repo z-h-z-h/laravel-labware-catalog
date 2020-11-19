@@ -16,7 +16,6 @@ class CreateSetsTable extends Migration
         Schema::create('sets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id');
-            $table->foreignId('company_id');
             $table->string('slug');
             $table->string('title');
             $table->string('code');

@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
+Route::prefix('/admin')->middleware('auth')->group(function () {
+    Route::resource('set', App\Http\Controllers\AdminController::class)
+        ->except('show');
+    Route::resource('category', App\Http\Controllers\CategoryController::class)
+        ->except('show');
+    Route::resource('company', App\Http\Controllers\CompanyController::class)
+        ->except('show');
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+});
