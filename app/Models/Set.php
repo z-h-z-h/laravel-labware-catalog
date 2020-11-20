@@ -39,13 +39,14 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 class Set extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'slug',
         'title',
         'description',
         'code',
         'category_id',
-        'company_id'
+        'company_id',
     ];
 
     public function company(): HasOneThrough

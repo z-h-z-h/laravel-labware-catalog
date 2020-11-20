@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Category
@@ -16,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $title
  * @property string $description
  * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|HasFactory->.....ь.юбьт.юьимитьортчяфФЯчтю.юбьимсчмитьб.юбке,3
-ЧЫСМЧМСМ36БЧЁЁС                             К                                                                           Ч  ЧБ   * @property-read \App\Models\Company $company
+ * @property \Illuminate\Support\Carbon|HasFactory
+ * @property-read \App\Models\Company $company
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
@@ -45,5 +46,9 @@ use HasFactory;
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+    public function nestedCategories(): HasMany
+    {
+        return $this->hasMany(Category::class, 'parent_id');
     }
 }

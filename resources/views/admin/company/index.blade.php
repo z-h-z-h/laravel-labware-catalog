@@ -18,15 +18,15 @@
                         </a>
                     </div>
 
-                    <table class="table-striped ">
+                    <table class="table-hover">
 
-                        <div class="message" style="background-color: #4cd213">
+                        <div class="table-info text-center">
                             @isset($search)
                                 {{ 'по запросу  '.$search.'  найдено  '.$companies->total().'  записей' }}
                             @endisset
                         </div>
 
-                        <div class="message" style="background-color: #4cd213">
+                        <div class="table-success text-center">
                             {{ session ('message') }}
 
                         </div>
@@ -38,35 +38,36 @@
                         </thead>
                         <tbody>
                         @foreach($companies as $company)
+
                             <tr>
                                 <td>
-                                    <div class="col mr-0 pl-2 pr-0">
-                                       {{$company->id}}
-                                    </div>
+                                    {{$company->id}}
                                 </td>
-                                <td>
-                                    <div class="col mr-0 pl-2 pr-0">
-                                        {{$company->title}}
-                                    </div>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-primary col" role="button"
-                                       href="{{route('company.edit',$company->id)}}">РЕДАКТИРОВАТЬ</a>
+                                <td class="w-75">
+                                    {{$company->title}}
                                 </td>
 
 
-                                <form class="col" method="post" enctype="multipart/form-data"
-                                      action="{{route('company.destroy', $company->id)}}">
-                                    @method('DELETE')
-                                    @csrf
                                     <td>
-                                        <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
+                                        <a class="btn btn-outline-primary" role="button"
+                                           href="{{route('company.edit',$company->id)}}">РЕДАКТИРОВАТЬ</a>
                                     </td>
-                                </form>
+
+                                    <form class="" method="post" enctype="multipart/form-data"
+                                          action="{{route('company.destroy', $company->id)}}">
+                                        @method('DELETE')
+                                        @csrf
+                                        <td>
+                                            <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
+                                        </td>
+                                    </form>
 
                             </tr>
+
                         @endforeach
+
                         </tbody>
+
                     </table>
 
 

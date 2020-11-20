@@ -17,15 +17,15 @@
                         </a>
                     </div>
 
-                    <table class="table-striped">
+                    <table class="table-hover">
 
-                        <div class="message" style="background-color: #4cd213">
+                        <div class="table-info text-center">
                             @isset($search)
                                 {{ 'по запросу  '.$search.'  найдено  '.$sets->total().'  записей' }}
                             @endisset
                         </div>
 
-                        <div class="message" style="background-color: #4cd213">
+                        <div class="table-success text-center">
                             {{ session ('message') }}
 
                         </div>
@@ -41,9 +41,9 @@
                         <tbody>
                         @foreach($sets as $set)
                             <tr>
-                                <th>
-                                    <div class="col">{{$set->id}}</div>
-                                </th>
+                                <td>
+                                    <div class="col" style="text-decoration-color: #1d68a7">{{$set->id}}</div>
+                                </td>
                                 <td>
                                     <div class="col">{{$set->title}}</div>
                                 </td>

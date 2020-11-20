@@ -18,15 +18,15 @@
                         </a>
                     </div>
 
-                    <table class="table-striped ">
+                    <table class="table-hover">
 
-                        <div class="message" style="background-color: #4cd213">
+                        <div class="table-info text-center">
                             @isset($search)
                                 {{ 'по запросу  '.$search.'  найдено  '.$categories->total().'  записей' }}
                             @endisset
                         </div>
 
-                        <div class="message" style="background-color: #4cd213">
+                        <div class="table-success text-center">
                             {{ session ('message') }}
 
                         </div>
@@ -38,6 +38,7 @@
                         </thead>
                         <tbody>
                         @foreach($categories as $category)
+
                             <tr>
                                 <td>
                                     <div class="col mr-0 pl-2 pr-0">
@@ -46,18 +47,12 @@
                                 </td>
 
 
-                                <td>
-
-                                    @if($category->parent_id == null)
-                                        <div class="col text-left  font-weight-bold">
-                                            {{$category->title }}
-
-                                            @else
-                                                <div class="col text-left  ">
-                                                    {{'---'. $category->title}}
-                                                    @endif
-                                                </div>
+                                <td class="w-75">
+                                    <div class="col text-left  font-weight-bold">
+                                                                             {{$category->title }}
+                                    </div>
                                 </td>
+
 
 
                                 <td>
@@ -76,6 +71,44 @@
                                 </form>
 
                             </tr>
+
+                                @foreach($category->nestedCategories as $nestedCategory)
+
+                                        <tr>
+                                            <td>
+                                                <div class="col mr-0 pl-2 pr-0">
+                                                    {{$nestedCategory->id}}
+                                                </div>
+                                            </td>
+
+
+                                            <td class="w-75">
+                                                <div class="col text-left">
+                                                   --{{$nestedCategory->title }}
+                                                </div>
+                                            </td>
+
+
+                                            <td>
+                                                <a class="btn btn-outline-primary col" role="button"
+                                                   href="{{route('category.edit',$nestedCategory->id)}}">РЕДАКТИРОВАТЬ</a>
+                                            </td>
+
+
+                                            <form class="col" method="post" enctype="multipart/form-data"
+                                                  action="{{route('category.destroy', $nestedCategory->id)}}">
+                                                @method('DELETE')
+                                                @csrf
+                                                <td>
+                                                    <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ
+                                                    </button>
+                                                </td>
+                                            </form>
+
+                                        </tr>
+
+                                @endforeach
+
                         @endforeach
                         </tbody>
                     </table>

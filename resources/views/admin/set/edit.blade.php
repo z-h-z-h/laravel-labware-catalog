@@ -1,27 +1,24 @@
 @extends('admin.layouts.app')
 @section('content')
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header">Редактировай давай</div>
-
-                    <div class="card-body">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        <form method="post" enctype="multipart/form-data"
-                              action="{{route('set.update',$set->id)}}">
-                            @method('put')
-                            @csrf
+    <form method="post" enctype="multipart/form-data"
+          action="{{route('set.update',$set->id)}}">
+        @method('put')
+        @csrf
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-body">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
 
                             <div class="form-row">
@@ -77,35 +74,62 @@
                                                 >
                                                     {{ $category->title }}</option>
 
-                                        @endforeach
+                                            @endforeach
                                         </select>
                                     </div>
 
-                                    <div class="form-group custom-file mt-4 ">
+                                    <div class="form-group custom-file mt-4 mb-4 ">
                                         <label class="custom-file-label" for="customFile">Изменить/добавить
-                                            изображение комплекта</label>
+                                            изображение </label>
                                         <input type="file" name="image" class="custom-file-input" id="customFile">
-
                                     </div>
 
-
-                                    <div class="button mt-2 offset-md-9">
-                                        <button type="submit" class="btn btn-primary ">
-                                            {{ __('ИЗМЕНИТЬ') }}
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
-
-
-                        </form>
-
-
+                        </div>
                     </div>
                 </div>
+                <div class="col-md-3">
+
+                    <div class="card">
+                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-body d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary justify-content-center">
+                                ИЗМЕНИТЬ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card d-flex justify-content-center">
+                        <div class="card-body d-flex justify-content-center">
+                            ID:{{$set->id}}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <label for="password"
+                                       class="col-form-label text-md-right">Создано</label>
+
+                                <input type="text" class="form-control" name="created_at"
+                                       value="{{$set->created_at}}">
+                            </div>
+                            <div class="form-group">
+                                <label for="password"
+                                       class="col-form-label text-md-right">Редактировано</label>
+
+                                <input type="text" class="form-control" name="updated_at"
+                                       value="{{$set->updated_at}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
 
+    </form>
 
 @endsection
