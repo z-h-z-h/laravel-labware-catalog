@@ -22,7 +22,7 @@ class CategoryController extends Controller
         when($search, function ($query, $search) {
             return $query->where('title', 'LIKE', '%' . $search . '%');
         })
-            ->where('parent_id', null)->
+            ->whereParent_id(null)->
             paginate(3);
         return view('admin/category/index', ['categories' => $category, 'search' => $search]);
 
@@ -35,7 +35,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $parentCategories = Category::where('parent_id', null)->select('id', 'title')->get();
+        $parentCategories = Category::whereParentId(null)->select('id', 'title')->get();
 
         $companies = Company::select('id', 'title')->get();
         return view('admin/category/create', [
@@ -79,7 +79,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::find($id);
-       $parentCategories = Category::where('parent_id', null)->select('id', 'title')->get();
+       $parentCategories = Category::whereParentId(null)->select('id', 'title')->get();
         $companies = Company::select('id', 'title')->get();
 
         return view('admin/category/edit', ['category' => $category,

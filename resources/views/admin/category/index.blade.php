@@ -9,7 +9,7 @@
                         <div class="col-5">Удаленный суперсклад всего!!!</div>
 
                         <form class="form-inline col-5 justify-content-end" action="{{route('category.index')}}">
-                            <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК">
+                            <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК" autofocus>
                             <button class="btn btn-primary" type="submit">ИСКАТЬ</button>
                         </form>
                         <a class="btn btn-primary col-2 justify-content-end" role="button"
@@ -22,6 +22,7 @@
 
                         <div class="table-info text-center">
                             @isset($search)
+                                {{-- поиск выводит количество переданных в него паренткатегорий а надо всех--}}
                                 {{ 'по запросу  '.$search.'  найдено  '.$categories->total().'  записей' }}
                             @endisset
                         </div>
@@ -41,7 +42,7 @@
 
                             <tr>
                                 <td>
-                                    <div class="col mr-0 pl-2 pr-0">
+                                    <div class="col text-muted mr-0 pl-2 pr-0">
                                        {{$category->id}}
                                     </div>
                                 </td>
