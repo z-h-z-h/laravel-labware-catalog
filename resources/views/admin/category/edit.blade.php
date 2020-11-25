@@ -65,17 +65,42 @@
                                                 class="form-control"
                                                 placeholder="Выберите категорию"
                                                 required>
+                                            @if (
+                                                $category->parent_id == 0)
+                                                <option value="{{0}}" selected>
+                                                    Родительская
+                                                </option>
 
                                                 @foreach($parentCategories as $parentCategory)
-                                                <option value="{{ $parentCategory->id }}"
-                                                    @if (
-                                                        $parentCategory->id == $category->parent_id)
-                                                        selected
-                                                    @endif
+                                                    <option value="{{ $parentCategory->id }}">
+                                                        {{ $parentCategory->title }}
+                                                    </option>
+                                                @endforeach
+                                            @else
+
+                                                @foreach($parentCategories as $parentCategory)
+                                                    <option value="{{ $parentCategory->id }}"
+                                                            @if (
+                                                                $parentCategory->id == $category->parent_id)
+                                                            selected
+                                                        @endif
                                                     >
-                                                    {{ $parentCategory->title }}
-                                            </option>
-                                            @endforeach
+                                                        {{ $parentCategory->title }}
+                                                    </option>
+                                                @endforeach
+                                                <option value="{{ $parentCategory->id = 0}}">Родительская</option>
+                                            @endif
+{{--                                                @foreach($parentCategories as $parentCategory)--}}
+{{--                                                <option value="{{ $parentCategory->id }}"--}}
+{{--                                                    @if (--}}
+{{--                                                        $parentCategory->id == $category->parent_id)--}}
+{{--                                                        selected--}}
+{{--                                                    @endif--}}
+{{--                                                    >--}}
+{{--                                                    {{ $parentCategory->title }}--}}
+{{--                                            </option>--}}
+{{--                                            @endforeach--}}
+{{--                                            <option value="{{ $parentCategory->id = 0}}">Родительская</option>--}}
                                         </select>
 
                                     </div>
@@ -141,14 +166,14 @@
                                        class="col-form-label text-md-right">Создано</label>
 
                                 <input type="text" class="form-control" name="created_at"
-                                       value="{{$category->created_at}}">
+                                       value="{{$category->created_at}}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="password"
                                        class="col-form-label text-md-right">Редактировано</label>
 
                                 <input type="text" class="form-control" name="updated_at"
-                                       value="{{$category->updated_at}}">
+                                       value="{{$category->updated_at}}" disabled>
                             </div>
                         </div>
                     </div>

@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
             $categoryIds = Category::factory()
                 ->count(1)
-                ->create(['company_id' => $companyId])
+                ->create(['company_id' => $companyId, 'parent_id' => 0])
                 ->pluck('id')
                 ->toArray();
 

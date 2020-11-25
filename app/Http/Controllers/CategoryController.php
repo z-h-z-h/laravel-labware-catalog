@@ -17,14 +17,19 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');;
-        $category = Category::
-        when($search, function ($query, $search) {
-            return $query->where('title', 'LIKE', '%' . $search . '%');
-        })
-            ->whereParent_id(null)->
-            paginate(3);
-        return view('admin/category/index', ['categories' => $category, 'search' => $search]);
+        $search = $request->input('search');
+
+
+        $categories = Category::when($search, function ($query, $search) {
+            return $query->where('title', 'LIKE', '%' . $search . '%')->paginate(15);
+
+        },
+            function ($query) {
+                return $query->whereParentId(0)->
+                paginate(3);
+            } );
+
+        return view('admin/category/index', ['categories' => $categories, 'search' => $search]);
 
     }
 
@@ -35,9 +40,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $parentCategories = Category::whereParentId(null)->select('id', 'title')->get();
+        $parentCategories = Category::where('parent_id', 0)->get(['id', 'title']);
 
-        $companies = Company::select('id', 'title')->get();
+
+
+        $companies = Company::all(['id', 'title']);
         return view('admin/category/create', [
             'parentCategories' => $parentCategories,
             'companies' => $companies]);
@@ -51,7 +58,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategory $request)
     {
-        $category = $request->input();
+        $category = $request->validated();
 
 
         Category::create($category);
@@ -76,11 +83,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        $category = Category::find($id);
-       $parentCategories = Category::whereParentId(null)->select('id', 'title')->get();
-        $companies = Company::select('id', 'title')->get();
+
+       $parentCategories = Category::whereParentId(0)->get(['id', 'title']);
+        $companies = Company::all(['id', 'title']);
 
         return view('admin/category/edit', ['category' => $category,
         'parentCategories' =>$parentCategories,
@@ -94,14 +101,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreCategory $request, $id)
+    public function update(StoreCategory $request, Category $category)
     {
 
-        $data = $request->input();
+        $data = $request->validated();
 
-
-      Category::find($id)->update($data);
-
+        $category->update($data);
 
         return redirect()->route('category.index')->with('message', 'успешно изменено!!!');
     }
@@ -114,7 +119,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $destroyer = Category::destroy($id);
+        Category::destroy($id);
 
         return redirect()->route('category.index')->with('message', 'успешно удалено!!!');
     }

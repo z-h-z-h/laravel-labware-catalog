@@ -1,19 +1,20 @@
 @extends('admin.layouts.app')
 
 @section('content')
+
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-header row mr-0 ml-0">
-                        <div class="col-3">Удаленный суперсклад всего!!!</div>
+                        <div class="col-5">Удаленный суперсклад всего!!!</div>
 
-                        <form class="form-inline col-7 justify-content-end" action="{{route('set.index')}}">
+                        <form class="form-inline col-5 justify-content-end" action="{{route('set.index')}}">
                             <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК" autofocus>
-                            <button class="btn btn-primary" type="submit">ИСКАТЬ</button>
+                            <button class="ml-1 btn btn-primary" type="submit">ИСКАТЬ</button>
                         </form>
-                        <a class="btn btn-primary col-2" role="button" href="{{route('set.create')}}">
-                            ДОБАВИТЬ ЗАПИСЬ
+                        <a class="btn btn-primary col-2 justify-content-end" role="button" href="{{route('set.create')}}">
+                            ДОБАВИТЬ
                         </a>
                     </div>
 
@@ -33,7 +34,6 @@
                         <tr>
                             <th>№</th>
                             <th>название</th>
-                            <th>описание</th>
                             <th>артикул</th>
                             <th>категория</th>
                         </tr>
@@ -47,9 +47,7 @@
                                 <td>
                                     <div class="col">{{$set->title}}</div>
                                 </td>
-                                <td>
-                                    <div class="col">{{$set->description}}</div>
-                                </td>
+
                                 <td>
                                     <div class="col">{{$set->code}}</div>
                                 </td>
@@ -58,20 +56,19 @@
                                 </td>
 
 
-                                <td>
-                                    <a class="btn btn-outline-primary col" role="button"
+                                <td style="width: 10%">
+                                    <a class="btn btn-outline-primary col mr-0 " role="button"
                                        href="{{route('set.edit',$set->id)}}">РЕДАКТИРОВАТЬ</a>
                                 </td>
 
-
-                                <form class="col" method="post" enctype="multipart/form-data"
+                                <td style="width: 10%">
+                                <form class="col ml-0 pl-0" method="post" enctype="multipart/form-data"
                                       action="{{route('set.destroy', $set->id)}}">
                                     @method('DELETE')
                                     @csrf
-                                    <td>
-                                        <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
-                                    </td>
+                                    <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
                                 </form>
+                                </td>
 
                             </tr>
                         @endforeach
@@ -80,6 +77,8 @@
 
 
                 </div>
+
+
             </div>
         </div>
     </div>

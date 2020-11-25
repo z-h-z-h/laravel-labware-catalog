@@ -21,12 +21,13 @@ class AdminController extends Controller
 
 
         $search = $request->input('search');;
-        $set = Set::when($search, function ($query, $search) {
-            return $query->where('title', 'LIKE', '%' . $search . '%');
+        $sets = Set::when($search, function ($query, $search) {
+            return $query->where('title', 'LIKE', '%' . $search . '%')
+                ->orWhere('code', 'LIKE', '%' . $search . '%');
         })
-            ->paginate(10);
+            ->paginate();
 
-        return view('admin/set/index', ['sets' => $set, 'search' => $search]);
+        return view('admin/set/index', ['sets' => $sets, 'search' => $search]);
 
 
     }
@@ -38,10 +39,12 @@ class AdminController extends Controller
      */
     public function create()
 
-    {
-        $categories = Category::select('id', 'title')->get();
+    {   $companies = Company::all();
+        $parentCategories = Category::where('parent_id', 0)->get();
+        $nestedCategories = Category::where('parent_id','>', 0)->get();
 
-        return view('admin/set/create', ['categories' => $categories]);
+
+        return view('admin/set/create', ['nestedCategories' => $nestedCategories,'parentCategories' => $parentCategories, 'companies' => $companies]);
     }
 
     /**
@@ -52,9 +55,9 @@ class AdminController extends Controller
      */
     public function store(StoreSet $request)
     {
-        //$validated = $request->validated(); включил -выключил разницы не понял
 
-        $set = $request->input();
+
+        $set = $request->validated();
         $slug = Str::slug($request->title);
         $set = array_merge($set, ['slug' => $slug]);
         Set::create($set);
@@ -81,12 +84,18 @@ class AdminController extends Controller
      * @param \App\Models\Set $set
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Set $set)
     {
-        $set = Set::find($id);
-        $categories = Category::select('id', 'title')->get();
 
-        return view('admin/set/edit', ['set' => $set, 'categories' => $categories]);
+        $companies = Company::all();
+        $parentCategories = Category::where('parent_id', 0)->get();
+        $nestedCategories = Category::where('parent_id','>', 0)->get();
+
+        return view('admin/set/edit', [
+            'set' => $set,
+            'companies' => $companies,
+            'parentCategories' =>  $parentCategories,
+            'nestedCategories' => $nestedCategories]);
 
     }
 
@@ -97,14 +106,14 @@ class AdminController extends Controller
      * @param \App\Models\Set $set
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreSet $request, $id)
+    public function update(StoreSet $request, Set $set)
     {
 
         $slug = Str::slug($request->title);
-        $data = $request->input();
+        $data = $request->validated();
 
 
-        Set::find($id)->update(array_merge($data, ['slug' => $slug]));
+        $set->update(array_merge($data, ['slug' => $slug]));
 
 
         return redirect()->route('set.index')->with('message', 'успешно изменено!!!');
@@ -118,7 +127,7 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        $destroyer = Set::destroy($id);
+        Set::destroy($id);
 
 
         return redirect()->route('set.index')->with('message', 'успешно удалено!!!');

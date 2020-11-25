@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Category extends Model
 {
@@ -50,5 +50,9 @@ use HasFactory;
     public function nestedCategories(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+    public function parentCategory(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 }

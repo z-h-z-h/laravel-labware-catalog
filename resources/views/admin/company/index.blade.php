@@ -9,8 +9,8 @@
                         <div class="col-5">Удаленный суперсклад всего!!!</div>
 
                         <form class="form-inline col-5 justify-content-end" action="{{route('company.index')}}">
-                            <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК">
-                            <button class="btn btn-primary" type="submit">ИСКАТЬ</button>
+                            <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК" autofocus>
+                            <button class="ml-1 btn btn-primary" type="submit">ИСКАТЬ</button>
                         </form>
                         <a class="btn btn-primary col-2 justify-content-end" role="button"
                            href="{{route('company.create')}}">
@@ -40,7 +40,7 @@
                         @foreach($companies as $company)
 
                             <tr>
-                                <td class="text-muted">
+                                <td class="text-muted" style="width: 10%">
                                     {{$company->id}}
                                 </td>
                                 <td class="w-75">
@@ -48,19 +48,18 @@
                                 </td>
 
 
-                                    <td>
-                                        <a class="btn btn-outline-primary" role="button"
-                                           href="{{route('company.edit',$company->id)}}">РЕДАКТИРОВАТЬ</a>
-                                    </td>
-
+                                <td>
+                                    <a class="btn btn-outline-primary" role="button"
+                                       href="{{route('company.edit',$company->id)}}">РЕДАКТИРОВАТЬ</a>
+                                </td>
+                                <td>
                                     <form class="" method="post" enctype="multipart/form-data"
                                           action="{{route('company.destroy', $company->id)}}">
                                         @method('DELETE')
                                         @csrf
-                                        <td>
-                                            <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
-                                        </td>
+                                        <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
                                     </form>
+                                </td>
 
                             </tr>
 

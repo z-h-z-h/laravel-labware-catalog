@@ -59,22 +59,61 @@
 
                                     <div class="form-group">
                                         <label for="category_id"
-                                               class="col-form-label ">Категория комплекта</label>
+                                               class="col-form-label ">Дистрибьютор</label>
 
-                                        <select name="category_id"
+                                        <select name="company"
                                                 class="form-control"
-                                                placeholder="Выберите категорию"
+                                                id="company"
                                                 required>
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                        @if (
-                                                            $category->id == $set->category_id)
+
+                                            @foreach($companies as $company)
+                                                <option value="{{ $company->id }}"
+                                                        @if($company->id == $set->category->company_id)
                                                         selected
                                                     @endif
                                                 >
-                                                    {{ $category->title }}</option>
-
+                                                    {{ $company->title }}
+                                                </option>
                                             @endforeach
+
+                                        </select>
+                                    </div>
+                                    <script>
+                                        const parentCategories = <?= json_encode($parentCategories); ?>;
+                                        const nestedCategories = <?= json_encode($nestedCategories); ?>;
+                                        const selectElement = document.getElementById('company');
+
+                                        selectElement.addEventListener('change', (event) => {
+                                            const category = document.querySelector('.category')
+
+                                            for (let i = 0; i < parentCategories.length; i++) {
+                                                if (parentCategories[i]['company_id'] == event.target.value) {
+                                                    category.innerHTML = `<optgroup label="${parentCategories[i]['title']}"></optgroup>`;
+
+                                                    for (let k = 0; k < nestedCategories.length; k++) {
+                                                        if (nestedCategories[k]['parent_id'] == parentCategories[i]['id']) {
+                                                            category.insertAdjacentHTML('beforeend', `<option value="${nestedCategories[k]['id']}">
+                                                                ${nestedCategories[k]['title']}</option>`)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        })
+
+
+                                    </script>
+
+                                    <div class="form-group">
+                                        <label for="category_id"
+                                               class="col-form-label ">Категория комплекта</label>
+
+                                        <select name="category_id"
+                                                class="category form-control"
+                                                required>
+
+                                            <option value="{{$set->category_id}}">
+                                                {{$set->category->title}}
+                                            </option>
                                         </select>
                                     </div>
 
@@ -100,7 +139,7 @@
                         </div>
                     </div>
 
-                    <div class="card d-flex justify-content-center">
+                    <div class="card">
                         <div class="card-body d-flex justify-content-center">
                             ID:{{$set->id}}
                         </div>
@@ -114,14 +153,14 @@
                                        class="col-form-label text-md-right">Создано</label>
 
                                 <input type="text" class="form-control" name="created_at"
-                                       value="{{$set->created_at}}">
+                                       value="{{$set->created_at}}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="password"
                                        class="col-form-label text-md-right">Редактировано</label>
 
                                 <input type="text" class="form-control" name="updated_at"
-                                       value="{{$set->updated_at}}">
+                                       value="{{$set->updated_at}}" disabled>
                             </div>
                         </div>
                     </div>
