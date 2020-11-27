@@ -25,10 +25,10 @@ class StoreSet extends FormRequest
     {
         return [
 
-                'title' => 'required|string|min:5|max:25',
+                'title' => 'required|string|min:4|max:25',
                 'description' => 'required|string|min:5|max:250',
                 'code' => 'required|string|min:3|max:21',
-                'category_id' => 'required|string|min:1|max:3',
+                'category_id' => 'required|string|min:1|max:5',
 
                 //'image' => 'mimes:jpeg,bmp,png,gif',
 

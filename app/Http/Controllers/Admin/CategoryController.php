@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategory;
 
 use App\Models\Category;
@@ -13,6 +13,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -27,7 +28,7 @@ class CategoryController extends Controller
             function ($query) {
                 return $query->where('parent_id',0)
                     ->orderBy('company_id')
-                    ->paginate(3);// красиво выглядит и ровно когда одинаковое количество вложенных категорий иначе надо что то переделать
+                    ->paginate(5);// красиво выглядит и ровно когда одинаковое количество вложенных категорий иначе надо что то переделать
             });
 
         return view('admin/category/index', ['categories' => $categories, 'search' => $search]);
@@ -52,7 +53,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreCategory $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCategory $request)
@@ -79,7 +80,7 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
     public function edit(Category $category)
@@ -96,15 +97,13 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param StoreCategory $request
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
     public function update(StoreCategory $request, Category $category)
     {
-
         $data = $request->validated();
-
         $category->update($data);
 
         return redirect()->route('category.index')->with('message', 'успешно изменено!!!');
@@ -113,20 +112,17 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Category $category
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
-
         if (count($category->nestedCategories) == 0) {
             $category->delete();
-
-//        elseif ($category->parent_id !== 0) {
-//            $category->delete();
-            //      } лишнее условие
             return redirect()->route('category.index')->with('message', 'успешно удалено!!!');
-        } else{
+        }
+        else{
             return redirect()->route('category.index')->with('message', 'Сначала разберись с вложенными категориями , а потом удаляй!!!');}
     }
 }

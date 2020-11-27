@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Set;
 use App\Http\Requests\StoreSet;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
-class AdminController extends Controller
+class SetController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -25,6 +28,7 @@ class AdminController extends Controller
             return $query->where('title', 'LIKE', '%' . $search . '%')
                 ->orWhere('code', 'LIKE', '%' . $search . '%');
         })
+            ->orderBy('category_id')
             ->paginate();
 
         return view('admin/set/index', ['sets' => $sets, 'search' => $search]);
@@ -35,11 +39,11 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
 
-    {   $companies = Company::all();
+    {   $companies = Company::all(['id', 'title']);
         $parentCategories = Category::where('parent_id', 0)->get();
         $nestedCategories = Category::where('parent_id','>', 0)->get();
 
@@ -50,13 +54,11 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param StoreSet $request
+     * @return Response
      */
     public function store(StoreSet $request)
     {
-
-
         $set = $request->validated();
         $slug = Str::slug($request->title);
         $set = array_merge($set, ['slug' => $slug]);
@@ -70,8 +72,8 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Set $set
-     * @return \Illuminate\Http\Response
+     * @param Set $set
+     * @return Response
      */
     public function show(Set $set)
     {
@@ -81,13 +83,13 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Set $set
-     * @return \Illuminate\Http\Response
+     * @param Set $set
+     * @return Response
      */
     public function edit(Set $set)
     {
 
-        $companies = Company::all();
+        $companies = Company::all(['id', 'title']);
         $parentCategories = Category::where('parent_id', 0)->get();
         $nestedCategories = Category::where('parent_id','>', 0)->get();
 
@@ -102,19 +104,16 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Set $set
-     * @return \Illuminate\Http\Response
+     * @param StoreSet $request
+     * @param Set $set
+     * @return Response
      */
     public function update(StoreSet $request, Set $set)
     {
 
         $slug = Str::slug($request->title);
         $data = $request->validated();
-
-
         $set->update(array_merge($data, ['slug' => $slug]));
-
 
         return redirect()->route('set.index')->with('message', 'успешно изменено!!!');
     }
@@ -122,12 +121,13 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Set $set
-     * @return \Illuminate\Http\Response
+     * @param Set $set
+     * @return Response
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(Set $set)
     {
-        Set::destroy($id);
+       $set->delete();
 
 
         return redirect()->route('set.index')->with('message', 'успешно удалено!!!');

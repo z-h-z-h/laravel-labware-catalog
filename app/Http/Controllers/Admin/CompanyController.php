@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompany;
 use App\Models\Company;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class CompanyController extends Controller
         when($search, function ($query, $search) {
             return $query->where('title', 'LIKE', '%' . $search . '%');
         })
-            -> paginate(20);
+            -> paginate();
         return view('admin/company/index', ['companies' => $company, 'search' => $search]);
     }
 
@@ -46,7 +46,7 @@ class CompanyController extends Controller
 
         Company::create($company);
 
-        return redirect()->route('company.index')->with('message', 'Дистрибьютор успешно добавлена');
+        return redirect()->route('company.index')->with('message', 'Дистрибьютор успешно добавлен');
     }
 
     /**
@@ -63,28 +63,26 @@ class CompanyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Company $company
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Company $company)
     {
-        $company = Company::find($id);
-
         return view('admin/company/edit', ['company' => $company]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param StoreCompany $request
+     * @param Company $company
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreCompany $request, $id)
+    public function update(StoreCompany $request,Company $company)
     {
-        $data = $request->input();
+        $data = $request->validated();
 
-        Company::find($id)->update($data);
+        $company->update($data);
 
         return redirect()->route('company.index')->with('message', 'успешно изменено!!!');
     }
@@ -92,12 +90,13 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Company $company
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Company $company)
     {
-        $destroyer = Company::destroy($id);
+        $company->delete();
 
         return redirect()->route('company.index')->with('message', 'успешно удалено!!!');
     }

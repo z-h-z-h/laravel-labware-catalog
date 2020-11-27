@@ -72,10 +72,10 @@
 
                                 selectElement.addEventListener('change', (event) => {
                                     const category = document.querySelector('.category');
-
+                                    category.innerHTML = `<optgroup label="все категории выбранного дистрибьютора" class="text-light bg-secondary"></optgroup>`
                                     for (let i = 0; i < parentCategories.length; i++) {
                                         if (parentCategories[i]['company_id'] == event.target.value) {
-                                            category.innerHTML = `<optgroup label="${parentCategories[i]['title']}"></optgroup>`;
+                                            category.insertAdjacentHTML( 'beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
 
                                             for (let k = 0; k < nestedCategories.length; k++) {
                                                 if (nestedCategories[k]['parent_id'] == parentCategories[i]['id']) {
@@ -94,7 +94,6 @@
                                 <div class="col-md-10 mt-3">
                                     <select name="category_id"
                                             class="category  form-control"
-                                            placeholder="Выберите категорию"
                                             required>
                                     </select>
                                 </div>

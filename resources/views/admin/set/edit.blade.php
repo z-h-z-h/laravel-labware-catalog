@@ -85,10 +85,10 @@
 
                                         selectElement.addEventListener('change', (event) => {
                                             const category = document.querySelector('.category')
-
+                                            category.innerHTML = `<optgroup label="все категории выбранного дистрибьютора" class="text-light bg-secondary"></optgroup>`
                                             for (let i = 0; i < parentCategories.length; i++) {
                                                 if (parentCategories[i]['company_id'] == event.target.value) {
-                                                    category.innerHTML = `<optgroup label="${parentCategories[i]['title']}"></optgroup>`;
+                                                    category.insertAdjacentHTML('beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
 
                                                     for (let k = 0; k < nestedCategories.length; k++) {
                                                         if (nestedCategories[k]['parent_id'] == parentCategories[i]['id']) {
@@ -110,10 +110,25 @@
                                         <select name="category_id"
                                                 class="category form-control"
                                                 required>
+                                            <optgroup label="все категории выбранного дистрибьютора" class="text-muted bg-light"></optgroup>
+                                            @foreach($parentCategories as $parentCategory)
 
-                                            <option value="{{$set->category_id}}">
-                                                {{$set->category->title}}
-                                            </option>
+                                                @if($parentCategory->company_id == $set->category->company_id)
+                                                    <optgroup label="{{$parentCategory->title}}"></optgroup>
+                                                @endif
+                                                @foreach($parentCategory->nestedCategories as $nestedCategory)
+                                                    @if($nestedCategory->company_id == $set->category->company_id)
+                                                        <option value="{{$nestedCategory->id}}"
+                                                                @if($nestedCategory->id == $set->category_id)
+                                                                selected
+                                                                @endif
+                                                        >
+                                                            {{$nestedCategory->title}}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+
+                                            @endforeach
                                         </select>
                                     </div>
 

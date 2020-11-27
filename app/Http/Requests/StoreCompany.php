@@ -24,7 +24,7 @@ class StoreCompany extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|min:5|max:25',
+            'title' => 'required|string|min:4|max:25',
             'description' => 'required|string|min:5|max:250',
             'slug' => '|string|min:3|max:21'
         ];

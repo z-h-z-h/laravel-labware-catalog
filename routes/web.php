@@ -18,16 +18,16 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::prefix('/admin')->middleware('auth')->group(function () {
 //    Route::resources([
-//        'set' => App\Http\Controllers\AdminController::class,
+//        'set' => App\Http\Controllers\SetController::class,
 //        'category' => App\Http\Controllers\CategoryController::class,
 //        'company' => App\Http\Controllers\CompanyController::class,
 //    ]);
      //   ->except('show');
-    Route::resource('set', App\Http\Controllers\AdminController::class)
+    Route::resource('set', App\Http\Controllers\Admin\SetController::class)
         ->except('show');
-    Route::resource('category', App\Http\Controllers\CategoryController::class)
+    Route::resource('category', App\Http\Controllers\Admin\CategoryController::class)
         ->except('show');
-    Route::resource('company', App\Http\Controllers\CompanyController::class)
+    Route::resource('company', App\Http\Controllers\Admin\CompanyController::class)
         ->except('show');
 });
 
@@ -45,5 +45,5 @@ Route::prefix('/public')->group(function () {
         'index', 'show' ])
         ->names('public.company');
     });
-
+Route::get('/', [\App\Http\Controllers\PublicCompanyController::class, 'index']);
 
