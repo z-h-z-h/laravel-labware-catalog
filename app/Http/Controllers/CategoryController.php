@@ -25,9 +25,10 @@ class CategoryController extends Controller
 
         },
             function ($query) {
-                return $query->whereParentId(0)->
-                paginate(3);
-            } );
+                return $query->where('parent_id',0)
+                    ->orderBy('company_id')
+                    ->paginate(3);// красиво выглядит и ровно когда одинаковое количество вложенных категорий иначе надо что то переделать
+            });
 
         return view('admin/category/index', ['categories' => $categories, 'search' => $search]);
 
@@ -40,9 +41,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $parentCategories = Category::where('parent_id', 0)->get(['id', 'title']);
-
-
+        $parentCategories = Category::where('parent_id', 0)->get(['id', 'title','company_id']);
 
         $companies = Company::all(['id', 'title']);
         return view('admin/category/create', [
@@ -53,7 +52,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCategory $request)
@@ -69,7 +68,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -80,25 +79,25 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Category $category)
     {
 
-       $parentCategories = Category::whereParentId(0)->get(['id', 'title']);
+        $parentCategories = Category::where('parent_id', 0)->get(['id', 'title', 'company_id']);
         $companies = Company::all(['id', 'title']);
 
         return view('admin/category/edit', ['category' => $category,
-        'parentCategories' =>$parentCategories,
+            'parentCategories' => $parentCategories,
             'companies' => $companies]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(StoreCategory $request, Category $category)
@@ -114,13 +113,20 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        Category::destroy($id);
 
-        return redirect()->route('category.index')->with('message', 'успешно удалено!!!');
+        if (count($category->nestedCategories) == 0) {
+            $category->delete();
+
+//        elseif ($category->parent_id !== 0) {
+//            $category->delete();
+            //      } лишнее условие
+            return redirect()->route('category.index')->with('message', 'успешно удалено!!!');
+        } else{
+            return redirect()->route('category.index')->with('message', 'Сначала разберись с вложенными категориями , а потом удаляй!!!');}
     }
 }

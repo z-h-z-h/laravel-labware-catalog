@@ -36,36 +36,42 @@
                             <th>#</th>
                             <th>название категории</th>
                             @if(isset ($search))
-                            <th>родительская категория</th>
+                                <th class="text-left">Родительская категория</th>
                             @endif
-                            <th></th>
-                            <th></th>
+                            <th>Дистрибьютор</th>
+
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($categories as $category)
 
                             <tr>
-                                <td class="text-light ml-2 pl-2" style="width: 10%">{{$category->id}}</td>
+                                <td class="text-light ml-2 pl-2" style="">{{$category->id}}</td>
                                 <td class="
-
-                                    @if($category->parent_id == 0)
+                                @if(isset($search))
+                                    w-25
+                                    @else
+                                    w-50
+                                @endif
+                                @if($category->parent_id == 0)
                                     font-weight-bold
                                     @endif
-                                          " style="width: 30%">{{$category->title }}</td>
+                                    ">{{$category->title }}</td>
                                 @isset($search)
-                                    <td class="text-muted"
-                                        style="width: 40%">
+                                    <td class="w-25 text-muted"
+                                        style="">
                                         @if($category->parent_id !== 0)
-                                        {{$category->parentCategory->title}}
+                                            {{$category->parentCategory->title}}
                                         @endif
                                     </td>
                                 @endisset
-                                <td class=" mr-1 pr-1" style="width: 10%"><a class="btn btn-outline-primary"
-                                                                             role="button"
-                                                                             href="{{route('category.edit',$category->id)}}">РЕДАКТИРОВАТЬ</a>
+                                <td class="w-25 text-muted">
+                                    {{ $category->company->title }}
                                 </td>
-                                <td class="ml-0 pl-0" style="width: 10%">
+                                <td><a class="btn btn-outline-primary" role="button"
+                                       href="{{route('category.edit',$category->id)}}">РЕДАКТИРОВАТЬ</a>
+                                </td>
+                                <td class="" style="">
                                     <form class="" method="post" enctype="multipart/form-data"
                                           action="{{route('category.destroy', $category->id)}}">
                                         @method('DELETE')
@@ -86,20 +92,23 @@
                                         </td>
 
 
-                                        <td class="w-75">
-                                            <div class="col text-left">
+                                        <td class="">
+                                            <div class="w-50 text-left">
                                                 --{{$nestedCategory->title }}
                                             </div>
                                         </td>
 
+                                        <td class="w-25 text-muted">
+                                            {{ $category->company->title }}
+                                        </td>
 
                                         <td>
-                                            <a class="btn btn-outline-primary col" role="button"
+                                            <a class=" btn btn-outline-primary " role="button"
                                                href="{{route('category.edit',$nestedCategory->id)}}">РЕДАКТИРОВАТЬ</a>
                                         </td>
 
 
-                                        <form class="col" method="post" enctype="multipart/form-data"
+                                        <form class="" method="post" enctype="multipart/form-data"
                                               action="{{route('category.destroy', $nestedCategory->id)}}">
                                             @method('DELETE')
                                             @csrf

@@ -58,61 +58,12 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="parent-id" class=" col-form-label ">Родительская
-                                            категория</label>
-
-                                        <select name="parent_id"
-                                                class="form-control"
-                                                placeholder="Выберите категорию"
-                                                required>
-                                            @if (
-                                                $category->parent_id == 0)
-                                                <option value="{{0}}" selected>
-                                                    Родительская
-                                                </option>
-
-                                                @foreach($parentCategories as $parentCategory)
-                                                    <option value="{{ $parentCategory->id }}">
-                                                        {{ $parentCategory->title }}
-                                                    </option>
-                                                @endforeach
-                                            @else
-
-                                                @foreach($parentCategories as $parentCategory)
-                                                    <option value="{{ $parentCategory->id }}"
-                                                            @if (
-                                                                $parentCategory->id == $category->parent_id)
-                                                            selected
-                                                        @endif
-                                                    >
-                                                        {{ $parentCategory->title }}
-                                                    </option>
-                                                @endforeach
-                                                <option value="{{ $parentCategory->id = 0}}">Родительская</option>
-                                            @endif
-{{--                                                @foreach($parentCategories as $parentCategory)--}}
-{{--                                                <option value="{{ $parentCategory->id }}"--}}
-{{--                                                    @if (--}}
-{{--                                                        $parentCategory->id == $category->parent_id)--}}
-{{--                                                        selected--}}
-{{--                                                    @endif--}}
-{{--                                                    >--}}
-{{--                                                    {{ $parentCategory->title }}--}}
-{{--                                            </option>--}}
-{{--                                            @endforeach--}}
-{{--                                            <option value="{{ $parentCategory->id = 0}}">Родительская</option>--}}
-                                        </select>
-
-                                    </div>
-
-
-                                    <div class="form-group">
                                         <label for="company_id"
                                                class="col-form-label">Дистрибьютор комплекта</label>
 
                                         <select name="company_id"
+                                                id="company"
                                                 class="form-control"
-                                                placeholder="Выберите дистрибьютора"
                                                 required>
                                             @foreach($companies as $company)
                                                 <option value="{{ $company->id }}"
@@ -128,6 +79,76 @@
                                         </select>
 
                                     </div>
+
+                                    <script>
+                                        const parentCategories = <?= json_encode($parentCategories); ?>;
+
+                                        const selectElement = document.getElementById('company');
+
+                                        selectElement.addEventListener('change', (event) => {
+                                            const parentCategory = document.querySelector('.parentCategory')
+                                            // parentCategory.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;
+                                            parentCategory.innerHTML = `<option value="0">Родительская</option>`
+                                            for (let i = 0; i < parentCategories.length; i++) {
+                                                if (parentCategories[i]['company_id'] == event.target.value) {
+                                                    parentCategory.insertAdjacentHTML('beforeend', `<option value="${parentCategories[i]['id']}">
+                                                                ${parentCategories[i]['title']}</option>`)
+                                                }
+
+                                            }
+                                        })
+
+                                    </script>
+
+
+                                    <div class="form-group">
+                                        <label for="parent-id" class=" col-form-label ">Родительская
+                                            категория</label>
+                                        @if ($category->parent_id == 0)
+                                            <select name="parent_id"
+                                                    class="parentCategory form-control"
+                                                    required>
+
+
+                                                <option value="{{0}}" selected>
+                                                    Родительская
+                                                </option>
+
+                                                @foreach($parentCategories as $parentCategory)
+                                                    @if($parentCategory->company_id == $category->company_id
+                                                              &&$parentCategory->title !== $category->title)
+                                                        <option value="{{ $parentCategory->id }}">
+                                                            {{ $parentCategory->title }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <select name="parent_id"
+                                                    class="parentCategory form-control"
+                                                    required>
+
+
+                                                <option value="{{0}}">
+                                                    Родительская
+                                                </option>
+
+                                                @foreach($parentCategories as $parentCategory)
+                                                    @if($parentCategory->company_id == $category->company_id)
+                                                        <option value="{{ $parentCategory->id }}"
+                                                                @if($parentCategory->id == $category->parent_id)
+                                                                selected
+                                                            @endif
+                                                        >
+                                                            {{ $parentCategory->title }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+
+                                            </select>
+                                        @endif
+                                    </div>
+
 
                                     <div class="form-group custom-file mt-4 mb-4 ">
                                         <label class="custom-file-label" for="customFile">Изменить/добавить

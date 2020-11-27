@@ -44,33 +44,18 @@
                                     <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label for="parent-id" class="col-md-2 col-form-label text-md-right">Родительская
-                                    категория</label>
-                                <div class="col-md-10">
 
-                                    <select name="parent_id"
-                                            class="form-control"
-                                            placeholder="Выберите категорию"
-                                            required>
-
-                                        @foreach($parentCategories as $parentCategory)
-                                            <option value="{{ $parentCategory->id }}">
-                                                {{ $parentCategory->title }}
-                                            </option>
-                                        @endforeach
-                                        <option value="{{ $parentCategory->id = 0}}">Родительская</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
+                            <div class="form-group row ">
                                 <label for="company_id"
                                        class="col-md-2 col-form-label text-md-right">Дистрибьютор</label>
-                                <div class="col-md-10">
+                                <div class="col-md-10  mb-4">
                                     <select name="company_id"
+                                            id="company"
                                             class="form-control"
-                                            placeholder="Выберите дистрибьютора"
                                             required>
+                                        <option>
+                                            Выберите дистрибьютора
+                                        </option>
                                         @foreach($companies as $company)
                                             <option value="{{ $company->id }}">
                                                 {{ $company->title }}</option>
@@ -79,7 +64,90 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="custom-file mb-4 col-md-10 offset-md-2">
+
+                            <script>
+                                const parentCategories = <?= json_encode($parentCategories); ?>;
+
+                                const selectElement = document.getElementById('company');
+
+                                selectElement.addEventListener('change', (event) => {
+                                    const category = document.querySelector('.category')
+
+                                   // category.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;
+                                    //пока я не поставил сюда оптгрупп работало иначе: добавлялся каждый выбранный парент каждый шелчок + парент или несколько парентов, понимая почему, не понимаю как этого избежать(ну кроме как добавлением innerhtml перед циклом)
+                                    category.innerHTML = `<option value="0">Родительская</option>`
+                                    for (let i = 0; i < parentCategories.length; i++) {
+                                        if (parentCategories[i]['company_id'] == event.target.value) {
+
+                                            category.insertAdjacentHTML('beforeend', `<option value="${parentCategories[i]['id']}">
+                                                                    ${parentCategories[i]['title']}</option>`)
+                                        }
+                                    }
+                                })
+                            </script>
+
+                            <div class="form-group row ">
+                                <label for="parent-id" class="col-md-2 col-form-label text-md-right">Родитель</label>
+                                <div class="col-md-10">
+
+                                    <select name="parent_id"
+                                            class="category form-control"
+                                            required>
+
+                                            <option>Выберите категорию</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {{--                            <div class="form-group">--}}
+                            {{--                                <label for="parent-id" class=" col-form-label ">Родительская--}}
+                            {{--                                    категория</label>--}}
+                            {{--                                @if ($category->parent_id == 0)--}}
+                            {{--                                    <select name="parent_id"--}}
+                            {{--                                            class="parentCategory form-control"--}}
+                            {{--                                            required>--}}
+
+
+                            {{--                                        <option value="{{0}}" selected>--}}
+                            {{--                                            Родительская--}}
+                            {{--                                        </option>--}}
+                            {{--                                        <optgroup label="паренткатегории"></optgroup>--}}
+                            {{--                                        @foreach($parentCategories as $parentCategory)--}}
+                            {{--                                            @if($parentCategory->company_id == $category->company_id--}}
+                            {{--                                                      &&$parentCategory->title !== $category->title)--}}
+                            {{--                                                <option value="{{ $parentCategory->id }}">--}}
+                            {{--                                                    {{ $parentCategory->title }}--}}
+                            {{--                                                </option>--}}
+                            {{--                                            @endif--}}
+                            {{--                                        @endforeach--}}
+                            {{--                                    </select>--}}
+                            {{--                                @else--}}
+                            {{--                                    <select name="parent_id"--}}
+                            {{--                                            class="parentCategory form-control"--}}
+                            {{--                                            required>--}}
+
+
+                            {{--                                        <option value="{{0}}">--}}
+                            {{--                                            Родительская--}}
+                            {{--                                        </option>--}}
+                            {{--                                        <optgroup label="паренткатегории"></optgroup>--}}
+                            {{--                                        @foreach($parentCategories as $parentCategory)--}}
+                            {{--                                            @if($parentCategory->company_id == $category->company_id)--}}
+                            {{--                                                <option value="{{ $parentCategory->id }}"--}}
+                            {{--                                                        @if($parentCategory->id == $category->parent_id)--}}
+                            {{--                                                        selected--}}
+                            {{--                                                    @endif--}}
+                            {{--                                                >--}}
+                            {{--                                                    {{ $parentCategory->title }}--}}
+                            {{--                                                </option>--}}
+                            {{--                                            @endif--}}
+                            {{--                                        @endforeach--}}
+
+                            {{--                                    </select>--}}
+                            {{--                                @endif--}}
+                            {{--                            </div>--}}
+
+                            <div class="custom-file mt-2 mb-4 col-md-10 offset-md-2">
                                 <label class="custom-file-label mt-3" for="image">Изменить/добавить
                                     изображение комплекта</label>
                                 <input type="file" name="image" class="custom-file-input" id="customFile">
