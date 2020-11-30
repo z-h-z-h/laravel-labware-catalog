@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Company;
@@ -43,12 +44,12 @@ class SetController extends Controller
      */
     public function create()
 
-    {   $companies = Company::all(['id', 'title']);
-        $parentCategories = Category::where('parent_id', 0)->get();
-        $nestedCategories = Category::where('parent_id','>', 0)->get();
+    {
+        $companies = Company::all(['id', 'title']);
+        $parentCategories = Category::whereNull('parent_id')->get();
+        $nestedCategories = Category::whereNotNull('parent_id')->get();
 
-
-        return view('admin/set/create', ['nestedCategories' => $nestedCategories,'parentCategories' => $parentCategories, 'companies' => $companies]);
+        return view('admin/set/create', ['nestedCategories' => $nestedCategories, 'parentCategories' => $parentCategories, 'companies' => $companies]);
     }
 
     /**
@@ -88,15 +89,16 @@ class SetController extends Controller
      */
     public function edit(Set $set)
     {
-
         $companies = Company::all(['id', 'title']);
-        $parentCategories = Category::where('parent_id', 0)->get();
-        $nestedCategories = Category::where('parent_id','>', 0)->get();
+        $parentCategories = Category::whereNull('parent_id')
+            ->with('nestedCategories')
+            ->get();
+        $nestedCategories = Category::whereNotNull('parent_id')->get();
 
         return view('admin/set/edit', [
             'set' => $set,
             'companies' => $companies,
-            'parentCategories' =>  $parentCategories,
+            'parentCategories' => $parentCategories,
             'nestedCategories' => $nestedCategories]);
 
     }
@@ -127,7 +129,7 @@ class SetController extends Controller
      */
     public function destroy(Set $set)
     {
-       $set->delete();
+        $set->delete();
 
 
         return redirect()->route('set.index')->with('message', 'успешно удалено!!!');

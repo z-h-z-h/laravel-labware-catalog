@@ -16,12 +16,12 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');;
-        $company = Company::
+        $companies = Company::
         when($search, function ($query, $search) {
             return $query->where('title', 'LIKE', '%' . $search . '%');
         })
             -> paginate();
-        return view('admin/company/index', ['companies' => $company, 'search' => $search]);
+        return view('admin/company/index', ['companies' => $companies, 'search' => $search]);
     }
 
     /**
@@ -42,7 +42,7 @@ class CompanyController extends Controller
      */
     public function store(StoreCompany $request)
     {
-        $company = $request->input();
+        $company = $request->validated();
 
         Company::create($company);
 

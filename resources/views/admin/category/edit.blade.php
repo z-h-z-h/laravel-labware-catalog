@@ -88,7 +88,7 @@
                                         selectElement.addEventListener('change', (event) => {
                                             const parentCategory = document.querySelector('.parentCategory')
                                             // parentCategory.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;
-                                            parentCategory.innerHTML = `<option value="0">Родительская</option>`
+                                            parentCategory.innerHTML = `<option value="">Родительская</option>`
                                             for (let i = 0; i < parentCategories.length; i++) {
                                                 if (parentCategories[i]['company_id'] == event.target.value) {
                                                     parentCategory.insertAdjacentHTML('beforeend', `<option value="${parentCategories[i]['id']}">
@@ -104,13 +104,12 @@
                                     <div class="form-group">
                                         <label for="parent-id" class=" col-form-label ">Родительская
                                             категория</label>
-                                        @if ($category->parent_id == 0)
+                                        @if ($category->parent_id == null)
                                             <select name="parent_id"
-                                                    class="parentCategory form-control"
-                                                    required>
+                                                    class="parentCategory form-control">
 
 
-                                                <option value="{{0}}" selected>
+                                                <option value="" selected>
                                                     Родительская
                                                 </option>
 
@@ -125,11 +124,10 @@
                                             </select>
                                         @else
                                             <select name="parent_id"
-                                                    class="parentCategory form-control"
-                                                    required>
+                                                    class="parentCategory form-control">
 
 
-                                                <option value="{{0}}">
+                                                <option value="">
                                                     Родительская
                                                 </option>
 

@@ -48,6 +48,10 @@ class Set extends Model
         'category_id',
         'company_id',
     ];
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function company(): HasOneThrough
     {

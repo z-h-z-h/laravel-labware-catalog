@@ -42,6 +42,10 @@ use HasFactory;
         'parent_id',
         'company_id'
     ];
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function company(): BelongsTo
     {

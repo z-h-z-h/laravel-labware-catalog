@@ -75,7 +75,7 @@
 
                                    // category.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;
                                     //пока я не поставил сюда оптгрупп работало иначе: добавлялся каждый выбранный парент каждый шелчок + парент или несколько парентов, понимая почему, не понимаю как этого избежать(ну кроме как добавлением innerhtml перед циклом)
-                                    category.innerHTML = `<option value="0">Родительская</option>`
+                                    category.innerHTML = `<option value="">Родительская</option>`
                                     for (let i = 0; i < parentCategories.length; i++) {
                                         if (parentCategories[i]['company_id'] == event.target.value) {
 
@@ -92,60 +92,60 @@
 
                                     <select name="parent_id"
                                             class="category form-control"
-                                            required>
+                                            >
 
                                             <option>Выберите категорию</option>
                                     </select>
                                 </div>
                             </div>
 
-                            {{--                            <div class="form-group">--}}
-                            {{--                                <label for="parent-id" class=" col-form-label ">Родительская--}}
-                            {{--                                    категория</label>--}}
-                            {{--                                @if ($category->parent_id == 0)--}}
-                            {{--                                    <select name="parent_id"--}}
-                            {{--                                            class="parentCategory form-control"--}}
-                            {{--                                            required>--}}
+{{--                                                        <div class="form-group">--}}
+{{--                                                            <label for="parent-id" class=" col-form-label ">Родительская--}}
+{{--                                                                категория</label>--}}
+{{--                                                            @if ($category->parent_id == null)--}}
+{{--                                                                <select name="parent_id"--}}
+{{--                                                                        class="parentCategory form-control"--}}
+{{--                                                                        required>--}}
 
 
-                            {{--                                        <option value="{{0}}" selected>--}}
-                            {{--                                            Родительская--}}
-                            {{--                                        </option>--}}
-                            {{--                                        <optgroup label="паренткатегории"></optgroup>--}}
-                            {{--                                        @foreach($parentCategories as $parentCategory)--}}
-                            {{--                                            @if($parentCategory->company_id == $category->company_id--}}
-                            {{--                                                      &&$parentCategory->title !== $category->title)--}}
-                            {{--                                                <option value="{{ $parentCategory->id }}">--}}
-                            {{--                                                    {{ $parentCategory->title }}--}}
-                            {{--                                                </option>--}}
-                            {{--                                            @endif--}}
-                            {{--                                        @endforeach--}}
-                            {{--                                    </select>--}}
-                            {{--                                @else--}}
-                            {{--                                    <select name="parent_id"--}}
-                            {{--                                            class="parentCategory form-control"--}}
-                            {{--                                            required>--}}
+{{--                                                                    <option value="{{null}}" selected>--}}
+{{--                                                                        Родительская--}}
+{{--                                                                    </option>--}}
+{{--                                                                    <optgroup label="паренткатегории"></optgroup>--}}
+{{--                                                                    @foreach($parentCategories as $parentCategory)--}}
+{{--                                                                        @if($parentCategory->company_id == $category->company_id--}}
+{{--                                                                                  &&$parentCategory->title !== $category->title)--}}
+{{--                                                                            <option value="{{ $parentCategory->id }}">--}}
+{{--                                                                                {{ $parentCategory->title }}--}}
+{{--                                                                            </option>--}}
+{{--                                                                        @endif--}}
+{{--                                                                    @endforeach--}}
+{{--                                                                </select>--}}
+{{--                                                            @else--}}
+{{--                                                                <select name="parent_id"--}}
+{{--                                                                        class="parentCategory form-control"--}}
+{{--                                                                        required>--}}
 
 
-                            {{--                                        <option value="{{0}}">--}}
-                            {{--                                            Родительская--}}
-                            {{--                                        </option>--}}
-                            {{--                                        <optgroup label="паренткатегории"></optgroup>--}}
-                            {{--                                        @foreach($parentCategories as $parentCategory)--}}
-                            {{--                                            @if($parentCategory->company_id == $category->company_id)--}}
-                            {{--                                                <option value="{{ $parentCategory->id }}"--}}
-                            {{--                                                        @if($parentCategory->id == $category->parent_id)--}}
-                            {{--                                                        selected--}}
-                            {{--                                                    @endif--}}
-                            {{--                                                >--}}
-                            {{--                                                    {{ $parentCategory->title }}--}}
-                            {{--                                                </option>--}}
-                            {{--                                            @endif--}}
-                            {{--                                        @endforeach--}}
+{{--                                                                    <option value="{{null}}">--}}
+{{--                                                                        Родительская--}}
+{{--                                                                    </option>--}}
+{{--                                                                    <optgroup label="паренткатегории"></optgroup>--}}
+{{--                                                                    @foreach($parentCategories as $parentCategory)--}}
+{{--                                                                        @if($parentCategory->company_id == $category->company_id)--}}
+{{--                                                                            <option value="{{ $parentCategory->id }}"--}}
+{{--                                                                                    @if($parentCategory->id == $category->parent_id)--}}
+{{--                                                                                    selected--}}
+{{--                                                                                @endif--}}
+{{--                                                                            >--}}
+{{--                                                                                {{ $parentCategory->title }}--}}
+{{--                                                                            </option>--}}
+{{--                                                                        @endif--}}
+{{--                                                                    @endforeach--}}
 
-                            {{--                                    </select>--}}
-                            {{--                                @endif--}}
-                            {{--                            </div>--}}
+{{--                                                                </select>--}}
+{{--                                                            @endif--}}
+{{--                                                        </div>--}}
 
                             <div class="custom-file mt-2 mb-4 col-md-10 offset-md-2">
                                 <label class="custom-file-label mt-3" for="image">Изменить/добавить

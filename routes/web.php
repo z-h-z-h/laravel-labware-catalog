@@ -19,7 +19,7 @@ Auth::routes();
 Route::prefix('/admin')->middleware('auth')->group(function () {
 //    Route::resources([
 //        'set' => App\Http\Controllers\SetController::class,
-//        'category' => App\Http\Controllers\CategoryController::class,
+//        'category' => App\Http\Controllers\ParentCategoryController::class,
 //        'company' => App\Http\Controllers\CompanyController::class,
 //    ]);
      //   ->except('show');
@@ -30,20 +30,12 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::resource('company', App\Http\Controllers\Admin\CompanyController::class)
         ->except('show');
 });
-
 Route::prefix('/public')->group(function () {
-    Route::resource('set', \App\Http\Controllers\PublicSetController::class)
-        ->only([
-        'index', 'show' ])
-        ->names('public.set');
-    Route::resource('category', \App\Http\Controllers\PublicCategoryController::class)
-        ->only([
-        'index', 'show' ])
-        ->names('public.category');
-    Route::resource('company', \App\Http\Controllers\PublicCompanyController::class)
-        ->only([
-        'index', 'show' ])
-        ->names('public.company');
-    });
-Route::get('/', [\App\Http\Controllers\PublicCompanyController::class, 'index']);
+    Route::get('/{company}/{parentCategory}/{nestedCategory}/{set}', [App\Http\Controllers\SetController::class, 'index'])->name('public.set.index');;
+    Route::get('/{company}/{parentCategory}/{nestedCategory}', [App\Http\Controllers\NestedCategoryController::class, 'index'])->name('public.nestedCategory.index');
+    Route::get('/{company}/{parentCategory}', [App\Http\Controllers\ParentCategoryController::class, 'index'])->name('public.category.index');
+    Route::get('/{company}', [App\Http\Controllers\CompanyController::class, 'index'])->name('public.company.index');
+});
+
+Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('main.index');
 

@@ -27,7 +27,7 @@ class StoreCategory extends FormRequest
             'title' => 'required|string|min:4|max:25',
             'description' => 'required|string|min:5|max:250',
             'slug' => '|string|min:3|max:21',
-            'parent_id' => 'required|string|min:1|max:3',
+            'parent_id' => 'nullable|string|min:0|max:100',
             'company_id' => 'required|string|min:1|max:3',
                ];
     }

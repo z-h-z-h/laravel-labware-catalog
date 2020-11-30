@@ -26,9 +26,9 @@ class CategoryController extends Controller
 
         },
             function ($query) {
-                return $query->where('parent_id',0)
+                return $query->where('parent_id', null)
                     ->orderBy('company_id')
-                    ->paginate(5);// красиво выглядит и ровно когда одинаковое количество вложенных категорий иначе надо что то переделать
+                    ->paginate(3);// красиво выглядит и ровно когда одинаковое количество вложенных категорий иначе надо что то переделать
             });
 
         return view('admin/category/index', ['categories' => $categories, 'search' => $search]);
@@ -42,7 +42,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $parentCategories = Category::where('parent_id', 0)->get(['id', 'title','company_id']);
+        $parentCategories = Category::whereNull('parent_id')->get(['id', 'title','company_id']);
 
         $companies = Company::all(['id', 'title']);
         return view('admin/category/create', [
@@ -86,7 +86,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
 
-        $parentCategories = Category::where('parent_id', 0)->get(['id', 'title', 'company_id']);
+        $parentCategories = Category::whereNull('parent_id')->get(['id', 'title', 'company_id']);
         $companies = Company::all(['id', 'title']);
 
         return view('admin/category/edit', ['category' => $category,

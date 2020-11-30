@@ -53,14 +53,15 @@
                                     @else
                                     w-50
                                 @endif
-                                @if($category->parent_id == 0)
+                                @if($category->parent_id == null)
                                     font-weight-bold
                                     @endif
                                     ">{{$category->title }}</td>
                                 @isset($search)
                                     <td class="w-25 text-muted"
                                         style="">
-                                        @if($category->parent_id !== 0)
+                                        @if($category->parent_id !== null)
+{{--                                            else??--}}
                                             {{$category->parentCategory->title}}
                                         @endif
                                     </td>

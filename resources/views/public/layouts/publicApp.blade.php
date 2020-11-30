@@ -25,13 +25,13 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 
         <div class="container">
-            <a class="navbar-brand" href="{{ route('public.set.index') }}">
-               Комплекты
-            </a>
-            <a class="navbar-brand" href="{{ route('public.category.index') }}">
-                Категории
-            </a>
-            <a class="navbar-brand" href="{{ route('public.company.index') }}">
+{{--            <a class="navbar-brand" href="{{ route('public.set.index') }}">--}}
+{{--               Комплекты--}}
+{{--            </a>--}}
+{{--            <a class="navbar-brand" href="{{ route('public.category.index') }}">--}}
+{{--                Категории--}}
+{{--            </a>--}}
+            <a class="navbar-brand" href="{{ route('main.index') }}">
                 Дистрибьюторы
             </a>
 
