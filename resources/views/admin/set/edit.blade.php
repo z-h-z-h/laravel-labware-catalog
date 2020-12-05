@@ -22,9 +22,10 @@
 
 
                             <div class="form-row">
+
                                 <div class="col-md-6">
                                     <img class="card-img-right "
-                                         src="{{--Storage::url($set -> image)--}}" alt="Значок [200 x 250]"
+                                         src="{{$image}}"
                                          style="width: 100%">
                                 </div>
 

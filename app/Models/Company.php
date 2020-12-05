@@ -42,10 +42,10 @@ class Company extends Model
         'description'
     ];
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+//    public function getRouteKeyName()
+//    {
+//        return 'slug';
+//    }
 
     public function categories(): HasMany
     {

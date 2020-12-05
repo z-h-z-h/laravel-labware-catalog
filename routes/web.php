@@ -31,10 +31,10 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
         ->except('show');
 });
 Route::prefix('/public')->group(function () {
-    Route::get('/{company}/{parentCategory}/{nestedCategory}/{set}', [App\Http\Controllers\SetController::class, 'index'])->name('public.set.index');;
-    Route::get('/{company}/{parentCategory}/{nestedCategory}', [App\Http\Controllers\NestedCategoryController::class, 'index'])->name('public.nestedCategory.index');
-    Route::get('/{company}/{parentCategory}', [App\Http\Controllers\ParentCategoryController::class, 'index'])->name('public.category.index');
-    Route::get('/{company}', [App\Http\Controllers\CompanyController::class, 'index'])->name('public.company.index');
+    Route::get('/{company:slug}/{category:slug}/{nestedCategory:slug}/{set:slug}', [\App\Http\Controllers\CatalogController::class, 'set'])->name('public.set.index');;
+    Route::get('/{company:slug}/{category:slug}/{nestedCategory:slug}', [\App\Http\Controllers\CatalogController::class, 'nestedCategory'])->name('public.nestedCategory.index');
+    Route::get('/{company:slug}/{category:slug}', [\App\Http\Controllers\CatalogController::class, 'parentCategory'])->name('public.category.index');
+    Route::get('/{company:slug}', [\App\Http\Controllers\CatalogController::class, 'company'])->name('public.company.index');
 });
 
 Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('main.index');

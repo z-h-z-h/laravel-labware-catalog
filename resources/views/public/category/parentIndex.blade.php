@@ -24,20 +24,20 @@
 
                         <tr>
                             <td class="w-25 ml-4 pl-4 text-left font-weight-bold">
-                                {{$parentCategory->title }}
+                                {{$category->title }}
                             </td>
 
                             <td class="w-50 text-left">
-                                {{$parentCategory->description }}
+                                {{$category->description }}
                             </td>
 
                             <td class="w-25 table-hover">
                                 <table>
-                                    @foreach($parentCategory->nestedCategories as $nestedCategory)
+                                    @foreach($category->nestedCategories as $nestedCategory)
                                         <tr>
                                             <td>
                                                 <div class="ml-3 text-left">
-                                                    <a href="{{route('public.nestedCategory.index',[$company->slug, $parentCategory->slug, $nestedCategory->slug])}}">
+                                                    <a href="{{route('public.nestedCategory.index',[$company->slug, $category->slug, $nestedCategory->slug])}}">
                                                         {{$nestedCategory->title}}</a>
                                                 </div>
                                             </td>

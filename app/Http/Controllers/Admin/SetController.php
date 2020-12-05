@@ -63,11 +63,14 @@ class SetController extends Controller
         $set = $request->validated();
         $slug = Str::slug($request->title);
         $set = array_merge($set, ['slug' => $slug]);
-        Set::create($set);
-
+        $set = Set::create($set);
+            if (!empty($request->file('image'))) {
+                $set->addMediaFromRequest('image')
+                    ->preservingOriginal()
+//            ->usingName()
+                    ->toMediaCollection('images');
+            }
         return redirect()->route('set.index')->with('message', 'комплект успешно добавлен');
-
-
     }
 
     /**
@@ -89,6 +92,12 @@ class SetController extends Controller
      */
     public function edit(Set $set)
     {
+        $image = $set->getFirstMedia('images');
+        if (isset($image)) {
+            $image = $image->getUrl();
+
+        }
+
         $companies = Company::all(['id', 'title']);
         $parentCategories = Category::whereNull('parent_id')
             ->with('nestedCategories')
@@ -99,7 +108,8 @@ class SetController extends Controller
             'set' => $set,
             'companies' => $companies,
             'parentCategories' => $parentCategories,
-            'nestedCategories' => $nestedCategories]);
+            'nestedCategories' => $nestedCategories,
+            'image' => $image]);
 
     }
 
@@ -115,8 +125,18 @@ class SetController extends Controller
 
         $slug = Str::slug($request->title);
         $data = $request->validated();
+
         $set->update(array_merge($data, ['slug' => $slug]));
 
+        if (!empty($request->file('image'))) {
+
+            if (!empty($set->getFirstMedia())) {
+                $set->getFirstMedia()->delete();
+            }
+            $set->addMediaFromRequest('image')
+                ->preservingOriginal()
+                ->toMediaCollection('images');
+        }
         return redirect()->route('set.index')->with('message', 'успешно изменено!!!');
     }
 

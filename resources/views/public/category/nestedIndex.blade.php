@@ -16,6 +16,7 @@
                             <th>название категории</th>
                             <th>описание категории</th>
                             <th>комплекты категории</th>
+{{--                            <th>изображение комплекта</th>--}}
                         </tr>
                         </thead>
                         <tbody>
@@ -26,20 +27,30 @@
                                 {{$nestedCategory->title }}
                             </td>
 
-                            <td class="w-50 text-left">
+                            <td class="w-25 text-left">
                                 {{$nestedCategory->description }}
                             </td>
 
-                            <td class="w-25 table-hover">
-                                <table>
+                            <td class="w-50 table-hover">
+                                <table class="w-100">
                                     @foreach($sets as $set)
                                         <tr>
                                             <td>
-                                                <div class="ml-3 text-left">
-                                                    <a href="{{route('public.set.index', [$company->slug, $parentCategory->slug, $nestedCategory->slug, $set->slug])}}">
+                                                <div class=" ml-3 mr-4 pr-4 text-left">
+                                                    <a class=""
+                                                       href="{{route('public.set.index', [$company->slug, $category->slug, $nestedCategory->slug, $set->slug])}}">
                                                         {{$set->title}}</a>
                                                 </div>
                                             </td>
+
+                                            @if(!empty($set->getFirstMedia('images')))
+                                                <td class="ml-4 mr-0 pr-0  d-flex justify-content-end">
+                                                    <img class="card-img-right "
+                                                         src="{{$set->getFirstMedia('images')->getUrl('thumb')}}"
+                                                         style="width: 100%">
+                                                </td>
+                                            @endif
+
                                         </tr>
                                     @endforeach
                                 </table>

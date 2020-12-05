@@ -42,10 +42,10 @@ use HasFactory;
         'parent_id',
         'company_id'
     ];
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+//    public function getRouteKeyName()
+//    {
+//        return 'slug';
+//    }
 
     public function company(): BelongsTo
     {
@@ -58,5 +58,9 @@ use HasFactory;
     public function parentCategory(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
+    }
+    public function sets(): HasMany
+    {
+        return $this->hasMany(Set::class);
     }
 }
