@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-header">Редактируемые данные</div>
 
                         <div class="card-body">
                             @if ($errors->any())
@@ -24,7 +24,7 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <img class="card-img-right "
-                                         src="{{--Storage::url($set -> image)--}}" alt="Значок [200 x 250]"
+                                         src="{{$image}}" alt=""
                                          style="width: 100%">
                                 </div>
 
@@ -44,13 +44,13 @@
                                                class="col-form-label text-md-right">Описание категории</label>
 
 
-                                        <input type="text" class="form-control" name="description"
-                                               value="{{$category->description}}">
+                                        <textarea type="text" class="form-control" name="description">
+                                            {{$category->description}}</textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="category-slug"
-                                               class="col-form-label text-md-right">url(slug)</label>
+                                               class="col-form-label text-md-right">Url(slug)</label>
 
 
                                         <input type="text" class="form-control" name="slug"
@@ -59,7 +59,7 @@
 
                                     <div class="form-group">
                                         <label for="company_id"
-                                               class="col-form-label">Дистрибьютор комплекта</label>
+                                               class="col-form-label">Компания</label>
 
                                         <select name="company_id"
                                                 id="company"
@@ -150,7 +150,7 @@
 
                                     <div class="form-group custom-file mt-4 mb-4 ">
                                         <label class="custom-file-label" for="customFile">Изменить/добавить
-                                            изображение комплекта</label>
+                                            изображение</label>
                                         <input type="file" name="image" class="custom-file-input" id="customFile">
 
                                     </div>
@@ -163,7 +163,7 @@
                 <div class="col-md-3">
 
                     <div class="card">
-                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-header">Нередактируемые данные</div>
                         <div class="card-body d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary justify-content-center">
                                 ИЗМЕНИТЬ

@@ -10,6 +10,7 @@ use App\Http\Requests\StoreSet;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class SetController extends Controller
@@ -61,15 +62,17 @@ class SetController extends Controller
     public function store(StoreSet $request)
     {
         $set = $request->validated();
-        $slug = Str::slug($request->title);
-        $set = array_merge($set, ['slug' => $slug]);
+        if (empty($request->slug)) {
+            $slug = Str::slug($request->code);
+            $set = array_merge($set, ['slug' => $slug]);
+        }
         $set = Set::create($set);
-            if (!empty($request->file('image'))) {
-                $set->addMediaFromRequest('image')
-                    ->preservingOriginal()
+        if (!empty($request->file('image'))) {
+            $set->addMediaFromRequest('image')
+                ->preservingOriginal()
 //            ->usingName()
-                    ->toMediaCollection('images');
-            }
+                ->toMediaCollection('sets');
+        }
         return redirect()->route('set.index')->with('message', 'комплект успешно добавлен');
     }
 
@@ -92,11 +95,14 @@ class SetController extends Controller
      */
     public function edit(Set $set)
     {
-        $image = $set->getFirstMedia('images');
-        if (isset($image)) {
+        $image = $set->getFirstMedia('sets');
+        if (!empty($image)) {
             $image = $image->getUrl();
-
         }
+        else {
+            $image = Storage::url('0/no_photo.png');
+        }
+
 
         $companies = Company::all(['id', 'title']);
         $parentCategories = Category::whereNull('parent_id')
@@ -122,20 +128,22 @@ class SetController extends Controller
      */
     public function update(StoreSet $request, Set $set)
     {
-
-        $slug = Str::slug($request->title);
         $data = $request->validated();
+        if (empty($request->slug)) {
+            $slug = Str::slug($request->code);
+            $data = array_merge($data, ['slug' => $slug]);
+        }
 
-        $set->update(array_merge($data, ['slug' => $slug]));
+        $set->update( $data);
 
         if (!empty($request->file('image'))) {
 
-            if (!empty($set->getFirstMedia())) {
-                $set->getFirstMedia()->delete();
+            if (!empty($set->getFirstMedia('sets'))) {
+                $set->getFirstMedia('sets')->delete();
             }
             $set->addMediaFromRequest('image')
                 ->preservingOriginal()
-                ->toMediaCollection('images');
+                ->toMediaCollection('sets');
         }
         return redirect()->route('set.index')->with('message', 'успешно изменено!!!');
     }

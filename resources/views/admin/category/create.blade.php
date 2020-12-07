@@ -33,12 +33,13 @@
                                 <label for="description" class="col-md-2 col-form-label text-md-right">Описание
                                     категории</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="description"
-                                           value="{{ old('description') }}">
+                                    <textarea type="text" class="form-control" name="description">
+                                        {{ old('description') }}</textarea>
+
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="code" class="col-md-2 col-form-label text-md-right">url(slug)
+                                <label for="code" class="col-md-2 col-form-label text-md-right">Url(slug)
                                     категории</label>
                                 <div class="col-md-10">
                                     <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
@@ -47,17 +48,22 @@
 
                             <div class="form-group row ">
                                 <label for="company_id"
-                                       class="col-md-2 col-form-label text-md-right">Дистрибьютор</label>
+                                       class="col-md-2 col-form-label text-md-right">Компания</label>
                                 <div class="col-md-10  mb-4">
                                     <select name="company_id"
                                             id="company"
                                             class="form-control"
                                             required>
                                         <option>
-                                            Выберите дистрибьютора
+                                            Выберите компанию
                                         </option>
                                         @foreach($companies as $company)
-                                            <option value="{{ $company->id }}">
+
+                                            <option value="{{ $company->id }}"
+                                                    @if(old('company_id') == $company->id)
+                                                    selected
+                                                @endif
+                                            >
                                                 {{ $company->title }}</option>
 
                                         @endforeach
@@ -71,11 +77,10 @@
                                 const selectElement = document.getElementById('company');
 
                                 selectElement.addEventListener('change', (event) => {
-                                    const category = document.querySelector('.category')
 
-                                   // category.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;
-                                    //пока я не поставил сюда оптгрупп работало иначе: добавлялся каждый выбранный парент каждый шелчок + парент или несколько парентов, понимая почему, не понимаю как этого избежать(ну кроме как добавлением innerhtml перед циклом)
-                                    category.innerHTML = `<option value="">Родительская</option>`
+                                    const category = document.querySelector('.category')
+                                    category.innerHTML = `<option value="">Родительская</option>`//здесь value пусто а не null, потому что null не integer - база ругается
+
                                     for (let i = 0; i < parentCategories.length; i++) {
                                         if (parentCategories[i]['company_id'] == event.target.value) {
 
@@ -86,117 +91,54 @@
                                 })
                             </script>
 
-                            <div class="form-group row ">
+                            <div class="form-group row pb-4">
                                 <label for="parent-id" class="col-md-2 col-form-label text-md-right">Родитель</label>
                                 <div class="col-md-10">
 
                                     <select name="parent_id"
                                             class="category form-control"
                                             >
+{{--                                             <option>Выберите категорию</option>--}}
 
-                                            <option>Выберите категорию</option>
+                                        <option value="">Родительская</option>
+                                        @foreach($companies as $company)
+                                            @if(old('company_id') == $company->id)
+                                                @foreach($company->categories as $category)
+                                                    @if($category->parent_id == null )
+
+                                                        <option value="{{$category->id}}"
+                                                                @if($category->id == old('parent_id'))
+                                                                selected
+                                                            @endif
+                                                        >
+                                                            {{$category->title}}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+
                                     </select>
                                 </div>
                             </div>
 
-{{--                                                        <div class="form-group">--}}
-{{--                                                            <label for="parent-id" class=" col-form-label ">Родительская--}}
-{{--                                                                категория</label>--}}
-{{--                                                            @if ($category->parent_id == null)--}}
-{{--                                                                <select name="parent_id"--}}
-{{--                                                                        class="parentCategory form-control"--}}
-{{--                                                                        required>--}}
+                            <div class="form-inline d-flex justify-content-end">
+                                <div class="">
+                                    <button type="submit" class="mr-2 btn btn-primary justify-content-center">
+                                        ДОБАВИТЬ
+                                    </button>
+                                </div>
+                                <div class=" custom-file  col-md-10 ">
+                                    <label class="custom-file-label ml-1" for="image">Добавить
+                                        изображение</label>
+                                    <input type="file" name="image" class="custom-file-input" id="customFile" value="{{old('image')}}">
 
-
-{{--                                                                    <option value="{{null}}" selected>--}}
-{{--                                                                        Родительская--}}
-{{--                                                                    </option>--}}
-{{--                                                                    <optgroup label="паренткатегории"></optgroup>--}}
-{{--                                                                    @foreach($parentCategories as $parentCategory)--}}
-{{--                                                                        @if($parentCategory->company_id == $category->company_id--}}
-{{--                                                                                  &&$parentCategory->title !== $category->title)--}}
-{{--                                                                            <option value="{{ $parentCategory->id }}">--}}
-{{--                                                                                {{ $parentCategory->title }}--}}
-{{--                                                                            </option>--}}
-{{--                                                                        @endif--}}
-{{--                                                                    @endforeach--}}
-{{--                                                                </select>--}}
-{{--                                                            @else--}}
-{{--                                                                <select name="parent_id"--}}
-{{--                                                                        class="parentCategory form-control"--}}
-{{--                                                                        required>--}}
-
-
-{{--                                                                    <option value="{{null}}">--}}
-{{--                                                                        Родительская--}}
-{{--                                                                    </option>--}}
-{{--                                                                    <optgroup label="паренткатегории"></optgroup>--}}
-{{--                                                                    @foreach($parentCategories as $parentCategory)--}}
-{{--                                                                        @if($parentCategory->company_id == $category->company_id)--}}
-{{--                                                                            <option value="{{ $parentCategory->id }}"--}}
-{{--                                                                                    @if($parentCategory->id == $category->parent_id)--}}
-{{--                                                                                    selected--}}
-{{--                                                                                @endif--}}
-{{--                                                                            >--}}
-{{--                                                                                {{ $parentCategory->title }}--}}
-{{--                                                                            </option>--}}
-{{--                                                                        @endif--}}
-{{--                                                                    @endforeach--}}
-
-{{--                                                                </select>--}}
-{{--                                                            @endif--}}
-{{--                                                        </div>--}}
-
-                            <div class="custom-file mt-2 mb-4 col-md-10 offset-md-2">
-                                <label class="custom-file-label mt-3" for="image">Изменить/добавить
-                                    изображение комплекта</label>
-                                <input type="file" name="image" class="custom-file-input" id="customFile">
-
+                                </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-
-
-                <div class="col-md-3">
-
-                    <div class="card">
-                        <div class="card-header">Созидание</div>
-                        <div class="card-body d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary justify-content-center">
-                                ДОБАВИТЬ
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card d-flex justify-content-center">
-                        <div class="card-body d-flex justify-content-center">
-                            ID:
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Создано</label>
-
-                                <input type="text" class="form-control" name="created_at"
-                                       value="" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Редактировано</label>
-
-                                <input type="text" class="form-control" name="updated_at"
-                                       value="" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
 
             </div>
         </div>

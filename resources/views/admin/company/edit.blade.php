@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-header">Редактируемые данные</div>
 
                         <div class="card-body">
                             @if ($errors->any())
@@ -25,7 +25,7 @@
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <img class="card-img-right "
-                                         src="{{--Storage::url($set -> image)--}}" alt="Значок [200 x 250]"
+                                         src="{{$image}}" alt="Значок [200 x 250]"
                                          style="width: 100%">
                                 </div>
 
@@ -33,7 +33,7 @@
 
                                     <div class="form-group">
                                         <label for="$category-title"
-                                               class="col-form-label text-md-right">Название дистрибьютора</label>
+                                               class="col-form-label text-md-right">Название компании</label>
 
                                         <input type="text" class="form-control" name="title"
                                                value="{{$company->title}}"
@@ -42,15 +42,15 @@
 
                                     <div class="form-group">
                                         <label for="category-description"
-                                               class="col-form-label text-md-right">Описание дистрибьютора</label>
+                                               class="col-form-label text-md-right">Описание компании</label>
 
-                                        <input type="text" class="form-control" name="description"
-                                               value="{{$company->description}}">
+                                        <textarea type="text" class="form-control" name="description">
+                                            {{$company->description}}</textarea>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="category-slug"
-                                               class="col-form-label text-md-right">url(slug) дистрибьютора</label>
+                                               class="col-form-label text-md-right">Url(slug) компании</label>
 
                                         <input type="text" class="form-control" name="slug"
                                                value="{{$company->slug}}">
@@ -72,7 +72,7 @@
                 <div class="col-md-3">
 
                     <div class="card">
-                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-header">Нередактируемые данные</div>
                         <div class="card-body d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary justify-content-center">
                                 ИЗМЕНИТЬ
@@ -94,14 +94,14 @@
                                        class="col-form-label text-md-right">Создано</label>
 
                                 <input type="text" class="form-control" name="created_at"
-                                       value="{{$company->created_at}}">
+                                       value="{{$company->created_at}}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="password"
                                        class="col-form-label text-md-right">Редактировано</label>
 
                                 <input type="text" class="form-control" name="updated_at"
-                                       value="{{$company->updated_at}}">
+                                       value="{{$company->updated_at}}" disabled>
                             </div>
                         </div>
                     </div>

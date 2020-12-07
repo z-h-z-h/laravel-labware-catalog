@@ -6,7 +6,7 @@
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-header row mr-0 ml-0">
-                        <div class="col-5">Удаленный суперсклад всего!!!</div>
+                        <div class="col-5">Название сервиса</div>
 
                     </div>
 
@@ -28,10 +28,19 @@
                             <td>
                                 {{$company->id}}
                             </td>
-                            <td>
-                                {{$company->title}}
-                            </td>
                             <td class="w-50">
+                                {{$company->title}}
+                                <img class="card-img-right "
+                                     src="
+                                @if(!empty($company->getFirstMedia('companies')))
+                                     {{$company->getFirstMedia('companies')->getUrl()}}
+                                     @else
+                                     {{ Storage::url('0/no_photo.png')}}
+                                     @endif
+                                         "
+                                     style="width: 100%" alt="Card image cap">
+                            </td>
+                            <td class="w-25">
                                 {{$company->description}}
                             </td>
                             <td>

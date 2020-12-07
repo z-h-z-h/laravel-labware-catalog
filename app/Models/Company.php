@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Models\Company
@@ -32,9 +34,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static \Illuminate\Database\Eloquent\Builder|Company whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Company extends Model
+class Company extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'slug',
@@ -42,10 +45,17 @@ class Company extends Model
         'description'
     ];
 
-//    public function getRouteKeyName()
-//    {
-//        return 'slug';
-//    }
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('companies')
+            ->registerMediaConversions(function (){
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(100)
+                    ->height(100);
+            });
+    }
 
     public function categories(): HasMany
     {

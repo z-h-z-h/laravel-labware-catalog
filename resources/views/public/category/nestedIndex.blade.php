@@ -16,7 +16,7 @@
                             <th>название категории</th>
                             <th>описание категории</th>
                             <th>комплекты категории</th>
-{{--                            <th>изображение комплекта</th>--}}
+                            {{--                            <th>изображение комплекта</th>--}}
                         </tr>
                         </thead>
                         <tbody>
@@ -25,6 +25,14 @@
                         <tr>
                             <td class="w-25 ml-4 pl-4 text-left font-weight-bold">
                                 {{$nestedCategory->title }}
+                                <img class="card-img-right " src="
+                                         @if(!empty($category->getFirstMedia('categories')))
+                                {{$category->getFirstMedia('categories')->getUrl('thumb')}}
+                                @else
+                                {{ Storage::url('0/no_photo.png')}}
+                                @endif
+                                    "
+                                     style="width: 100%">
                             </td>
 
                             <td class="w-25 text-left">
@@ -43,10 +51,10 @@
                                                 </div>
                                             </td>
 
-                                            @if(!empty($set->getFirstMedia('images')))
+                                            @if(!empty($set->getFirstMedia('sets')))
                                                 <td class="ml-4 mr-0 pr-0  d-flex justify-content-end">
                                                     <img class="card-img-right "
-                                                         src="{{$set->getFirstMedia('images')->getUrl('thumb')}}"
+                                                         src="{{$set->getFirstMedia('sets')->getUrl('thumb')}}"
                                                          style="width: 100%">
                                                 </td>
                                             @endif

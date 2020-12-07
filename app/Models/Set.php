@@ -59,12 +59,12 @@ class Set extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('images')
-            ->registerMediaConversions(function (){
-        $this
-            ->addMediaConversion('thumb')
-            ->width(100)
-            ->height(100);
+            ->addMediaCollection('sets')
+            ->registerMediaConversions(function () {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(100)
+                    ->height(100);
             });
     }
 

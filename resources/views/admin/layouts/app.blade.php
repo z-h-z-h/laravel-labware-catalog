@@ -32,7 +32,7 @@
                 Категории
             </a>
             <a class="navbar-brand" href="{{ route('company.index') }}">
-                Дистрибьюторы
+                Компании
             </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse"

@@ -23,7 +23,7 @@
 
                             <div class="form-group row">
                                 <label for="title" class="col-md-2 col-form-label text-md-right">Название
-                                    дистрибьютора</label>
+                                    компании</label>
                                 <div class="col-md-10">
 
                                     <input type="text" class="form-control" name="title" autofocus  value="{{ old('title') }}">
@@ -31,60 +31,38 @@
                             </div>
                             <div class="form-group row">
                                 <label for="description" class="col-md-2 col-form-label text-md-right">Описание
-                                    дистрибьютора</label>
+                                    компании</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="description"  value="{{ old('description') }}">
+                                    <textarea type="text" class="form-control" name="description">
+                                        {{ old('description') }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="code" class="col-md-2 col-form-label text-md-right">url(slug)
-                                    дистрибьютора</label>
+                                <label for="code" class="col-md-2 col-form-label text-md-right">Url(slug)
+                                    компании</label>
                                 <div class="col-md-10">
                                     <input type="text" class="form-control" name="slug"  value="{{ old('slug') }}">
                                 </div>
                             </div>
 
+                            <div class="form-inline d-flex justify-content-end">
+                                <div class="">
+                                    <button type="submit" class="mr-2 btn btn-primary justify-content-center">
+                                        ДОБАВИТЬ
+                                    </button>
+                                </div>
+                                <div class=" custom-file  col-md-10 ">
+                                    <label class="custom-file-label ml-1" for="image">Добавить
+                                        изображение компании</label>
+                                    <input type="file" name="image" class="custom-file-input" id="customFile">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                 </div>
-                <div class="col-md-3">
 
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-center">Созидание</div>
-                        <div class="card-body d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary">
-                                ДОБАВИТЬ
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card d-flex justify-content-center">
-                        <div class="card-body d-flex justify-content-center">
-                            ID:
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Создано</label>
-
-                                <input type="text" class="form-control" name="created_at"
-                                       value="" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Редактировано</label>
-
-                                <input type="text" class="form-control" name="updated_at"
-                                       value="" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </form>

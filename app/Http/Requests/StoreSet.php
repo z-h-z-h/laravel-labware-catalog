@@ -11,7 +11,7 @@ class StoreSet extends FormRequest
      *
      * @return bool
      */
-   public function authorize()
+    public function authorize()
     {
         return true;
     }
@@ -25,12 +25,13 @@ class StoreSet extends FormRequest
     {
         return [
 
-                'title' => 'required|string|min:4|max:25',
-                'description' => 'required|string|min:5|max:250',
-                'code' => 'required|string|min:3|max:21',
-                'category_id' => 'required|string|min:1|max:5',
+            'title' => 'required|string|min:3|max:21',
+            'description' => 'required|string|min:5|max:250',
+            'code' => 'required|string|min:3|max:10',
+            'slug' => '|string|min:3|max:21|nullable',
+            'category_id' => 'required|string|min:1|max:5',
 
-                //'image' => 'mimes:jpeg,bmp,png,gif',
+            //'image' => 'mimes:jpeg,bmp,png,gif',
 
         ];
     }

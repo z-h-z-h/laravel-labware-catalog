@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategory;
 
 use App\Models\Category;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -42,7 +45,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $parentCategories = Category::whereNull('parent_id')->get(['id', 'title','company_id']);
+        $parentCategories = Category::whereNull('parent_id')->get(['id', 'title', 'company_id']);
 
         $companies = Company::all(['id', 'title']);
         return view('admin/category/create', [
@@ -59,10 +62,18 @@ class CategoryController extends Controller
     public function store(StoreCategory $request)
     {
         $category = $request->validated();
+        if (empty($request->slug)) {
+            $slug = Str::slug($request->title);
+            $category = array_merge($category, ['slug' => $slug]);
+        }
 
-
-        Category::create($category);
-
+        $category = Category::create($category);
+        if (!empty($request->file('image'))) {
+            $category->addMediaFromRequest('image')
+                ->preservingOriginal()
+//            ->usingName()
+                ->toMediaCollection('categories');
+        }
         return redirect()->route('category.index')->with('message', 'Категория успешно добавлена');
     }
 
@@ -85,13 +96,20 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-
+        $image = $category->getFirstMedia('categories');
+        if (!empty($image)) {
+            $image = $image->getUrl();
+        }
+        else {
+            $image = Storage::url('0/no_photo.png');
+        }
         $parentCategories = Category::whereNull('parent_id')->get(['id', 'title', 'company_id']);
         $companies = Company::all(['id', 'title']);
 
         return view('admin/category/edit', ['category' => $category,
             'parentCategories' => $parentCategories,
-            'companies' => $companies]);
+            'companies' => $companies,
+            'image' => $image]);
     }
 
     /**
@@ -104,8 +122,21 @@ class CategoryController extends Controller
     public function update(StoreCategory $request, Category $category)
     {
         $data = $request->validated();
+        if (empty($request->slug)) {
+            $slug = Str::slug($request->title);
+            $data = array_merge($data, ['slug' => $slug]);
+        }
         $category->update($data);
 
+        if (!empty($request->file('image'))) {
+            if (!empty($category->getFirstMedia('categories'))) {
+                $category->getFirstMedia('categories')->delete();
+            }
+            $category->addMediaFromRequest('image')
+                ->preservingOriginal()
+//            ->usingName()
+                ->toMediaCollection('categories');
+        }
         return redirect()->route('category.index')->with('message', 'успешно изменено!!!');
     }
 
@@ -118,11 +149,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if (count($category->nestedCategories) == 0) {
+        if (count($category->nestedCategories) == 0 && count($category->sets) == 0) {
             $category->delete();
             return redirect()->route('category.index')->with('message', 'успешно удалено!!!');
+        } else {
+            return redirect()->route('category.index')->with('message', 'Нельзя удалить, пока есть зависимые категории или комплекты!');
         }
-        else{
-            return redirect()->route('category.index')->with('message', 'Сначала разберись с вложенными категориями , а потом удаляй!!!');}
     }
 }

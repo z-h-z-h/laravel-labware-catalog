@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-header">Редактируемые данные</div>
                         <div class="card-body">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -24,7 +24,7 @@
                             <div class="form-row">
 
                                 <div class="col-md-6">
-                                    <img class="card-img-right "
+                                    <img class="card-img-left"
                                          src="{{$image}}"
                                          style="width: 100%">
                                 </div>
@@ -45,8 +45,8 @@
                                                class="col-form-label text-md-right">Описание комплекта</label>
 
 
-                                        <input type="text" class="form-control" name="description"
-                                               value="{{$set->description}}">
+                                        <textarea type="text" class="form-control" name="description">
+                                        {{$set->description}}</textarea>
                                     </div>
 
                                     <div class="form-group">
@@ -57,10 +57,18 @@
                                         <input type="text" class="form-control" name="code"
                                                value="{{$set->code}}">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="slug"
+                                               class="col-form-label text-md-right">Url(slug) комплекта</label>
+
+
+                                        <input type="text" class="form-control" name="slug"
+                                               value="{{$set->slug}}">
+                                    </div>
 
                                     <div class="form-group">
                                         <label for="category_id"
-                                               class="col-form-label ">Дистрибьютор</label>
+                                               class="col-form-label ">Компания</label>
 
                                         <select name="company"
                                                 class="form-control"
@@ -86,7 +94,7 @@
 
                                         selectElement.addEventListener('change', (event) => {
                                             const category = document.querySelector('.category')
-                                            category.innerHTML = `<optgroup label="все категории выбранного дистрибьютора" class="text-light bg-secondary"></optgroup>`
+                                            category.innerHTML = `<optgroup label="все категории выбранной компании" class="text-light bg-secondary"></optgroup>`
                                             for (let i = 0; i < parentCategories.length; i++) {
                                                 if (parentCategories[i]['company_id'] == event.target.value) {
                                                     category.insertAdjacentHTML('beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
@@ -111,7 +119,7 @@
                                         <select name="category_id"
                                                 class="category form-control"
                                                 required>
-                                            <optgroup label="все категории выбранного дистрибьютора" class="text-muted bg-light"></optgroup>
+                                            <optgroup label="все категории выбранной компании" class="text-muted bg-light"></optgroup>
                                             @foreach($parentCategories as $parentCategory)
 
                                                 @if($parentCategory->company_id == $set->category->company_id)
@@ -147,7 +155,7 @@
                 <div class="col-md-3">
 
                     <div class="card">
-                        <div class="card-header">Редактировай давай</div>
+                        <div class="card-header">Нередактируемые данные</div>
                         <div class="card-body d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary justify-content-center">
                                 ИЗМЕНИТЬ

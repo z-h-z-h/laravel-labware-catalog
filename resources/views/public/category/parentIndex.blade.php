@@ -1,4 +1,3 @@
-
 @extends('public.layouts.publicApp')
 
 @section('content')
@@ -25,6 +24,18 @@
                         <tr>
                             <td class="w-25 ml-4 pl-4 text-left font-weight-bold">
                                 {{$category->title }}
+
+
+                                    <img class="card-img-right " src="
+                                         @if(!empty($category->getFirstMedia('categories')))
+                                         {{$category->getFirstMedia('categories')->getUrl('thumb')}}
+                                         @else
+                                         {{ Storage::url('0/no_photo.png')}}
+                                         @endif
+                                             "
+                                         style="width: 100%">
+
+
                             </td>
 
                             <td class="w-50 text-left">

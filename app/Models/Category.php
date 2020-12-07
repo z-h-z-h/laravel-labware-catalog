@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Models\Category
@@ -32,9 +34,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin Eloquent
  */
-class Category extends Model
+class Category extends Model implements HasMedia
 {
-use HasFactory;
+    use HasFactory;
+    use InteractsWithMedia;
+
     protected $fillable = [
         'slug',
         'title',
@@ -42,23 +46,34 @@ use HasFactory;
         'parent_id',
         'company_id'
     ];
-//    public function getRouteKeyName()
-//    {
-//        return 'slug';
-//    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('categories')
+            ->registerMediaConversions(function () {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(100)
+                    ->height(100);
+            });
+    }
 
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
+
     public function nestedCategories(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
+
     public function parentCategory(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
+
     public function sets(): HasMany
     {
         return $this->hasMany(Set::class);

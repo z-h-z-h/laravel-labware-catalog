@@ -33,8 +33,8 @@
                                 <label for="description" class="col-md-2 col-form-label text-md-right">Описание
                                     комплекта</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control" name="description"
-                                           value="{{ old('description') }}">
+                                    <textarea type="text" class="form-control" name="description">
+                                        {{ old('description') }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -44,20 +44,31 @@
                                     <input type="text" class="form-control" name="code" value="{{ old('code') }}">
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="slug" class="col-md-2 col-form-label text-md-right">Url(slug)
+                                    комплекта</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
+                                </div>
+                            </div>
 
                             <div class="form-group row mb-4" id="company">
                                 <label for="company_id"
-                                       class="col-md-2 col-form-label text-md-right">Дистрибьютор</label>
+                                       class="col-md-2 col-form-label text-md-right">Компания</label>
                                 <div class="col-md-10">
-                                    <select name="company"
+                                    <select name="company_id"
                                             class="form-control"
                                             id="company"
                                             required>
                                         <option>
-                                            Выберите дистрибьютора
+                                            Выберите компанию
                                         </option>
                                         @foreach($companies as $company)
-                                            <option value="{{ $company->id }}">
+                                            <option value="{{ $company->id }}"
+                                                    @if(old('company_id') == $company->id)
+                                                    selected
+                                                @endif
+                                            >
                                                 {{ $company->title }}
                                             </option>
                                         @endforeach
@@ -70,12 +81,12 @@
                                 const nestedCategories = <?= json_encode($nestedCategories); ?>;
                                 const selectElement = document.getElementById('company');
 
-                                selectElement.addEventListener('change', (event) => {
+                                selectElement.addEventListener('change',  (event) => {
                                     const category = document.querySelector('.category');
-                                    category.innerHTML = `<optgroup label="все категории выбранного дистрибьютора" class="text-light bg-secondary"></optgroup>`
+                                    category.innerHTML = `<optgroup label="все категории выбранного компании" class="text-light bg-secondary"></optgroup>`
                                     for (let i = 0; i < parentCategories.length; i++) {
                                         if (parentCategories[i]['company_id'] == event.target.value) {
-                                            category.insertAdjacentHTML( 'beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
+                                            category.insertAdjacentHTML('beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
 
                                             for (let k = 0; k < nestedCategories.length; k++) {
                                                 if (nestedCategories[k]['parent_id'] == parentCategories[i]['id']) {
@@ -88,62 +99,50 @@
                                 });
                             </script>
 
-                            <div class="form-group  row">
+                            <div class="form-group row pb-3">
                                 <label for="category_id" class="col-md-2 col-form-label text-md-right">Категория
                                     комплекта</label>
                                 <div class="col-md-10 mt-3">
                                     <select name="category_id"
                                             class="category  form-control"
-                                            required>
+                                           required>
+
+                                        @foreach($companies as $company)
+                                            @if(old('company_id') == $company->id)
+                                                @foreach($company->categories as $category)
+                                                    @if($category->parent_id == null )
+                                                        <optgroup label="{{$category->title}}"></optgroup>
+                                                    @else
+                                                    <option value="{{$category->id}}"
+                                                        @if($category->id == old('category_id'))
+                                                        selected
+                                                        @endif
+                                                    >
+
+                                                        {{$category->title}}
+                                                    </option>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="custom-file  mb-4 col-md-10 offset-md-2">
-                                <label class="custom-file-label mt-3 mb-3" for="image">Изменить/добавить
-                                    изображение комплекта</label>
-                                <input type="file" name="image" class="custom-file-input" id="customFile">
+                            <div class="form-inline d-flex justify-content-end">
+                                <div class="">
+                                    <button type="submit" class="mr-2 btn btn-primary justify-content-center">
+                                        ДОБАВИТЬ
+                                    </button>
+                                </div>
+                                <div class=" custom-file  col-md-10 ">
+                                    <label class="custom-file-label ml-1" for="image">Добавить
+                                        изображение</label>
+                                    <input type="file" name="image" class="custom-file-input" id="customFile">
+
+                                </div>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-md-3">
-
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-center">СОЗИДАТЕЛЬСТВО</div>
-                        <div class="card-body d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary">
-                                СОЗДАТЬ
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body d-flex justify-content-center">
-                            ID
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Создано</label>
-
-                                <input type="text" class="form-control" name="created_at"
-                                       value="" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Редактировано</label>
-
-                                <input type="text" class="form-control" name="updated_at"
-                                       value="" disabled>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,7 @@
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-header row mr-0 ml-0">
-                        <div class="col-5">Удаленный суперсклад всего!!!</div>
+                        <div class="col-5">Название сервиса</div>
 
                         <form class="form-inline col-5 justify-content-end" action="{{route('set.index')}}">
                             <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК" autofocus>
