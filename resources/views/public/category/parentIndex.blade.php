@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header row mr-0 ml-0">
-                        <div class="col-5">Категории всего!!!</div>
+                        <div class="col-5">Категории</div>
                     </div>
 
                     <table>

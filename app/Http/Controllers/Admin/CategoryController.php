@@ -153,7 +153,7 @@ class CategoryController extends Controller
             $category->delete();
             return redirect()->route('category.index')->with('message', 'успешно удалено!!!');
         } else {
-            return redirect()->route('category.index')->with('message', 'Нельзя удалить, пока есть зависимые категории или комплекты!');
+            return redirect()->route('category.index')->with('message', 'Нельзя удалить, пока есть зависимые категории или комплекты');
         }
     }
 }

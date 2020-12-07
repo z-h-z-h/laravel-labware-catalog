@@ -8,7 +8,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        Заказывай давай
+                        Коплект
                     </div>
                     <div class="card-body p-0 d-flex justify-content-center">
 
@@ -33,7 +33,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        Заказывай давай
+                        Коплект
                     </div>
                     <div class="card-body d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary justify-content-center">

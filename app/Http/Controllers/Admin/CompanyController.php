@@ -137,7 +137,7 @@ class CompanyController extends Controller
             return redirect()->route('company.index')->with('message', 'успешно удалено!!!');
         } else {
             return redirect()->route('company.index')
-                ->with('message', 'Нельзя удалить компанию с существующими категориями, сначала удалите категории!!!');
+                ->with('message', 'Нельзя удалить компанию с существующими категориями, сначала удалите категории');
         }
     }
 }
