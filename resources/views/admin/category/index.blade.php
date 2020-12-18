@@ -2,139 +2,150 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header row mr-0 ml-0">
-                        <div class="col-5">Название сервиса</div>
 
-                        <form class="form-inline col-5 justify-content-end" action="{{route('category.index')}}">
-                            <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК"
-                                   autofocus>
-                            <button class="ml-1 btn btn-primary" type="submit">ИСКАТЬ</button>
-                        </form>
-                        <a class="btn btn-primary col-2 justify-content-end" role="button"
-                           href="{{route('category.create')}}">
-                            ДОБАВИТЬ
-                        </a>
-                    </div>
+        <div class="card">
+            <div class="card-header row m-0 p-2">
+                <div class="col-5  d-flex align-items-end"><h5>Категории</h5></div>
 
-                    <table class="table-hover">
+                <a class="btn  btn-outline-primary d-flex ml-auto mr-3" role="button"
+                   href="{{route('category.create')}}">
+                    Добавить
+                </a>
+            </div>
 
-                        <div class="table-info text-center">
-                            @isset($search)
-                                {{ 'по запросу  '.$search.'  найдено  '.$categories->total().'  записей' }}
-                            @endisset
+            <div class="card-body">
+                <form class="form-inline mb-3" action="{{route('category.index')}}">
+                    <input class="form-control form-control-sm col" name="search" type="text" value="{{$search}}"
+                           placeholder="Поиск" autofocus>
+                    <button class="ml-1 mr-1 d-flex justify-content-end btn btn-sm btn-outline-secondary" type="submit">
+                        Искать
+                    </button>
+                </form>
+                <table class="table table-hover table-sm table-borderless">
+                    @isset($search)
+                        <div class="alert alert-info mr-1 pb-0 pt-0 " role="alert">
+                            {{'По запросу  ' . '"' . $search . '" ' . App\Helpers::quantity($categories->count(),['найдена ', 'найдено ', 'найдено ']).
+                              $categories->count() . App\Helpers::quantity($categories->count(),[' запись', ' записи', ' записей'])}}
                         </div>
-
-                        <div class="table-success text-center">
+                    @endisset
+                    @if(!empty(session ('message')))
+                        <div class="alert alert-success mr-1  pb-0 pt-0" role="alert">
                             {{ session ('message') }}
 
                         </div>
-                        <thead>
+                    @endif
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Название категории</th>
+                        @if(isset ($search))
+                            <th>Родительская категория</th>
+                        @endif
+                        <th>Компания</th>
+                        <th>Дата создания</th>
+                        <th>Дата обновления</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($categories as $category)
+
                         <tr>
-                            <th>#</th>
-                            <th>название категории</th>
-                            @if(isset ($search))
-                                <th class="text-left">Родительская категория</th>
-                            @endif
-                            <th>компания</th>
+                            <td class="text-muted" style="width: 3%">{{$category->id}}</td>
+                            <td style="width:18%" class="
 
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($categories as $category)
-
-                            <tr>
-                                <td class="text-light ml-2 pl-2" style="">{{$category->id}}</td>
-                                <td class="
-                                @if(isset($search))
-                                    w-25
-                                    @else
-                                    w-50
-                                @endif
                                 @if($category->parent_id == null)
                                     font-weight-bold
+                                @endif
+                                ">{{$category->title }}</td>
+                            @isset($search)
+                                <td class="text-muted"
+                                    style="width: 22%">
+                                    @if($category->parent_id !== null)
+                                        {{$category->parentCategory->title}}
                                     @endif
-                                    ">{{$category->title }}</td>
-                                @isset($search)
-                                    <td class="w-25 text-muted"
-                                        style="">
-                                        @if($category->parent_id !== null)
-{{--                                            else??--}}
-                                            {{$category->parentCategory->title}}
-                                        @endif
+                                </td>
+                            @endisset
+                            <td style="width: 18%" class="text-muted">
+                                {{ $category->company->title }}
+                            </td>
+                            <td style="width: 18%" class="text-muted">
+                                {{ $category->created_at->format('Y-m-d') }}
+                            </td>
+
+                            <td style="width: 22%" class="text-muted">
+                                {{ $category->updated_at->format('Y-m-d') }}
+                            </td>
+                            <td><a class="btn btn-outline-secondary btn-sm" role="button"
+                                   href=" {{route('category.edit',$category->id)}}">Редактировать</a>
+                            </td>
+                            <td>
+                                <form class="" method="post" enctype="multipart/form-data"
+                                      action="{{route('category.destroy', $category->id)}}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        @if(empty($search))
+                            @foreach($category->nestedCategories as $nestedCategory)
+
+                                <tr>
+                                    <td style="width: 3%" class="text-muted">
+                                        {{$nestedCategory->id}}
                                     </td>
-                                @endisset
-                                <td class="w-25 text-muted">
-                                    {{ $category->company->title }}
-                                </td>
-                                <td><a class="btn btn-outline-primary" role="button"
-                                       href="{{route('category.edit',$category->id)}}">РЕДАКТИРОВАТЬ</a>
-                                </td>
-                                <td class="" style="">
-                                    <form class="" method="post" enctype="multipart/form-data"
-                                          action="{{route('category.destroy', $category->id)}}">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
-                                    </form>
-                                </td>
-                            </tr>
-
-                            @if(empty($search))
-                                @foreach($category->nestedCategories as $nestedCategory)
-
-                                    <tr>
-                                        <td>
-                                            <div class="text-light col mr-0 pl-2 pr-0">
-                                                {{$nestedCategory->id}}
-                                            </div>
-                                        </td>
 
 
-                                        <td class="">
-                                            <div class="w-50 text-left">
-                                                --{{$nestedCategory->title }}
-                                            </div>
-                                        </td>
+                                    <td style="width: 20%" class="  ">
+                                        - {{$nestedCategory->title }}
+                                    </td>
 
-                                        <td class="w-25 text-muted">
-                                            {{ $category->company->title }}
-                                        </td>
+                                    <td style="width: 20%" class="text-muted">
+                                        {{ $category->company->title }}
+                                    </td>
+                                    <td style="width: 20%" class=" text-muted">
+                                        {{ $category->created_at->format('Y-m-d') }}
+                                    </td>
 
-                                        <td>
-                                            <a class=" btn btn-outline-primary " role="button"
-                                               href="{{route('category.edit',$nestedCategory->id)}}">РЕДАКТИРОВАТЬ</a>
-                                        </td>
+                                    <td style="width: 22%" class=" text-muted">
+                                        {{ $category->updated_at->format('Y-m-d') }}
+                                    </td>
 
+                                    <td>
+                                        <a class="btn btn-outline-secondary btn-sm" role="button"
+                                           href="{{route('category.edit',$nestedCategory->id)}}">Редактировать</a>
+                                    </td>
 
-                                        <form class="" method="post" enctype="multipart/form-data"
+                                    <td>
+                                        <form method="post" enctype="multipart/form-data"
                                               action="{{route('category.destroy', $nestedCategory->id)}}">
                                             @method('DELETE')
                                             @csrf
-                                            <td>
-                                                <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ
-                                                </button>
-                                            </td>
+
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm">Удалить
+                                            </button>
+
                                         </form>
+                                    </td>
 
-                                    </tr>
+                                </tr>
 
-                                @endforeach
-                            @endif
-                        @endforeach
-                        </tbody>
-                    </table>
-
-
-                </div>
+                            @endforeach
+                        @endif
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
+
+
         </div>
     </div>
 
+
     <div class="container">
-        <div class="row justify-content-center">
+        <div class=mt-3>
 
             <div class="pagination">{{ $categories->withQueryString()->links() }}</div>
 

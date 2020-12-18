@@ -3,11 +3,10 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header row mr-0 ml-0">
-                        <div class="col-5">Название сервиса</div>
-
+                    <div class="card-header row m-0 pt-2 pb-2 ">
+                        <div class=" d-flex align-items-end"><h5 class="mt-2">Выбранная компания</h5></div>
                     </div>
 
                     <table>
@@ -16,9 +15,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>название компании</th>
-                            <th>описание компании</th>
-                            <th>категории компании</th>
+                            <th>Название компании</th>
+                            <th>Описание компании</th>
+                            <th>Категории компании</th>
                         </tr>
                         </thead>
                         <tbody>

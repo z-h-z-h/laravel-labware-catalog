@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategory;
 
 use App\Models\Category;
 use App\Models\Company;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -17,31 +20,28 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
         $search = $request->input('search');
-
-
-        $categories = Category::when($search, function ($query, $search) {
-            return $query->where('title', 'LIKE', '%' . $search . '%')->paginate(15);
-
-        },
+        $categories = Category::when($search,
+            function ($query, $search) {
+                return $query->where('title', 'LIKE', '%' . $search . '%')->paginate(15);
+            },
             function ($query) {
                 return $query->where('parent_id', null)
                     ->orderBy('company_id')
-                    ->paginate(3);// красиво выглядит и ровно когда одинаковое количество вложенных категорий иначе надо что то переделать
-            });
-
+                    ->paginate(3);
+            }
+        );
         return view('admin/category/index', ['categories' => $categories, 'search' => $search]);
-
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -57,7 +57,7 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreCategory $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreCategory $request)
     {
@@ -81,7 +81,7 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -92,15 +92,14 @@ class CategoryController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Category $category
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Category $category)
     {
         $image = $category->getFirstMedia('categories');
         if (!empty($image)) {
             $image = $image->getUrl();
-        }
-        else {
+        } else {
             $image = Storage::url('0/no_photo.png');
         }
         $parentCategories = Category::whereNull('parent_id')->get(['id', 'title', 'company_id']);
@@ -117,7 +116,8 @@ class CategoryController extends Controller
      *
      * @param StoreCategory $request
      * @param Category $category
-     * @return \Illuminate\Http\Response
+     * @return Response
+     * @throws Exception
      */
     public function update(StoreCategory $request, Category $category)
     {
@@ -126,6 +126,7 @@ class CategoryController extends Controller
             $slug = Str::slug($request->title);
             $data = array_merge($data, ['slug' => $slug]);
         }
+
         $category->update($data);
 
         if (!empty($request->file('image'))) {
@@ -134,7 +135,6 @@ class CategoryController extends Controller
             }
             $category->addMediaFromRequest('image')
                 ->preservingOriginal()
-//            ->usingName()
                 ->toMediaCollection('categories');
         }
         return redirect()->route('category.index')->with('message', 'успешно изменено!!!');
@@ -144,8 +144,8 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Category $category
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @return Response
+     * @throws Exception
      */
     public function destroy(Category $category)
     {

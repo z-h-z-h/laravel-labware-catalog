@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Company;
@@ -32,6 +33,7 @@ class SetController extends Controller
         })
             ->orderBy('category_id')
             ->paginate();
+
 
         return view('admin/set/index', ['sets' => $sets, 'search' => $search]);
 
@@ -98,8 +100,7 @@ class SetController extends Controller
         $image = $set->getFirstMedia('sets');
         if (!empty($image)) {
             $image = $image->getUrl();
-        }
-        else {
+        } else {
             $image = Storage::url('0/no_photo.png');
         }
 
@@ -134,7 +135,7 @@ class SetController extends Controller
             $data = array_merge($data, ['slug' => $slug]);
         }
 
-        $set->update( $data);
+        $set->update($data);
 
         if (!empty($request->file('image'))) {
 

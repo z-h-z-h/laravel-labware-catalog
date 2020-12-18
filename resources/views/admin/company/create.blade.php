@@ -5,8 +5,8 @@
     <form method="post" enctype="multipart/form-data" action="{{route('company.store')}}">
         @csrf
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
+            <div class="alert alert-danger pb-1">
+                <ul class="list-unstyled mb-1 mt-n1">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -16,46 +16,51 @@
 
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Создание</div>
+                        <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Создание компании</h5></div>
                         <div class="card-body">
-
-                            <div class="form-group row">
-                                <label for="title" class="col-md-2 col-form-label text-md-right">Название
-                                    компании</label>
-                                <div class="col-md-10">
-
-                                    <input type="text" class="form-control" name="title" autofocus  value="{{ old('title') }}">
+                            <div class="form-row">
+                                <div class="col-md-4 pr-3">
+                                    <div class="form-group">
+                                        <label for="image" class="col-form-label">Фотография</label>
+                                        <img class="card-img-right bg-light"
+                                             src="{{Storage::url('0/no_photo.png')}}" alt=""
+                                             style="width: 100%">
+                                    </div>
+                                    <div class="form-group custom-file">
+                                        <label class="custom-file-label" for="image">Добавить
+                                            изображение компании</label>
+                                        <input type="file" name="image" class="custom-file-input" id="customFile">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="description" class="col-md-2 col-form-label text-md-right">Описание
-                                    компании</label>
-                                <div class="col-md-10">
-                                    <textarea type="text" class="form-control" name="description">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="title" class=" col-form-label ">Название
+                                        </label>
+                                        <input type="text" class="form-control" name="title" autofocus
+                                               value="{{ old('title') }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="slug" class="col-form-label">URL
+                                            компании</label>
+                                        <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description" class="col-form-label">Описание компании</label>
+
+                                        <textarea type="text" class="form-control" rows="6" name="description">
                                         {{ old('description') }}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="code" class="col-md-2 col-form-label text-md-right">Url(slug)
-                                    компании</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="slug"  value="{{ old('slug') }}">
-                                </div>
-                            </div>
 
-                            <div class="form-inline d-flex justify-content-end">
-                                <div class="">
-                                    <button type="submit" class="mr-2 btn btn-primary justify-content-center">
-                                        ДОБАВИТЬ
-                                    </button>
-                                </div>
-                                <div class=" custom-file  col-md-10 ">
-                                    <label class="custom-file-label ml-1" for="image">Добавить
-                                        изображение компании</label>
-                                    <input type="file" name="image" class="custom-file-input" id="customFile">
+                                    </div>
+                                    <div class="d-flex justify-content-end">
 
+                                        <button type="submit" class="btn btn-outline-primary">
+                                            Сохранить
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

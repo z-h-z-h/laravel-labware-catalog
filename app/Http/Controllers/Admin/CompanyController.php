@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompany;
 use App\Models\Company;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -14,7 +17,7 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -24,13 +27,14 @@ class CompanyController extends Controller
             return $query->where('title', 'LIKE', '%' . $search . '%');
         })
             ->paginate();
+
         return view('admin/company/index', ['companies' => $companies, 'search' => $search]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -41,7 +45,7 @@ class CompanyController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreCompany $request)
     {
@@ -66,7 +70,7 @@ class CompanyController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -77,15 +81,14 @@ class CompanyController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Company $company
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Company $company)
     {
         $image = $company->getFirstMedia('companies');
         if (!empty($company->getFirstMedia('companies'))) {
             $image = $image->getUrl();
-        }
-        else {
+        } else {
             $image = Storage::url('0/no_photo.png');
         }
         return view('admin/company/edit', [
@@ -98,7 +101,7 @@ class CompanyController extends Controller
      *
      * @param StoreCompany $request
      * @param Company $company
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(StoreCompany $request, Company $company)
     {
@@ -127,8 +130,8 @@ class CompanyController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Company $company
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @return Response
+     * @throws Exception
      */
     public function destroy(Company $company)
     {

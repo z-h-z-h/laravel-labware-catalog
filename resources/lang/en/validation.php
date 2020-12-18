@@ -79,7 +79,7 @@ return [
     'max' => [
         'numeric' => 'The :attribute may not be greater than :max.',
         'file' => 'The :attribute may not be greater than :max kilobytes.',
-        'string' => ':attribute не больше :max символов.',
+        'string' => ':attribute не больше :max символа.',
         'array' => 'The :attribute may not have more than :max items.',
     ],
     'mimes' => 'The :attribute must be a file of type: :values.',
@@ -147,6 +147,13 @@ return [
     |
     */
 
-    'attributes' => [],
-
+    'attributes' => [
+        'title' => 'Название'
+        , 'description' => 'Описание'
+        , 'code' => 'Код'
+        , 'slug' => 'URL'
+        , 'category_id' => 'Категория'
+        , 'parent_id' => 'Родительская категория'
+        , 'company_id' => 'Компания'
+    ],
 ];

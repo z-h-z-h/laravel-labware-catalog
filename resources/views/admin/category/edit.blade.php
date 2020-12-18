@@ -6,14 +6,15 @@
         @csrf
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Редактируемые данные</div>
+                        <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Редактирование категории
+                                #{{$category->id}}</h5></div>
 
                         <div class="card-body">
                             @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
+                                <div class="alert alert-danger pb-1">
+                                    <ul class="list-unstyled mb-1 mt-n1">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
@@ -22,39 +23,47 @@
                             @endif
 
                             <div class="form-row">
-                                <div class="col-md-6">
-                                    <img class="card-img-right "
-                                         src="{{$image}}" alt=""
-                                         style="width: 100%">
+                                <div class="col-md-4 pr-3">
+                                    <div class="form-group">
+                                        <label for="image" class="col-form-label">Фотография</label>
+                                        <img class="card-img-right bg-light"
+                                             src="{{$image}}" alt=""
+                                             style="width: 100%">
+                                    </div>
+                                    <div class="form-group custom-file">
+                                        <label class="custom-file-label" for="customFile">Изменить/добавить
+                                            изображение</label>
+                                        <input type="file" name="image" class="custom-file-input" id="customFile">
+
+                                    </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-8">
 
                                     <div class="form-group">
                                         <label for="$category-title"
-                                               class="col-form-label text-md-right">Название категории</label>
+                                               class="col-form-label">Название</label>
 
                                         <input type="text" class="form-control" name="title"
-                                               value="{{$category->title}}"
+                                               @if(empty(old()))
+                                                value="{{$category->title}}"
+                                               @else
+                                                value="{{old('title')}}"
+                                               @endif
                                                autofocus>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="category-description"
-                                               class="col-form-label text-md-right">Описание категории</label>
-
-
-                                        <textarea type="text" class="form-control" name="description">
-                                            {{$category->description}}</textarea>
-                                    </div>
-
-                                    <div class="form-group">
                                         <label for="category-slug"
-                                               class="col-form-label text-md-right">Url(slug)</label>
+                                               class="col-form-label">URL</label>
 
 
                                         <input type="text" class="form-control" name="slug"
-                                               value="{{$category->slug}}">
+                                               @if(empty(old()))
+                                                value="{{$category->slug}}"
+                                               @else
+                                                value="{{old('slug')}}"
+                                            @endif>
                                     </div>
 
                                     <div class="form-group">
@@ -67,11 +76,11 @@
                                                 required>
                                             @foreach($companies as $company)
                                                 <option value="{{ $company->id }}"
-
-                                                        @if (
-                                                            $company->id == $category->company_id)
-                                                        selected
-                                                    @endif
+                                                        @if($company->id == old('company_id'))
+                                                            selected
+                                                        @elseif ($company->id == $category->company_id)
+                                                            selected
+                                                        @endif
                                                 >
                                                     {{ $company->title }}</option>
 
@@ -104,102 +113,69 @@
                                     <div class="form-group">
                                         <label for="parent-id" class=" col-form-label ">Родительская
                                             категория</label>
-                                        @if ($category->parent_id == null)
-                                            <select name="parent_id"
-                                                    class="parentCategory form-control">
+                                        <select name="parent_id"
+                                                class="parentCategory form-control">
 
 
-                                                <option value="" selected>
-                                                    Родительская
-                                                </option>
-
-                                                @foreach($parentCategories as $parentCategory)
-                                                    @if($parentCategory->company_id == $category->company_id
-                                                              &&$parentCategory->title !== $category->title)
-                                                        <option value="{{ $parentCategory->id }}">
-                                                            {{ $parentCategory->title }}
-                                                        </option>
+                                            <option value=""
+                                                    @if ($category->parent_id == null)
+                                                        selected
                                                     @endif
-                                                @endforeach
-                                            </select>
-                                        @else
-                                            <select name="parent_id"
-                                                    class="parentCategory form-control">
+                                            >
+                                                Родительская
+                                            </option>
 
+                                            @foreach($parentCategories as $parentCategory)
 
-                                                <option value="">
-                                                    Родительская
-                                                </option>
-
-                                                @foreach($parentCategories as $parentCategory)
-                                                    @if($parentCategory->company_id == $category->company_id)
+                                                @if((old('company_id')) !== null)
+                                                    @if($parentCategory->company_id == old('company_id'))
                                                         <option value="{{ $parentCategory->id }}"
-                                                                @if($parentCategory->id == $category->parent_id)
-                                                                selected
-                                                            @endif
+                                                                @if($parentCategory->id == old('parent_id'))
+                                                                    selected
+                                                                @endif
                                                         >
                                                             {{ $parentCategory->title }}
                                                         </option>
                                                     @endif
-                                                @endforeach
 
-                                            </select>
-                                        @endif
+                                                @elseif($parentCategory->company_id == $category->company_id
+
+                                                          &&$parentCategory->title !== $category->title)
+                                                    {{--такое условие чтобы предотвратить наследование самой себя вроде изза него и разделено все на парент и непарент и код дублируется--}}
+                                                    <option value="{{ $parentCategory->id }}">
+                                                        {{ $parentCategory->title }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+
                                     </div>
+                                    <div class="form-group">
+                                        <label for="category-description"
+                                               class="col-form-label">Описание категории</label>
 
 
-                                    <div class="form-group custom-file mt-4 mb-4 ">
-                                        <label class="custom-file-label" for="customFile">Изменить/добавить
-                                            изображение</label>
-                                        <input type="file" name="image" class="custom-file-input" id="customFile">
-
+                                        <textarea type="text" class="form-control" rows="6" name="description">
+                                             @if(empty(old()))
+                                                {{$category->description}}
+                                            @else
+                                                {{old('description')}}
+                                            @endif
+                                        </textarea>
                                     </div>
-
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-outline-primary">
+                                            Изменить
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
 
-                    <div class="card">
-                        <div class="card-header">Нередактируемые данные</div>
-                        <div class="card-body d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary justify-content-center">
-                                ИЗМЕНИТЬ
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card d-flex justify-content-center">
-                        <div class="card-body d-flex justify-content-center">
-                            ID:{{$category->id}}
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Создано</label>
-
-                                <input type="text" class="form-control" name="created_at"
-                                       value="{{$category->created_at}}" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Редактировано</label>
-
-                                <input type="text" class="form-control" name="updated_at"
-                                       value="{{$category->updated_at}}" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
-
     </form>
 
 @endsection

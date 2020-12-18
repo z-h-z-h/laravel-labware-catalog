@@ -3,90 +3,103 @@
 @section('content')
 
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="card">
-                    <div class="card-header row mr-0 ml-0">
-                        <div class="col-5">Название сервиса</div>
 
-                        <form class="form-inline col-5 justify-content-end" action="{{route('set.index')}}">
-                            <input class="form-control" name="search" type="text" value="" placeholder="ПОИСК" autofocus>
-                            <button class="ml-1 btn btn-primary" type="submit">ИСКАТЬ</button>
-                        </form>
-                        <a class="btn btn-primary col-2 justify-content-end" role="button" href="{{route('set.create')}}">
-                            ДОБАВИТЬ
-                        </a>
-                    </div>
+        <div class="card">
+            <div class="card-header row m-0 p-2">
+                <div class="col-5  d-flex align-items-end"><h5>Комплекты</h5></div>
 
-                    <table class="table-hover">
+                <a class="btn  btn-outline-primary d-flex ml-auto mr-3" role="button"
+                   href="{{route('set.create')}}">
+                    Добавить
+                </a>
+            </div>
 
-                        <div class="table-info text-center">
-                            @isset($search)
-                                {{ 'по запросу  '.$search.'  найдено  '.$sets->total().'  записей' }}
-                            @endisset
+            <div class="card-body">
+                <form class="form-inline mb-3" action="{{route('set.index')}}">
+                    <input class="form-control form-control-sm col" name="search" type="text" value="{{$search}}"
+                           placeholder="Поиск" autofocus>
+                    <button class="ml-1 mr-1 d-flex justify-content-end btn btn-sm btn-outline-secondary" type="submit">
+                        Искать
+                    </button>
+                </form>
+                <table class="table table-hover table-sm table-borderless">
+                    @isset($search)
+                        <div class="alert alert-info mr-1 pb-0 pt-0 " role="alert">
+                            {{ 'По запросу ' . '"' . $search . '" ' . App\Helpers::quantity($sets->count(),['найдена ', 'найдено ', 'найдено ']).
+                               $sets->count() . App\Helpers::quantity($sets->count(),[' запись', ' записи', ' записей'])}}
                         </div>
-
-                        <div class="table-success text-center">
+                    @endisset
+                    @if(!empty(session ('message')))
+                        <div class="alert alert-success mr-1 pb-0 pt-0" role="alert">
                             {{ session ('message') }}
 
                         </div>
-                        <thead>
+                    @endif
+                    <thead>
+                    <tr>
+                        <th class="">#</th>
+                        <th>Название</th>
+                        <th>Код</th>
+                        <th>Категория</th>
+                        <th>Дата создания</th>
+                        <th>Дата обновления</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($sets as $set)
                         <tr>
-                            <th>#</th>
-                            <th>название</th>
-                            <th>артикул</th>
-                            <th>категория</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($sets as $set)
-                            <tr>
-                                <td>
-                                    <div class="col text-muted">{{$set->id}}</div>
-                                </td>
-                                <td>
-                                    <div class="col">{{$set->title}}</div>
-                                </td>
+                            <td style="width: 4%">
+                                <div class="text-muted">{{$set->id}}</div>
+                            </td>
+                            <td style="width: 18%">
+                                <div class="">{{$set->title}}</div>
+                            </td>
 
-                                <td>
-                                    <div class="col">{{$set->code}}</div>
-                                </td>
-                                <td>
-                                    <div class="col">{{$set->category->title}}</div>
-                                </td>
+                            <td style="width: 18%">
+                                <div class="">{{$set->code}}</div>
+                            </td>
+                            <td style="width: 18%">
+                                <div class="">{{$set->category->title}}</div>
+                            </td>
+                            <td style="width: 18%">
+                                <div class="text-muted">{{$set->created_at->format('Y-m-d')}}</div>
+                            </td>
+                            <td style="width: 20%">
+                                <div class="text-muted">{{$set->updated_at->format('Y-m-d')}}</div>
+                            </td>
 
 
-                                <td style="width: 10%">
-                                    <a class="btn btn-outline-primary col mr-0 " role="button"
-                                       href="{{route('set.edit',$set->id)}}">РЕДАКТИРОВАТЬ</a>
-                                </td>
+                            <td>
+                                <a class="btn btn-outline-secondary btn-sm" role="button"
+                                   href=" {{route('set.edit',$set->id)}}">Редактировать</a>
+                            </td>
 
-                                <td style="width: 10%">
-                                <form class="col ml-0 pl-0" method="post" enctype="multipart/form-data"
+                            <td>
+                                <form class="" method="post" enctype="multipart/form-data"
                                       action="{{route('set.destroy', $set->id)}}">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-outline-danger">УДАЛИТЬ</button>
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">Удалить</button>
                                 </form>
-                                </td>
+                            </td>
 
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-
-
-                </div>
-
-
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
+
+
         </div>
+
+
     </div>
 
-    <div class="container">
-        <div class="row justify-content-center">
 
-                    <div class="pagination">{{ $sets->withQueryString()->links() }}</div>
+    <div class="container">
+        <div class="mt-3">
+
+            <div class="pagination">{{ $sets->withQueryString()->links() }}</div>
 
         </div>
     </div>

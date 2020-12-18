@@ -26,14 +26,14 @@
                                 {{$category->title }}
 
 
-                                    <img class="card-img-right " src="
+                                <img class="card-img-right " src="
                                          @if(!empty($category->getFirstMedia('categories')))
-                                         {{$category->getFirstMedia('categories')->getUrl('thumb')}}
-                                         @else
-                                         {{ Storage::url('0/no_photo.png')}}
-                                         @endif
-                                             "
-                                         style="width: 100%">
+                                {{$category->getFirstMedia('categories')->getUrl('thumb')}}
+                                @else
+                                {{ Storage::url('0/no_photo.png')}}
+                                @endif
+                                    "
+                                     style="width: 100%">
 
 
                             </td>
@@ -66,12 +66,6 @@
         </div>
     </div>
 
-    {{--    <div class="container">--}}
-    {{--        <div class="row justify-content-center">--}}
 
-    {{--            <div class="pagination">{{ $categories->withQueryString()->links() }}</div>--}}
-
-    {{--        </div>--}}
-    {{--    </div>--}}
 
 @endsection

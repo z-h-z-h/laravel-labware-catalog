@@ -33,6 +33,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Company whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Company whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
  */
 class Company extends Model implements HasMedia
 {
@@ -49,7 +51,7 @@ class Company extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('companies')
-            ->registerMediaConversions(function (){
+            ->registerMediaConversions(function () {
                 $this
                     ->addMediaConversion('thumb')
                     ->width(100)

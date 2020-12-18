@@ -6,13 +6,14 @@
         @csrf
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Редактируемые данные</div>
+                        <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Редактирование комплекта #{{$set->id}}</h5>
+                        </div>
                         <div class="card-body">
                             @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
+                                <div class="alert alert-danger pb-1">
+                                    <ul class="list-unstyled mb-1 mt-n1">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
@@ -23,67 +24,80 @@
 
                             <div class="form-row">
 
-                                <div class="col-md-6">
-                                    <img class="card-img-left"
+                                <div class="col-md-4 pr-3">
+                                    <label for="image"
+                                           class="col-form-label">Фотография</label>
+                                    <img class="card-img-left bg-light"
                                          src="{{$image}}"
                                          style="width: 100%">
+                                    <div class="form-group custom-file mt-3 ">
+                                        <label class="custom-file-label" for="customFile">Изменить/добавить
+                                            изображение </label>
+                                        <input type="file" name="image" class="custom-file-input" id="customFile">
+                                    </div>
                                 </div>
 
-                                <div class="col-md-6">
+
+                                <div class="col-md-8">
 
                                     <div class="form-group">
                                         <label for="password"
-                                               class="col-form-label text-md-right">Название комплекта</label>
+                                               class="col-form-label">Название</label>
 
                                         <input type="text" class="form-control" name="title"
-                                               value="{{$set->title}}"
+                                               @if(empty(old()))
+                                                value="{{$set->title}}"
+                                               @else
+                                                value="{{old('title')}}"
+                                               @endif
                                                autofocus>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="password"
-                                               class="col-form-label text-md-right">Описание комплекта</label>
-
-
-                                        <textarea type="text" class="form-control" name="description">
-                                        {{$set->description}}</textarea>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="password"
-                                               class="col-form-label text-md-right">Артикул комплекта</label>
-
-
+                                               class="col-form-label">Код</label>
                                         <input type="text" class="form-control" name="code"
-                                               value="{{$set->code}}">
+                                               @if(empty(old()))
+                                                value="{{$set->code}}"
+                                               @else
+                                                value="{{old('code')}}"
+                                               @endif>
                                     </div>
                                     <div class="form-group">
                                         <label for="slug"
-                                               class="col-form-label text-md-right">Url(slug) комплекта</label>
+                                               class="col-form-label ">URL</label>
 
 
                                         <input type="text" class="form-control" name="slug"
-                                               value="{{$set->slug}}">
+                                               @if(empty(old()))
+                                                 value="{{$set->slug}}"
+                                               @else
+                                                 value="{{old('slug')}}"
+                                               @endif>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="category_id"
-                                               class="col-form-label ">Компания</label>
+                                        <label for="company_id"
+                                               class="col-form-label">Компания</label>
 
-                                        <select name="company"
+                                        <select name="company_id"
                                                 class="form-control"
                                                 id="company"
                                                 required>
 
                                             @foreach($companies as $company)
                                                 <option value="{{ $company->id }}"
-                                                        @if($company->id == $set->category->company_id)
-                                                        selected
-                                                    @endif
+                                                        @if(old('company_id') == $company->id)
+                                                            selected
+
+                                                        @elseif($company->id == $set->category->company_id)
+                                                            selected
+                                                        @endif
                                                 >
                                                     {{ $company->title }}
                                                 </option>
                                             @endforeach
+
 
                                         </select>
                                     </div>
@@ -94,7 +108,7 @@
 
                                         selectElement.addEventListener('change', (event) => {
                                             const category = document.querySelector('.category')
-                                            category.innerHTML = `<optgroup label="все категории выбранной компании" class="text-light bg-secondary"></optgroup>`
+                                            category.innerHTML = ""
                                             for (let i = 0; i < parentCategories.length; i++) {
                                                 if (parentCategories[i]['company_id'] == event.target.value) {
                                                     category.insertAdjacentHTML('beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
@@ -114,82 +128,68 @@
 
                                     <div class="form-group">
                                         <label for="category_id"
-                                               class="col-form-label ">Категория комплекта</label>
+                                               class="col-form-label">Категория комплекта</label>
 
                                         <select name="category_id"
                                                 class="category form-control"
                                                 required>
-                                            <optgroup label="все категории выбранной компании" class="text-muted bg-light"></optgroup>
+
+
                                             @foreach($parentCategories as $parentCategory)
 
-                                                @if($parentCategory->company_id == $set->category->company_id)
+                                                @if($parentCategory->company_id == old('company_id'))
                                                     <optgroup label="{{$parentCategory->title}}"></optgroup>
-                                                @endif
-                                                @foreach($parentCategory->nestedCategories as $nestedCategory)
-                                                    @if($nestedCategory->company_id == $set->category->company_id)
+                                                    @foreach($parentCategory->nestedCategories as $nestedCategory)
                                                         <option value="{{$nestedCategory->id}}"
-                                                                @if($nestedCategory->id == $set->category_id)
-                                                                selected
+                                                                @if(old('category_id') == $nestedCategory->id)
+                                                                 selected
                                                                 @endif
                                                         >
                                                             {{$nestedCategory->title}}
                                                         </option>
-                                                    @endif
-                                                @endforeach
+                                                    @endforeach
 
+                                                @elseif(empty( old('company_id')) && $parentCategory->company_id == $set->category->company_id)
+                                                    <optgroup label="{{$parentCategory->title}}"></optgroup>
+
+                                                    @foreach($parentCategory->nestedCategories as $nestedCategory)
+
+                                                        <option value="{{$nestedCategory->id}}"
+
+                                                                @if($nestedCategory->id == $set->category_id)
+                                                                    selected
+                                                                @endif
+                                                        >
+                                                            {{$nestedCategory->title}}
+                                                        </option>
+
+                                                    @endforeach
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="password"
+                                               class="col-form-label">Описание комплекта</label>
 
-                                    <div class="form-group custom-file mt-4 mb-4 ">
-                                        <label class="custom-file-label" for="customFile">Изменить/добавить
-                                            изображение </label>
-                                        <input type="file" name="image" class="custom-file-input" id="customFile">
+                                        <textarea type="text" class="form-control" rows="6" name="description">
+                                            @if(empty(old()))
+                                                {{$set->description}}
+                                            @else
+                                                {{old('description')}}
+                                            @endif
+                                        </textarea>
                                     </div>
-
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-outline-primary">
+                                            Изменить
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-
-                    <div class="card">
-                        <div class="card-header">Нередактируемые данные</div>
-                        <div class="card-body d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary justify-content-center">
-                                ИЗМЕНИТЬ
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body d-flex justify-content-center">
-                            ID:{{$set->id}}
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Создано</label>
-
-                                <input type="text" class="form-control" name="created_at"
-                                       value="{{$set->created_at}}" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="password"
-                                       class="col-form-label text-md-right">Редактировано</label>
-
-                                <input type="text" class="form-control" name="updated_at"
-                                       value="{{$set->updated_at}}" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 

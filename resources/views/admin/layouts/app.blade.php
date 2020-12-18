@@ -22,18 +22,10 @@
 <body>
 <div id="app">
 
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-light   ">
 
         <div class="container">
-            <a class="navbar-brand" href="{{ route('set.index') }}">
-               Комплекты
-            </a>
-            <a class="navbar-brand" href="{{ route('category.index') }}">
-                Категории
-            </a>
-            <a class="navbar-brand" href="{{ route('company.index') }}">
-                Компании
-            </a>
+
 
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -44,7 +36,27 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto ">
-
+                    <li class="nav-item
+                       @if(Str::startsWith(Route::currentRouteName(), 'company.'))
+                        active
+                        @endif
+                        ">
+                        <a class="nav-link" href="{{ route('company.index') }}">Компании</a>
+                    </li>
+                    <li class="nav-item
+                       @if(Str::startsWith(Route::currentRouteName(),'category.'))
+                        active
+                        @endif
+                        ">
+                        <a class="nav-link" href="{{ route('category.index') }}">Категории</a>
+                    </li>
+                    <li class="nav-item
+                        @if(Str::startsWith(Route::currentRouteName(),'set.'))
+                        active
+                        @endif
+                        ">
+                        <a class="nav-link" href="{{ route('set.index') }}">Комплекты</a>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -54,12 +66,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Войти') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('company.index') }}">На главную</a>
+                        </li>
                     <!--@if (Route::has('register'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif-->
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('main.index') }}">На главную</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

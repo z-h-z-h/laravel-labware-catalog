@@ -44,7 +44,7 @@
 
                 <div class="card">
                     <div class="card-body d-flex justify-content-center">
-                        АРТИКУЛ:{{$set->code}}
+                        Код:{{$set->code}}
                     </div>
                 </div>
 
@@ -64,12 +64,6 @@
         </div>
     </div>
 
-    {{--    <div class="container">--}}
-    {{--        <div class="row justify-content-center">--}}
 
-    {{--            <div class="pagination">{{ $companies->withQueryString()->links() }}</div>--}}
-
-    {{--        </div>--}}
-    {{--    </div>--}}
 
 @endsection

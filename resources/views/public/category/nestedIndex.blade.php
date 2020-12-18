@@ -16,7 +16,7 @@
                             <th>название категории</th>
                             <th>описание категории</th>
                             <th>комплекты категории</th>
-                            {{--                            <th>изображение комплекта</th>--}}
+
                         </tr>
                         </thead>
                         <tbody>
@@ -73,13 +73,6 @@
         </div>
     </div>
 
-    {{--    <div class="container">--}}
-    {{--        <div class="row justify-content-center">--}}
-
-    {{--            <div class="pagination">{{ $categories->withQueryString()->links() }}</div>--}}
-
-    {{--        </div>--}}
-    {{--    </div>--}}
 
 @endsection
 

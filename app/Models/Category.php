@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -18,9 +19,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string $slug
  * @property string $title
  * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|HasFactory
- * @property-read \App\Models\Company $company
+ * @property Carbon|null $created_at
+ * @property Carbon|HasFactory
+ * @property-read Company $company
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
@@ -33,6 +34,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin Eloquent
+ * @property Carbon|null $updated_at
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $nestedCategories
+ * @property-read int|null $nested_categories_count
+ * @property-read Category|null $parentCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Set[] $sets
+ * @property-read int|null $sets_count
  */
 class Category extends Model implements HasMedia
 {

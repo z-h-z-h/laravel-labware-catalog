@@ -3,8 +3,8 @@
     <form method="post" enctype="multipart/form-data" action="{{route('set.store')}}">
         @csrf
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
+            <div class="alert alert-danger pb-1">
+                <ul class="list-unstyled mb-1 mt-n1">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -15,140 +15,149 @@
         <div class="container">
             <div class="row justify-content-center">
 
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Создание</div>
+                        <div class="card-header pt-2 pb-2"><h5 class="mt-2">Создание комплекта</h5></div>
                         <div class="card-body">
 
-                            <div class="form-group row">
-                                <label for="title" class="col-md-2 col-form-label text-md-right">Название
-                                    комплекта</label>
-                                <div class="col-md-10">
+                            <div class="form-row">
+                                <div class="col-md-4 pr-3">
 
-                                    <input type="text" class="form-control" name="title" autofocus
-                                           value="{{ old('title') }}">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="description" class="col-md-2 col-form-label text-md-right">Описание
-                                    комплекта</label>
-                                <div class="col-md-10">
-                                    <textarea type="text" class="form-control" name="description">
-                                        {{ old('description') }}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="code" class="col-md-2 col-form-label text-md-right">Артикул
-                                    комплекта</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="code" value="{{ old('code') }}">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="slug" class="col-md-2 col-form-label text-md-right">Url(slug)
-                                    комплекта</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
-                                </div>
-                            </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label text-md-right" for="image">
+                                            Фотография</label>
+                                        <img class="card-img-left bg-light"
+                                             src="{{Storage::url('0/no_photo.png')}}"
+                                             style="width: 100%">
+                                    </div>
 
-                            <div class="form-group row mb-4" id="company">
-                                <label for="company_id"
-                                       class="col-md-2 col-form-label text-md-right">Компания</label>
-                                <div class="col-md-10">
-                                    <select name="company_id"
-                                            class="form-control"
-                                            id="company"
-                                            required>
-                                        <option>
-                                            Выберите компанию
-                                        </option>
-                                        @foreach($companies as $company)
-                                            <option value="{{ $company->id }}"
-                                                    @if(old('company_id') == $company->id)
-                                                    selected
-                                                @endif
-                                            >
-                                                {{ $company->title }}
+                                    <div class="form-group custom-file ">
+                                        <label class="custom-file-label " for="image">Добавить
+                                            изображение комплекта</label>
+                                        <input type="file" name="image" class="custom-file-input  " id="customFile">
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-8">
+
+                                    <div class="form-group">
+                                        <label for="title" class="col-form-label">Название</label>
+                                        <input type="text" class="form-control " name="title" autofocus
+                                               value="{{ old('title') }}">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="code" class="col-form-label">Код</label>
+
+                                        <input type="text" class="form-control" name="code"
+                                               value="{{ old('code') }}">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="slug" class="col-form-label">URL</label>
+
+                                        <input type="text" class="form-control" name="slug"
+                                               value="{{ old('slug') }}">
+                                    </div>
+
+
+                                    <div class="form-group" id="company">
+                                        <label for="company_id"
+                                               class="col-form-label">Компания</label>
+
+                                        <select name="company_id"
+                                                class="form-control"
+                                                id="company"
+                                                required>
+                                            <option>
+                                                Выберите компанию
                                             </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                                            @foreach($companies as $company)
+                                                <option value="{{ $company->id }}"
+                                                        @if(old('company_id') == $company->id)
+                                                        selected
+                                                    @endif
+                                                >
+                                                    {{ $company->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
 
-                            <script>
-                                const parentCategories = <?= json_encode($parentCategories); ?>;
-                                const nestedCategories = <?= json_encode($nestedCategories); ?>;
-                                const selectElement = document.getElementById('company');
+                                    </div>
 
-                                selectElement.addEventListener('change',  (event) => {
-                                    const category = document.querySelector('.category');
-                                    category.innerHTML = `<optgroup label="все категории выбранного компании" class="text-light bg-secondary"></optgroup>`
-                                    for (let i = 0; i < parentCategories.length; i++) {
-                                        if (parentCategories[i]['company_id'] == event.target.value) {
-                                            category.insertAdjacentHTML('beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
+                                    <script>
+                                        const parentCategories = <?= json_encode($parentCategories); ?>;
+                                        const nestedCategories = <?= json_encode($nestedCategories); ?>;
+                                        const selectElement = document.getElementById('company');
 
-                                            for (let k = 0; k < nestedCategories.length; k++) {
-                                                if (nestedCategories[k]['parent_id'] == parentCategories[i]['id']) {
-                                                    category.insertAdjacentHTML('beforeend', `<option value="${nestedCategories[k]['id']}">${nestedCategories[k]['title']}</option>`);
+                                        selectElement.addEventListener('change', (event) => {
+                                            const category = document.querySelector('.category');
+                                            category.innerHTML = ""
+                                            for (let i = 0; i < parentCategories.length; i++) {
+                                                if (parentCategories[i]['company_id'] == event.target.value) {
+                                                    category.insertAdjacentHTML('beforeend', `<optgroup label="${parentCategories[i]['title']}"></optgroup>`);
 
+                                                    for (let k = 0; k < nestedCategories.length; k++) {
+                                                        if (nestedCategories[k]['parent_id'] == parentCategories[i]['id']) {
+                                                            category.insertAdjacentHTML('beforeend', `<option value="${nestedCategories[k]['id']}">${nestedCategories[k]['title']}</option>`);
+
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }
-                                });
-                            </script>
+                                        });
+                                    </script>
 
-                            <div class="form-group row pb-3">
-                                <label for="category_id" class="col-md-2 col-form-label text-md-right">Категория
-                                    комплекта</label>
-                                <div class="col-md-10 mt-3">
-                                    <select name="category_id"
-                                            class="category  form-control"
-                                           required>
+                                    <div class="form-group">
+                                        <label for="category_id" class="col-form-label">Категория комплекта</label>
 
-                                        @foreach($companies as $company)
-                                            @if(old('company_id') == $company->id)
-                                                @foreach($company->categories as $category)
-                                                    @if($category->parent_id == null )
-                                                        <optgroup label="{{$category->title}}"></optgroup>
-                                                    @else
-                                                    <option value="{{$category->id}}"
-                                                        @if($category->id == old('category_id'))
-                                                        selected
+                                        <select name="category_id"
+                                                class="category  form-control"
+                                                required>
+                                            @foreach($companies as $company)
+                                                @if(old('company_id') == $company->id)
+                                                    @foreach($company->categories as $category)
+                                                        @if($category->parent_id == null )
+                                                            <optgroup label="{{$category->title}}"></optgroup>
+                                                        @else
+                                                            <option value="{{$category->id}}"
+                                                                    @if($category->id == old('category_id'))
+                                                                        selected
+                                                                    @endif
+                                                            >
+
+                                                                {{$category->title}}
+                                                            </option>
                                                         @endif
-                                                    >
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        </select>
 
-                                                        {{$category->title}}
-                                                    </option>
-                                                    @endif
-                                                @endforeach
-                                            @endif
-                                        @endforeach
-                                    </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-form-label">Описание комплекта</label>
+
+                                        <textarea type="text" class="form-control" rows="6" name="description">
+                                        {{ old('description') }}</textarea></div>
+
+                                    <div class="d-flex  justify-content-end">
+                                        <button type="submit" class="btn btn-outline-primary">
+                                            Сохранить
+                                        </button>
+                                    </div>
+
                                 </div>
+
                             </div>
-
-                            <div class="form-inline d-flex justify-content-end">
-                                <div class="">
-                                    <button type="submit" class="mr-2 btn btn-primary justify-content-center">
-                                        ДОБАВИТЬ
-                                    </button>
-                                </div>
-                                <div class=" custom-file  col-md-10 ">
-                                    <label class="custom-file-label ml-1" for="image">Добавить
-                                        изображение</label>
-                                    <input type="file" name="image" class="custom-file-input" id="customFile">
-
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
 
     </form>
 @endsection

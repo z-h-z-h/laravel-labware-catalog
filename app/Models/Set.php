@@ -38,6 +38,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|Set whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Set whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
  */
 class Set extends Model implements HasMedia
 {

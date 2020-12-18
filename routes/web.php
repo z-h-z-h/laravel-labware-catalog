@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::prefix('/admin')->middleware('auth')->group(function () {
+
     Route::redirect('/', 'admin/company');
     Route::resource('set', App\Http\Controllers\Admin\SetController::class)
         ->except('show');

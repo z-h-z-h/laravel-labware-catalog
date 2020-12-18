@@ -30,4 +30,5 @@ class CatalogController extends Controller
     {
         return view('public/set/index', ['set' => $set]);
     }
-}
+
+ }

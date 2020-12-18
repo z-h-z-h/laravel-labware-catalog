@@ -14,7 +14,7 @@ class MainController extends Controller
         when($search, function ($query, $search) {
             return $query->where('title', 'LIKE', '%' . $search . '%');
         })
-            -> paginate();
+            ->paginate();
         return view('public/mainIndex', ['companies' => $companies, 'search' => $search]);
     }
 }
