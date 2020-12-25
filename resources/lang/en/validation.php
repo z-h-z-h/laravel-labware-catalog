@@ -78,7 +78,7 @@ return [
     ],
     'max' => [
         'numeric' => 'The :attribute may not be greater than :max.',
-        'file' => 'The :attribute may not be greater than :max kilobytes.',
+        'file' => 'Фотография не может быть больше 10 мегабайт.',
         'string' => ':attribute не больше :max символа.',
         'array' => 'The :attribute may not have more than :max items.',
     ],

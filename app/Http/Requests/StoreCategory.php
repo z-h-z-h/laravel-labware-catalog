@@ -36,7 +36,7 @@ class StoreCategory extends FormRequest
                 }
             }],
             'company_id' => 'required|string|min:1|max:3',
-            //'image' => 'mimes:jpeg,bmp,png,gif',
+            'image' => 'mimes:jpeg,png,gif|max:10240',
         ];
     }
 }

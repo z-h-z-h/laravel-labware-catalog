@@ -1,27 +1,27 @@
 @extends('admin.layouts.app')
 @section('content')
-    <form method="post" enctype="multipart/form-data"
-          action="{{route('category.update',$category->id)}}">
-        @method('put')
-        @csrf
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Редактирование категории
-                                #{{$category->id}}</h5></div>
 
-                        <div class="card-body">
-                            @if ($errors->any())
-                                <div class="alert alert-danger pb-1">
-                                    <ul class="list-unstyled mb-1 mt-n1">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+    <div class="container">
 
+
+                <div class="card">
+                    <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Редактирование категории
+                            #{{$category->id}}</h5></div>
+
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger pb-1">
+                                <ul class="list-unstyled mb-1 mt-n1">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form method="post" enctype="multipart/form-data"
+                              action="{{route('category.update',$category->id)}}">
+                            @method('put')
+                            @csrf
                             <div class="form-row">
                                 <div class="col-md-4 pr-3">
                                     <div class="form-group">
@@ -46,9 +46,9 @@
 
                                         <input type="text" class="form-control" name="title"
                                                @if(empty(old()))
-                                                value="{{$category->title}}"
+                                               value="{{$category->title}}"
                                                @else
-                                                value="{{old('title')}}"
+                                               value="{{old('title')}}"
                                                @endif
                                                autofocus>
                                     </div>
@@ -60,9 +60,9 @@
 
                                         <input type="text" class="form-control" name="slug"
                                                @if(empty(old()))
-                                                value="{{$category->slug}}"
+                                               value="{{$category->slug}}"
                                                @else
-                                                value="{{old('slug')}}"
+                                               value="{{old('slug')}}"
                                             @endif>
                                     </div>
 
@@ -74,40 +74,32 @@
                                                 id="company"
                                                 class="form-control"
                                                 required>
-                                            @foreach($companies as $company)
-                                                <option value="{{ $company->id }}"
-                                                        @if($company->id == old('company_id'))
-                                                            selected
-                                                        @elseif ($company->id == $category->company_id)
-                                                            selected
-                                                        @endif
-                                                >
-                                                    {{ $company->title }}</option>
+                                            <option value="{{$category->company_id }}" selected>
+                                                {{ $category->company->title }}</option>
 
-                                            @endforeach
                                         </select>
 
                                     </div>
 
-                                    <script>
-                                        const parentCategories = <?= json_encode($parentCategories); ?>;
+                                    {{--                                    <script>--}}
+                                    {{--                                        const parentCategories = <?= json_encode($parentCategories); ?>;--}}
 
-                                        const selectElement = document.getElementById('company');
+                                    {{--                                        const selectElement = document.getElementById('company');--}}
 
-                                        selectElement.addEventListener('change', (event) => {
-                                            const parentCategory = document.querySelector('.parentCategory')
-                                            // parentCategory.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;
-                                            parentCategory.innerHTML = `<option value="">Родительская</option>`
-                                            for (let i = 0; i < parentCategories.length; i++) {
-                                                if (parentCategories[i]['company_id'] == event.target.value) {
-                                                    parentCategory.insertAdjacentHTML('beforeend', `<option value="${parentCategories[i]['id']}">
-                                                                ${parentCategories[i]['title']}</option>`)
-                                                }
+                                    {{--                                        selectElement.addEventListener('change', (event) => {--}}
+                                    {{--                                            const parentCategory = document.querySelector('.parentCategory')--}}
+                                    {{--                                            // parentCategory.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;--}}
+                                    {{--                                            parentCategory.innerHTML = `<option value="">Родительская</option>`--}}
+                                    {{--                                            for (let i = 0; i < parentCategories.length; i++) {--}}
+                                    {{--                                                if (parentCategories[i]['company_id'] == event.target.value) {--}}
+                                    {{--                                                    parentCategory.insertAdjacentHTML('beforeend', `<option value="${parentCategories[i]['id']}">--}}
+                                    {{--                                                                ${parentCategories[i]['title']}</option>`)--}}
+                                    {{--                                                }--}}
 
-                                            }
-                                        })
+                                    {{--                                            }--}}
+                                    {{--                                        })--}}
 
-                                    </script>
+                                    {{--                                    </script>--}}
 
 
                                     <div class="form-group">
@@ -116,37 +108,31 @@
                                         <select name="parent_id"
                                                 class="parentCategory form-control">
 
-
                                             <option value=""
                                                     @if ($category->parent_id == null)
-                                                        selected
-                                                    @endif
+
+                                                    selected
+                                                @endif
                                             >
                                                 Родительская
                                             </option>
-
                                             @foreach($parentCategories as $parentCategory)
+                                                @if($parentCategory->id !== $category->id)
 
-                                                @if((old('company_id')) !== null)
-                                                    @if($parentCategory->company_id == old('company_id'))
-                                                        <option value="{{ $parentCategory->id }}"
-                                                                @if($parentCategory->id == old('parent_id'))
-                                                                    selected
-                                                                @endif
-                                                        >
-                                                            {{ $parentCategory->title }}
-                                                        </option>
-                                                    @endif
-
-                                                @elseif($parentCategory->company_id == $category->company_id
-
-                                                          &&$parentCategory->title !== $category->title)
-                                                    {{--такое условие чтобы предотвратить наследование самой себя вроде изза него и разделено все на парент и непарент и код дублируется--}}
-                                                    <option value="{{ $parentCategory->id }}">
-                                                        {{ $parentCategory->title }}
+                                                    <option value="
+                                                            {{$parentCategory->id}}"
+                                                            @if($parentCategory->id == old('parent_id'))
+                                                                selected
+                                                            @elseif ($category->parent_id == $parentCategory->id)
+                                                                selected
+                                                            @endif
+                                                    >
+                                                        {{$parentCategory->title}}
                                                     </option>
+
                                                 @endif
                                             @endforeach
+
                                         </select>
 
                                     </div>
@@ -168,14 +154,22 @@
                                             Изменить
                                         </button>
                                     </div>
+
                                 </div>
                             </div>
-                        </div>
+                        </form>
+
+                        <form class=" d-flex justify-content-end mt-3" method="post" enctype="multipart/form-data"
+                              action="{{route('category.destroy', $category->id)}}">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-outline-primary">Удалить</button>
+                        </form>
+
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </form>
+    </div>
+
 
 @endsection

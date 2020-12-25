@@ -26,8 +26,8 @@ class StoreCompany extends FormRequest
         return [
             'title' => 'required|string|min:3|max:21',
             'description' => 'required|string|min:5|max:250',
-            'slug' => '|string|min:3|max:21|nullable'
-            //'image' => 'mimes:jpeg,bmp,png,gif',
+            'slug' => '|string|min:3|max:21|nullable',
+            'image' => 'mimes:jpeg,png,gif|max:10240',
         ];
     }
 }

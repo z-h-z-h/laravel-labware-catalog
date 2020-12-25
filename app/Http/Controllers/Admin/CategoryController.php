@@ -102,12 +102,13 @@ class CategoryController extends Controller
         } else {
             $image = Storage::url('0/no_photo.png');
         }
-        $parentCategories = Category::whereNull('parent_id')->get(['id', 'title', 'company_id']);
-        $companies = Company::all(['id', 'title']);
+        $parentCategories = Category::where('company_id', $category->company_id)->whereNull('parent_id')->get(['id', 'title', 'company_id']);
+
+
 
         return view('admin/category/edit', ['category' => $category,
             'parentCategories' => $parentCategories,
-            'companies' => $companies,
+
             'image' => $image]);
     }
 

@@ -30,8 +30,7 @@ class StoreSet extends FormRequest
             'code' => 'required|string|min:3|max:255',
             'slug' => '|string|min:3|max:21|nullable',
             'category_id' => 'required|string|min:1',
-
-            //'image' => 'mimes:jpeg,bmp,png,gif',
+            'image' => 'mimes:jpeg,png,gif|max:10240',
 
         ];
     }
