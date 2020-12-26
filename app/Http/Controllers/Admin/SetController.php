@@ -52,7 +52,10 @@ class SetController extends Controller
         $parentCategories = Category::whereNull('parent_id')->get();
         $nestedCategories = Category::whereNotNull('parent_id')->get();
 
-        return view('admin/set/create', ['nestedCategories' => $nestedCategories, 'parentCategories' => $parentCategories, 'companies' => $companies]);
+        return view('admin/set/create', [
+            'nestedCategories' => $nestedCategories,
+            'parentCategories' => $parentCategories,
+            'companies' => $companies]);
     }
 
     /**

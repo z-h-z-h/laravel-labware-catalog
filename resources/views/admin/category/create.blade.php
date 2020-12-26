@@ -84,7 +84,7 @@
                                         selectElement.addEventListener('change', (event) => {
 
                                             const category = document.querySelector('.category')
-                                            category.innerHTML = `<option value="">Родительская</option>`//здесь value пусто а не null, потому что null не integer - база ругается
+                                            category.innerHTML = `<option value="">Родительская</option>`
 
                                             for (let i = 0; i < parentCategories.length; i++) {
                                                 if (parentCategories[i]['company_id'] == event.target.value) {
@@ -105,8 +105,8 @@
                                             {{--                                             <option>Выберите категорию</option>--}}
 
                                             <option value="">Родительская</option>
-                                            @foreach($companies as $company)
-                                                @if(old('company_id') == $company->id)
+
+                                                @if(old('company_id') && $company = $companies->find(old('company_id')))
                                                     @foreach($company->categories as $category)
                                                         @if($category->parent_id == null )
 
@@ -120,7 +120,7 @@
                                                         @endif
                                                     @endforeach
                                                 @endif
-                                            @endforeach
+
 
                                         </select>
 

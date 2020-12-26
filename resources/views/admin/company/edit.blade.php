@@ -44,9 +44,9 @@
 
                                 <input type="text" class="form-control" name="title"
                                        @if(empty(old()))
-                                       value="{{$company->title}}"
+                                            value="{{$company->title}}"
                                        @else
-                                       value="{{old('title')}}"
+                                            value="{{old('title')}}"
                                        @endif
                                        autofocus>
                             </div>
@@ -57,17 +57,17 @@
 
                                 <input type="text" class="form-control" name="slug"
                                        @if(empty(old()))
-                                       value="{{$company->slug}}"
+                                            value="{{$company->slug}}"
                                        @else
-                                       value="{{old('slug')}}"
-                                    @endif>
+                                            value="{{old('slug')}}"
+                                       @endif>
                             </div>
                             <div class="form-group">
                                 <label for="description"
                                        class="col-form-label">Описание компании</label>
 
                                 <textarea type="text" class="form-control" rows="6" name="description">
-                                            @if(empty(old()))
+                                    @if(empty(old()))
                                         {{$company->description}}
                                     @else
                                         {{old('description')}}

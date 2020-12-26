@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EditCategory;
 use App\Http\Requests\StoreCategory;
 
 use App\Models\Category;
@@ -71,7 +72,6 @@ class CategoryController extends Controller
         if (!empty($request->file('image'))) {
             $category->addMediaFromRequest('image')
                 ->preservingOriginal()
-//            ->usingName()
                 ->toMediaCollection('categories');
         }
         return redirect()->route('category.index')->with('message', 'Категория успешно добавлена');
@@ -104,11 +104,9 @@ class CategoryController extends Controller
         }
         $parentCategories = Category::where('company_id', $category->company_id)->whereNull('parent_id')->get(['id', 'title', 'company_id']);
 
-
-
-        return view('admin/category/edit', ['category' => $category,
+        return view('admin/category/edit', [
+            'category' => $category,
             'parentCategories' => $parentCategories,
-
             'image' => $image]);
     }
 
@@ -120,7 +118,7 @@ class CategoryController extends Controller
      * @return Response
      * @throws Exception
      */
-    public function update(StoreCategory $request, Category $category)
+    public function update(EditCategory $request, Category $category)
     {
         $data = $request->validated();
         if (empty($request->slug)) {

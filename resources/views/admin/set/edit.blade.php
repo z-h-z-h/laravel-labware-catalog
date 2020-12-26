@@ -134,35 +134,23 @@
                                         required>
 
 
+
                                     @foreach($parentCategories as $parentCategory)
 
-                                        @if($parentCategory->company_id == old('company_id'))
+                                        @if(($parentCategory->company_id == old('company_id')) || ($parentCategory->company_id == $set->category->company_id))
                                             <optgroup label="{{$parentCategory->title}}"></optgroup>
                                             @foreach($parentCategory->nestedCategories as $nestedCategory)
                                                 <option value="{{$nestedCategory->id}}"
                                                         @if(old('category_id') == $nestedCategory->id)
-                                                        selected
-                                                    @endif
+                                                            selected
+                                                        @elseif($nestedCategory->id == $set->category_id)
+                                                            selected
+                                                        @endif
                                                 >
                                                     {{$nestedCategory->title}}
                                                 </option>
                                             @endforeach
 
-                                        @elseif(empty( old('company_id')) && $parentCategory->company_id == $set->category->company_id)
-                                            <optgroup label="{{$parentCategory->title}}"></optgroup>
-
-                                            @foreach($parentCategory->nestedCategories as $nestedCategory)
-
-                                                <option value="{{$nestedCategory->id}}"
-
-                                                        @if($nestedCategory->id == $set->category_id)
-                                                        selected
-                                                    @endif
-                                                >
-                                                    {{$nestedCategory->title}}
-                                                </option>
-
-                                            @endforeach
                                         @endif
                                     @endforeach
                                 </select>
