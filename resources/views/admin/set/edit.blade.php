@@ -86,12 +86,9 @@
 
                                     @foreach($companies as $company)
                                         <option value="{{ $company->id }}"
-                                                @if(old('company_id') == $company->id)
-                                                selected
-
-                                                @elseif($company->id == $set->category->company_id)
-                                                selected
-                                            @endif
+                                                @if((old('company_id') == $company->id)||($company->id == $set->category->company_id))
+                                                    selected
+                                                @endif
                                         >
                                             {{ $company->title }}
                                         </option>
@@ -134,16 +131,13 @@
                                         required>
 
 
-
                                     @foreach($parentCategories as $parentCategory)
 
                                         @if(($parentCategory->company_id == old('company_id')) || ($parentCategory->company_id == $set->category->company_id))
                                             <optgroup label="{{$parentCategory->title}}"></optgroup>
                                             @foreach($parentCategory->nestedCategories as $nestedCategory)
                                                 <option value="{{$nestedCategory->id}}"
-                                                        @if(old('category_id') == $nestedCategory->id)
-                                                            selected
-                                                        @elseif($nestedCategory->id == $set->category_id)
+                                                        @if((old('category_id') == $nestedCategory->id)||($nestedCategory->id == $set->category_id))
                                                             selected
                                                         @endif
                                                 >
@@ -160,7 +154,7 @@
                                        class="col-form-label">Описание комплекта</label>
 
                                 <textarea type="text" class="form-control" rows="6" name="description">
-                                            @if(empty(old()))
+                                    @if(empty(old()))
                                         {{$set->description}}
                                     @else
                                         {{old('description')}}

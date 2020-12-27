@@ -1,21 +1,22 @@
 @extends('admin.layouts.app')
 @section('content')
 
-    @if ($errors->any())
-        <div class="alert alert-danger pb-1">
-            <ul class="list-unstyled mb-1 mt-n1">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
 
     <div class="container">
 
         <div class="card">
             <div class="card-header pt-2 pb-2"><h5 class="mt-2">Создание комплекта</h5></div>
             <div class="card-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger pb-1">
+                        <ul class="list-unstyled mb-1 mt-n1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form method="post" enctype="multipart/form-data" action="{{route('set.store')}}">
                     @csrf
                     <div class="form-row">
@@ -70,7 +71,7 @@
                                         class="form-control"
                                         id="company"
                                         required>
-                                    <option>
+                                    <option hidden>
                                         Выберите компанию
                                     </option>
                                     @foreach($companies as $company)

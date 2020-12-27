@@ -22,12 +22,12 @@
                     </button>
                 </form>
                 <table class="table table-hover table-sm table-borderless">
-                    @isset($search)
+                    @if(!empty($search))
                         <div class="alert alert-info mr-1 pb-0 pt-0 " role="alert">
                             {{'По запросу  ' . '"' . $search . '" ' . App\Helpers::quantity($categories->count(),['найдена ', 'найдено ', 'найдено ']).
                               $categories->count() . App\Helpers::quantity($categories->count(),[' запись', ' записи', ' записей'])}}
                         </div>
-                    @endisset
+                    @endif
                     @if(!empty(session ('message')))
                         <div class="alert alert-success mr-1  pb-0 pt-0" role="alert">
                             {{ session ('message') }}
@@ -38,7 +38,7 @@
                     <tr>
                         <th>#</th>
                         <th>Название категории</th>
-                        @if(isset ($search))
+                        @if(!empty($search))
                             <th>Родительская категория</th>
                         @endif
                         <th>Компания</th>
@@ -54,14 +54,14 @@
                             <td class="text-muted" style="width: 3%">{{$category->id}}</td>
                             <td style="width:18%" class="
 
-                                @if($category->parent_id == null)
+                                @if(empty($category->parent_id))
                                     font-weight-bold
                                 @endif
                                 ">{{$category->title }}</td>
-                            @isset($search)
+                            @if(!empty($search))
                                 <td class="text-muted"
                                     style="width: 22%">
-                                    @if($category->parent_id !== null)
+                                    @if($category->parent_id)
                                         {{$category->parentCategory->title}}
                                     @endif
                                 </td>
@@ -89,7 +89,7 @@
                             </td>
                         </tr>
 
-                        @if(empty($search))
+                        @empty($search)
                             @foreach($category->nestedCategories as $nestedCategory)
 
                                 <tr>
@@ -103,14 +103,14 @@
                                     </td>
 
                                     <td style="width: 20%" class="text-muted">
-                                        {{ $category->company->title }}
+                                        {{ $nestedCategory->company->title }}
                                     </td>
                                     <td style="width: 20%" class=" text-muted">
-                                        {{ $category->created_at->format('Y-m-d') }}
+                                        {{ $nestedCategory->created_at->format('Y-m-d') }}
                                     </td>
 
                                     <td style="width: 22%" class=" text-muted">
-                                        {{ $category->updated_at->format('Y-m-d') }}
+                                        {{ $nestedCategory->updated_at->format('Y-m-d') }}
                                     </td>
 
                                     <td>
@@ -133,7 +133,7 @@
                                 </tr>
 
                             @endforeach
-                        @endif
+                        @endempty
                     @endforeach
                     </tbody>
                 </table>

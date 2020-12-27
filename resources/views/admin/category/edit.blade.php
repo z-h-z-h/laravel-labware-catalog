@@ -81,27 +81,6 @@
 
                             </div>
 
-                            {{--                                    <script>--}}
-                            {{--                                        const parentCategories = <?= json_encode($parentCategories); ?>;--}}
-
-                            {{--                                        const selectElement = document.getElementById('company');--}}
-
-                            {{--                                        selectElement.addEventListener('change', (event) => {--}}
-                            {{--                                            const parentCategory = document.querySelector('.parentCategory')--}}
-                            {{--                                            // parentCategory.innerHTML = `<optgroup label="паренткатегории"></optgroup>`;--}}
-                            {{--                                            parentCategory.innerHTML = `<option value="">Родительская</option>`--}}
-                            {{--                                            for (let i = 0; i < parentCategories.length; i++) {--}}
-                            {{--                                                if (parentCategories[i]['company_id'] == event.target.value) {--}}
-                            {{--                                                    parentCategory.insertAdjacentHTML('beforeend', `<option value="${parentCategories[i]['id']}">--}}
-                            {{--                                                                ${parentCategories[i]['title']}</option>`)--}}
-                            {{--                                                }--}}
-
-                            {{--                                            }--}}
-                            {{--                                        })--}}
-
-                            {{--                                    </script>--}}
-
-
                             <div class="form-group">
                                 <label for="parent-id" class=" col-form-label ">Родительская
                                     категория</label>
@@ -109,10 +88,10 @@
                                         class="parentCategory form-control">
 
                                     <option value=""
-                                            @if ($category->parent_id == null)
+                                            @empty($category->parent_id)
 
                                             selected
-                                        @endif
+                                        @endempty
                                     >
                                         Родительская
                                     </option>
@@ -137,12 +116,12 @@
                                 <label for="category-description"
                                        class="col-form-label">Описание категории</label>
                                 <textarea type="text" class="form-control" rows="6" name="description">
-                                             @if(empty(old()))
+                                     @if(empty(old()))
                                         {{$category->description}}
                                     @else
                                         {{old('description')}}
                                     @endif
-                                        </textarea>
+                                </textarea>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-outline-primary">

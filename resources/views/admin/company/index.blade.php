@@ -22,12 +22,12 @@
                     </button>
                 </form>
                 <table class="table table-hover table-sm table-borderless">
-                    @isset($search)
+                    @if(!empty($search))
                         <div class="alert alert-info mr-1 pb-0 pt-0 " role="alert">
                             {{ 'По запросу  ' . '"' . $search . '" ' . App\Helpers::quantity($companies->count(),['найдена ', 'найдено ', 'найдено ']).
                                $companies->count() . App\Helpers::quantity($companies->count(),[' запись', ' записи', ' записей']) }}
                         </div>
-                    @endisset
+                    @endif
                     @if(!empty(session ('message')))
                         <div class="alert alert-success mr-1 pb-0 pt-0" role="alert">
                             {{ session ('message') }}
