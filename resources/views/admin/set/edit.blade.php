@@ -2,9 +2,9 @@
 @section('content')
 
     <div class="container">
-
         <div class="card">
-            <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Редактирование комплекта #{{$set->id}}</h5>
+            <div class="card-header pt-2 pb-2">
+                <h5 class="mt-2">Редактирование комплекта #{{$set->id}}</h5>
             </div>
             <div class="card-body">
                 @if ($errors->any())
@@ -16,33 +16,27 @@
                         </ul>
                     </div>
                 @endif
-
                 <form method="post" enctype="multipart/form-data"
                       action="{{route('set.update',$set->id)}}">
                     @method('put')
                     @csrf
                     <div class="form-row">
-
                         <div class="col-md-4 pr-3">
                             <label for="image"
                                    class="col-form-label">Фотография</label>
                             <img class="card-img-left bg-light"
                                  src="{{$image}}"
                                  style="width: 100%">
-                            <div class="form-group custom-file mt-3 ">
+                            <div class="form-group custom-file mt-3">
                                 <label class="custom-file-label" for="customFile">Изменить/добавить
                                     изображение </label>
                                 <input type="file" name="image" class="custom-file-input" id="customFile">
                             </div>
                         </div>
-
-
                         <div class="col-md-8">
-
                             <div class="form-group">
                                 <label for="password"
                                        class="col-form-label">Название</label>
-
                                 <input type="text" class="form-control" name="title"
                                        @if(empty(old()))
                                        value="{{$set->title}}"
@@ -51,7 +45,6 @@
                                        @endif
                                        autofocus>
                             </div>
-
                             <div class="form-group">
                                 <label for="password"
                                        class="col-form-label">Код</label>
@@ -64,9 +57,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="slug"
-                                       class="col-form-label ">URL</label>
-
-
+                                       class="col-form-label">URL</label>
                                 <input type="text" class="form-control" name="slug"
                                        @if(empty(old()))
                                        value="{{$set->slug}}"
@@ -74,26 +65,23 @@
                                        value="{{old('slug')}}"
                                     @endif>
                             </div>
-
                             <div class="form-group">
                                 <label for="company_id"
                                        class="col-form-label">Компания</label>
-
                                 <select name="company_id"
                                         class="form-control"
                                         id="company"
                                         required>
 
-                                    @foreach($companies as $company)
-                                        <option value="{{ $company->id }}"
-                                                @if((old('company_id') == $company->id)||($company->id == $set->category->company_id))
-                                                    selected
-                                                @endif
-                                        >
-                                            {{ $company->title }}
-                                        </option>
-                                    @endforeach
-
+                                        @foreach($companies as $company)
+                                            <option value="{{ $company->id }}"
+                                                    @if((old('company_id') && $company->id == old('company_id')) || (!old('company_id') && $company->id == $set->category->company_id))
+                                                        selected
+                                                    @endif
+                                            >
+                                                {{ $company->title }}
+                                            </option>
+                                        @endforeach
 
                                 </select>
                             </div>
@@ -118,41 +106,49 @@
                                         }
                                     }
                                 })
-
-
                             </script>
-
                             <div class="form-group">
                                 <label for="category_id"
                                        class="col-form-label">Категория комплекта</label>
-
                                 <select name="category_id"
                                         class="category form-control"
                                         required>
-
-
-                                    @foreach($parentCategories as $parentCategory)
-
-                                        @if(($parentCategory->company_id == old('company_id')) || ($parentCategory->company_id == $set->category->company_id))
-                                            <optgroup label="{{$parentCategory->title}}"></optgroup>
-                                            @foreach($parentCategory->nestedCategories as $nestedCategory)
-                                                <option value="{{$nestedCategory->id}}"
-                                                        @if((old('category_id') == $nestedCategory->id)||($nestedCategory->id == $set->category_id))
+                                    @if(old('company_id') && $company = $companies->find(old('company_id')))
+                                        @foreach($company->categories as $category)
+                                            @if(($category->parent_id == null))
+                                                <optgroup label="{{$category->title}}"></optgroup>
+                                                @foreach($category->nestedCategories as $nestedCategory)
+                                                    <option value="{{$nestedCategory->id}}"
+                                                            @if(old('category_id') == $nestedCategory->id)
                                                             selected
                                                         @endif
-                                                >
-                                                    {{$nestedCategory->title}}
-                                                </option>
-                                            @endforeach
-
-                                        @endif
-                                    @endforeach
+                                                    >
+                                                        {{$nestedCategory->title}}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        @foreach($parentCategories as $parentCategory)
+                                            @if($parentCategory->company_id == $set->category->company_id)
+                                                <optgroup label="{{$parentCategory->title}}"></optgroup>
+                                                @foreach($parentCategory->nestedCategories as $nestedCategory)
+                                                    <option value="{{$nestedCategory->id}}"
+                                                            @if($nestedCategory->id == $set->category_id)
+                                                            selected
+                                                        @endif
+                                                    >
+                                                        {{$nestedCategory->title}}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="password"
                                        class="col-form-label">Описание комплекта</label>
-
                                 <textarea type="text" class="form-control" rows="6" name="description">
                                     @if(empty(old()))
                                         {{$set->description}}
@@ -169,7 +165,7 @@
                         </div>
                     </div>
                 </form>
-                <form class=" d-flex justify-content-end mt-3" method="post" enctype="multipart/form-data"
+                <form class="d-flex justify-content-end mt-3" method="post" enctype="multipart/form-data"
                       action="{{route('set.destroy', $set->id)}}">
                     @method('DELETE')
                     @csrf

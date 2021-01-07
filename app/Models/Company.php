@@ -47,10 +47,21 @@ class Company extends Model implements HasMedia
         'description'
     ];
 
+    public function scopeSearch($query, string $search)
+    {
+        return $query->where('title', 'LIKE', '%' . $search . '%');
+    }
+
+    public function scopeCutCompany($query)
+    {
+        return $query->get(['id', 'title']);
+    }
+
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('companies')
+            ->addMediaCollection('photo')
+            ->useFallbackUrl('/img/no_photo.png')
             ->registerMediaConversions(function () {
                 $this
                     ->addMediaConversion('thumb')

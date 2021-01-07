@@ -3,7 +3,7 @@
 
     <div class="container">
         <div class="card">
-            <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Создание категории</h5></div>
+            <div class="card-header pt-2 pb-2"><h5 class="mt-2">Создание категории</h5></div>
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger pb-1">
@@ -22,7 +22,7 @@
                             <div class="form-group">
                                 <label for="image" class="col-form-label">Фотография</label>
                                 <img class="card-img-right bg-light"
-                                     src="{{Storage::url('0/no_photo.png')}}" alt=""
+                                     src="{{'/img/no_photo.png'}}" alt=""
                                      style="width: 100%">
                             </div>
                             <div class="form-group custom-file">
@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="code" class="col-form-label ">URL</label>
+                                <label for="code" class="col-form-label">URL</label>
 
                                 <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
                             </div>
@@ -51,26 +51,26 @@
                             <div class="form-group">
                                 <label for="company_id"
                                        class="col-form-label">Компания</label>
-                                <div class="">
-                                    <select name="company_id"
-                                            id="company"
-                                            class="form-control"
-                                            required>
-                                        <option hidden>
-                                            Выберите компанию
-                                        </option>
-                                        @foreach($companies as $company)
 
-                                            <option value="{{ $company->id }}"
-                                                    @if(old('company_id') == $company->id)
-                                                    selected
-                                                @endif
-                                            >
-                                                {{ $company->title }}</option>
+                                <select name="company_id"
+                                        id="company"
+                                        class="form-control"
+                                        required>
+                                    <option hidden>
+                                        Выберите компанию
+                                    </option>
+                                    @foreach($companies as $company)
 
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        <option value="{{ $company->id }}"
+                                                @if(old('company_id') == $company->id)
+                                                selected
+                                            @endif
+                                        >
+                                            {{ $company->title }}</option>
+
+                                    @endforeach
+                                </select>
+
                             </div>
 
                             <script>
@@ -94,15 +94,11 @@
                             </script>
 
                             <div class="form-group">
-                                <label for="parent-id" class=" col-form-label">Родительcкая категория</label>
+                                <label for="parent-id" class="col-form-label">Родительcкая категория</label>
 
                                 <select name="parent_id"
-                                        class="category form-control"
-                                >
-
-
+                                        class="category form-control">
                                     <option value="">Родительская</option>
-
                                     @if(old('company_id') && $company = $companies->find(old('company_id')))
                                         @foreach($company->categories as $category)
                                             @empty($category->parent_id)
@@ -117,25 +113,18 @@
                                             @endempty
                                         @endforeach
                                     @endif
-
-
                                 </select>
-
                             </div>
                             <div class="form-group">
                                 <label for="description" class="col-form-label">Описание категории</label>
-
                                 <textarea type="text" class="form-control" rows="6" name="description">
-                                        {{ old('description') }}</textarea>
-
+                                        {{ old('description') }}
+                                </textarea>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <div class="">
                                     <button type="submit" class="btn btn-outline-primary">
                                         Сохранить
                                     </button>
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -143,7 +132,5 @@
             </div>
         </div>
     </div>
-
-
 
 @endsection

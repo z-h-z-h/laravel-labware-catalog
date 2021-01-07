@@ -6,8 +6,6 @@ class Helpers
     public static function quantity($number, $word)
     {
 
-//            $number % 100 >= 11 && $number % 100 <= 14 ? 2 : [2,0,1,1,1,2][min($number % 10,5)]
-
         $divideForHundredNumber = $number % 100;
 
         if ($divideForHundredNumber >= 11 && $divideForHundredNumber <= 14) {

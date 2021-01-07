@@ -2,12 +2,12 @@
 @section('content')
 
     <div class="container">
-
-
         <div class="card">
-            <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Редактирование категории
-                    #{{$category->id}}</h5></div>
-
+            <div class="card-header pt-2 pb-2">
+                <h5 class="mt-2">
+                    Редактирование категории #{{$category->id}}
+                </h5>
+            </div>
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger pb-1">
@@ -34,16 +34,12 @@
                                 <label class="custom-file-label" for="customFile">Изменить/добавить
                                     изображение</label>
                                 <input type="file" name="image" class="custom-file-input" id="customFile">
-
                             </div>
                         </div>
-
                         <div class="col-md-8">
-
                             <div class="form-group">
                                 <label for="$category-title"
                                        class="col-form-label">Название</label>
-
                                 <input type="text" class="form-control" name="title"
                                        @if(empty(old()))
                                        value="{{$category->title}}"
@@ -56,8 +52,6 @@
                             <div class="form-group">
                                 <label for="category-slug"
                                        class="col-form-label">URL</label>
-
-
                                 <input type="text" class="form-control" name="slug"
                                        @if(empty(old()))
                                        value="{{$category->slug}}"
@@ -69,29 +63,24 @@
                             <div class="form-group">
                                 <label for="company_id"
                                        class="col-form-label">Компания</label>
-
                                 <select name="company_id"
                                         id="company"
                                         class="form-control"
                                         required>
                                     <option value="{{$category->company_id }}" selected>
                                         {{ $category->company->title }}</option>
-
                                 </select>
-
                             </div>
 
                             <div class="form-group">
-                                <label for="parent-id" class=" col-form-label ">Родительская
+                                <label for="parent-id" class="col-form-label">Родительская
                                     категория</label>
                                 <select name="parent_id"
                                         class="parentCategory form-control">
-
                                     <option value=""
                                             @empty($category->parent_id)
-
-                                            selected
-                                        @endempty
+                                                selected
+                                            @endempty
                                     >
                                         Родительская
                                     </option>
@@ -99,13 +88,12 @@
                                         @if($parentCategory->id !== $category->id)
 
                                             <option value="{{$parentCategory->id}}"
-                                                    @if(($parentCategory->id == old('parent_id'))||($category->parent_id == $parentCategory->id))
-                                                    selected
-                                                @endif
+                                                    @if(($parentCategory->id == old('parent_id'))||($parentCategory->id == $category->parent_id))
+                                                        selected
+                                                    @endif
                                             >
                                                 {{$parentCategory->title}}
                                             </option>
-
                                         @endif
                                     @endforeach
 
@@ -116,7 +104,7 @@
                                 <label for="category-description"
                                        class="col-form-label">Описание категории</label>
                                 <textarea type="text" class="form-control" rows="6" name="description">
-                                     @if(empty(old()))
+                                    @if(empty(old()))
                                         {{$category->description}}
                                     @else
                                         {{old('description')}}
@@ -133,7 +121,7 @@
                     </div>
                 </form>
 
-                <form class=" d-flex justify-content-end mt-3" method="post" enctype="multipart/form-data"
+                <form class="d-flex justify-content-end mt-3" method="post" enctype="multipart/form-data"
                       action="{{route('category.destroy', $category->id)}}">
                     @method('DELETE')
                     @csrf

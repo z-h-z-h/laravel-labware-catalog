@@ -56,10 +56,31 @@ class Category extends Model implements HasMedia
         'company_id'
     ];
 
+    public function scopeSearch($query, string $search)
+    {
+        return $query->where('title', 'LIKE', '%' . $search . '%');
+    }
+
+    public function scopeParents($query)
+    {
+        return $query->wherenull('parent_id')->orderBy('company_id');
+    }
+
+    public function scopeNested($query)
+    {
+        return $query->whereNotnull('parent_id')->orderBy('company_id');
+    }
+
+    public function scopeForCompany($query, int $companyId)
+    {
+        return $query->where('company_id', $companyId);
+    }
+
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('categories')
+            ->addMediaCollection('photo')
+            ->useFallbackUrl('/img/no_photo.png')
             ->registerMediaConversions(function () {
                 $this
                     ->addMediaConversion('thumb')

@@ -61,13 +61,19 @@ class Set extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('sets')
+            ->addMediaCollection('photo')
+            ->useFallbackUrl('/img/no_photo.png')
             ->registerMediaConversions(function () {
                 $this
                     ->addMediaConversion('thumb')
                     ->width(100)
                     ->height(100);
             });
+    }
+
+    public function scopeSearch($query, string $search)
+    {
+        return $query->where('title', 'LIKE', '%' . $search . '%')->orWhere('code', 'LIKE', '%' . $search . '%');
     }
 
     public function company(): HasOneThrough

@@ -26,11 +26,11 @@ class EditCategory extends FormRequest
         return [
             'title' => 'required|string|min:3|max:21',
             'description' => 'required|string|min:5|max:250',
-            'slug' => '|string|min:3|max:21|nullable',
+            'slug' => 'string|min:3|max:21|nullable',
             'parent_id' => ['nullable', 'string', 'min:0', 'max:100', function ($attribute, $value, $fail) {
 
                 if ($value !== 'null' && $this->category->nestedCategories->count() !== 0) {
-                    $fail(' Нельзя изменить родительскую категорию на вложенную пока у нее есть вложенные категории.');
+                    $fail('Нельзя изменить родительскую категорию на вложенную пока у нее есть вложенные категории.');
                 }
             }],
             'company_id' => 'required|string|min:1|max:3',

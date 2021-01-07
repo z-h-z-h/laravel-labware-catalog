@@ -8,20 +8,15 @@
                     <div class="card-header row mr-0 ml-0">
                         <div class="col-5">Категории</div>
                     </div>
-
                     <table>
-
                         <thead>
                         <tr>
                             <th>название категории</th>
                             <th>описание категории</th>
                             <th>комплекты категории</th>
-
                         </tr>
                         </thead>
                         <tbody>
-
-
                         <tr>
                             <td class="w-25 ml-4 pl-4 text-left font-weight-bold">
                                 {{$nestedCategory->title }}
@@ -34,11 +29,9 @@
                                     "
                                      style="width: 100%">
                             </td>
-
                             <td class="w-25 text-left">
                                 {{$nestedCategory->description }}
                             </td>
-
                             <td class="w-50 table-hover">
                                 <table class="w-100">
                                     @foreach($sets as $set)
@@ -50,7 +43,6 @@
                                                         {{$set->title}}</a>
                                                 </div>
                                             </td>
-
                                             @if(!empty($set->getFirstMedia('sets')))
                                                 <td class="ml-4 mr-0 pr-0  d-flex justify-content-end">
                                                     <img class="card-img-right "
@@ -58,16 +50,13 @@
                                                          style="width: 100%">
                                                 </td>
                                             @endif
-
                                         </tr>
                                     @endforeach
                                 </table>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

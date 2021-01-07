@@ -8,10 +8,7 @@
                     <div class="card-header row m-0 pt-2 pb-2 ">
                         <div class=" d-flex align-items-end"><h5 class="mt-2">Выбранная компания</h5></div>
                     </div>
-
                     <table>
-
-
                         <thead>
                         <tr>
                             <th>#</th>
@@ -21,8 +18,6 @@
                         </tr>
                         </thead>
                         <tbody>
-
-
                         <tr>
                             <td>
                                 {{$company->id}}
@@ -55,12 +50,8 @@
                                 </table>
                             </td>
                         </tr>
-
                         </tbody>
-
                     </table>
-
-
                 </div>
             </div>
         </div>

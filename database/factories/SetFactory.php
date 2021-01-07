@@ -24,7 +24,6 @@ class SetFactory extends Factory
      */
     public function definition()
     {
-
         $title = $this->faker->sentence(1);
 
         return [
@@ -34,5 +33,4 @@ class SetFactory extends Factory
             'description' => $this->faker->realText()
         ];
     }
-
 }

@@ -14,22 +14,18 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    //колхозный но рабочий вариант
-    public function run()
 
+    public function run()
     {
         for ($i = 1; $i <= 12; $i++) {
             $companyId = Company::factory()
                 ->create()
                 ->id;
-
-
             $categoryIds = Category::factory()
                 ->count(1)
                 ->create(['company_id' => $companyId, 'parent_id' => null])
                 ->pluck('id')
                 ->toArray();
-
             foreach ($categoryIds as $categoryId) {
                 $nestedCategoryIds = Category::factory()
                     ->count(4)
@@ -42,11 +38,7 @@ class DatabaseSeeder extends Seeder
                         ->create(['category_id' => $nestedCategoryId]);
                 }
             }
-
-
         }
-
-
     }
 }
 

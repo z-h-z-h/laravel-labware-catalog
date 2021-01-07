@@ -2,17 +2,14 @@
 
 @section('content')
     <div class="container">
-
         <div class="card">
-            <div class="card-header row m-0 p-2 ">
-                <div class="col-5  d-flex align-items-end"><h5>Компании</h5></div>
-
-                <a class="btn  btn-outline-primary d-flex ml-auto mr-3" role="button"
+            <div class="card-header row m-0 p-2">
+                <div class="col-5 d-flex align-items-end"><h5>Компании</h5></div>
+                <a class="btn btn-outline-primary d-flex ml-auto mr-3" role="button"
                    href="{{route('company.create')}}">
                     Добавить
                 </a>
             </div>
-
             <div class="card-body">
                 <form class="form-inline mb-3" action="{{route('company.index')}}">
                     <input class="form-control form-control-sm col" name="search" type="text" value="{{"$search"}}"
@@ -23,7 +20,7 @@
                 </form>
                 <table class="table table-hover table-sm table-borderless">
                     @if(!empty($search))
-                        <div class="alert alert-info mr-1 pb-0 pt-0 " role="alert">
+                        <div class="alert alert-info mr-1 pb-0 pt-0" role="alert">
                             {{ 'По запросу  ' . '"' . $search . '" ' . App\Helpers::quantity($companies->count(),['найдена ', 'найдено ', 'найдено ']).
                                $companies->count() . App\Helpers::quantity($companies->count(),[' запись', ' записи', ' записей']) }}
                         </div>
@@ -31,12 +28,11 @@
                     @if(!empty(session ('message')))
                         <div class="alert alert-success mr-1 pb-0 pt-0" role="alert">
                             {{ session ('message') }}
-
                         </div>
                     @endif
                     <thead>
                     <tr>
-                        <th class="">#</th>
+                        <th>#</th>
                         <th>Название компании</th>
                         <th>Дата создания</th>
                         <th>Дата обновления</th>
@@ -44,9 +40,8 @@
                     </thead>
                     <tbody>
                     @foreach($companies as $company)
-
                         <tr>
-                            <td class="text-muted  " style="width: 3%">
+                            <td class="text-muted" style="width: 3%">
                                 {{$company->id}}
                             </td>
                             <td class="w-50">
@@ -58,40 +53,28 @@
                             <td class="w-25">
                                 {{$company->updated_at->format('Y-m-d')}}
                             </td>
-
-
                             <td>
                                 <a class="btn btn-outline-secondary btn-sm set" role="button"
-                                   href=" {{route('company.edit',$company->id)}}">Редактировать</a>
+                                   href="{{route('company.edit',$company->id)}}">Редактировать</a>
                             </td>
                             <td>
-                                <form class="" method="post" enctype="multipart/form-data"
+                                <form method="post" enctype="multipart/form-data"
                                       action="{{route('company.destroy', $company->id)}}">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn btn-outline-secondary btn-sm">Удалить</button>
                                 </form>
                             </td>
-
                         </tr>
-
                     @endforeach
-
                     </tbody>
-
                 </table>
             </div>
-
-
         </div>
     </div>
-
     <div class="container">
         <div class="mt-3">
-
             <div class="pagination">{{ $companies->withQueryString()->links() }}</div>
-
         </div>
     </div>
-
 @endsection

@@ -23,12 +23,9 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-
-
         $title = $this->faker->sentence(1);
 
         return [
-
             'title' => $title,
             'slug' => Str::slug($title),
             'description' => $this->faker->realText()

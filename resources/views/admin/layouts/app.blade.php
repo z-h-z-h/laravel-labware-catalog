@@ -25,8 +25,6 @@
     <nav class="navbar navbar-expand-md navbar-light   ">
 
         <div class="container">
-
-
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -90,7 +88,6 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                           class="d-none">
                                         @csrf
@@ -101,9 +98,7 @@
                 </ul>
             </div>
         </div>
-
     </nav>
-
     <main class="py-4">
         @yield('content')
     </main>

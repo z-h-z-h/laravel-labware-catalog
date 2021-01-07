@@ -8,9 +8,7 @@
                     <div class="card-header row mr-0 ml-0">
                         <div class="col-5">Категории</div>
                     </div>
-
                     <table>
-
                         <thead>
                         <tr>
                             <th>название категории</th>
@@ -19,13 +17,9 @@
                         </tr>
                         </thead>
                         <tbody>
-
-
                         <tr>
                             <td class="w-25 ml-4 pl-4 text-left font-weight-bold">
                                 {{$category->title }}
-
-
                                 <img class="card-img-right " src="
                                          @if(!empty($category->getFirstMedia('categories')))
                                 {{$category->getFirstMedia('categories')->getUrl('thumb')}}
@@ -34,14 +28,10 @@
                                 @endif
                                     "
                                      style="width: 100%">
-
-
                             </td>
-
                             <td class="w-50 text-left">
                                 {{$category->description }}
                             </td>
-
                             <td class="w-25 table-hover">
                                 <table>
                                     @foreach($category->nestedCategories as $nestedCategory)
@@ -57,15 +47,11 @@
                                 </table>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
     </div>
-
-
 
 @endsection

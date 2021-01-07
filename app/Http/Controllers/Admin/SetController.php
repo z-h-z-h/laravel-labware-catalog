@@ -11,7 +11,6 @@ use App\Http\Requests\StoreSet;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class SetController extends Controller
@@ -24,20 +23,14 @@ class SetController extends Controller
      */
     public function index(Request $request)
     {
-
-
         $search = $request->input('search');;
         $sets = Set::when($search, function ($query, $search) {
-            return $query->where('title', 'LIKE', '%' . $search . '%')
-                ->orWhere('code', 'LIKE', '%' . $search . '%');
+            $query->search($search);
         })
             ->orderBy('category_id')
             ->paginate();
 
-
         return view('admin/set/index', ['sets' => $sets, 'search' => $search]);
-
-
     }
 
     /**
@@ -46,16 +39,12 @@ class SetController extends Controller
      * @return Response
      */
     public function create()
-
     {
-        $companies = Company::all(['id', 'title']);
-        $parentCategories = Category::whereNull('parent_id')->get();
-        $nestedCategories = Category::whereNotNull('parent_id')->get();
-
         return view('admin/set/create', [
-            'nestedCategories' => $nestedCategories,
-            'parentCategories' => $parentCategories,
-            'companies' => $companies]);
+            'nestedCategories' => Category::nested()->get(),
+            'parentCategories' => Category::parents()->get(),
+            'companies' => Company::CutCompany()
+        ]);
     }
 
     /**
@@ -66,31 +55,21 @@ class SetController extends Controller
      */
     public function store(StoreSet $request)
     {
-        $set = $request->validated();
-        if (empty($request->slug)) {
-            $slug = Str::slug($request->code);
-            $set = array_merge($set, ['slug' => $slug]);
+        $data = $request->validated();
+        $set = new Set($data);
+        if (empty($data['slug'])) {
+            $set->slug = Str::slug($data['code']);
         }
-        $set = Set::create($set);
-        if (!empty($request->file('image'))) {
+        $set->save();
+        if ($request->hasFile('image')) {
             $set->addMediaFromRequest('image')
                 ->preservingOriginal()
-//            ->usingName()
-                ->toMediaCollection('sets');
+                ->toMediaCollection('photo');
         }
-        return redirect()->route('set.index')->with('message', 'комплект успешно добавлен');
+
+        return redirect()->route('set.index')->with('message', 'Комплект добавлен.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Set $set
-     * @return Response
-     */
-    public function show(Set $set)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -100,27 +79,13 @@ class SetController extends Controller
      */
     public function edit(Set $set)
     {
-        $image = $set->getFirstMedia('sets');
-        if (!empty($image)) {
-            $image = $image->getUrl();
-        } else {
-            $image = Storage::url('0/no_photo.png');
-        }
-
-
-        $companies = Company::all(['id', 'title']);
-        $parentCategories = Category::whereNull('parent_id')
-            ->with('nestedCategories')
-            ->get();
-        $nestedCategories = Category::whereNotNull('parent_id')->get();
-
         return view('admin/set/edit', [
             'set' => $set,
-            'companies' => $companies,
-            'parentCategories' => $parentCategories,
-            'nestedCategories' => $nestedCategories,
-            'image' => $image]);
-
+            'companies' => Company::cutCompany(),
+            'parentCategories' => Category::parents()->with('nestedCategories')->get(),
+            'nestedCategories' => Category::nested()->get(),
+            'image' => $set->getFirstMediaUrl('photo')
+        ]);
     }
 
     /**
@@ -133,23 +98,20 @@ class SetController extends Controller
     public function update(StoreSet $request, Set $set)
     {
         $data = $request->validated();
-        if (empty($request->slug)) {
-            $slug = Str::slug($request->code);
-            $data = array_merge($data, ['slug' => $slug]);
+        $set->fill($data);
+        if (empty($data['slug'])) {
+            $set->slug = Str::slug($data['code']);
         }
+        $set->save();
 
-        $set->update($data);
-
-        if (!empty($request->file('image'))) {
-
-            if (!empty($set->getFirstMedia('sets'))) {
-                $set->getFirstMedia('sets')->delete();
-            }
+        if ($request->hasFile('image')) {
+            $set->clearMediaCollection('photo');
             $set->addMediaFromRequest('image')
                 ->preservingOriginal()
-                ->toMediaCollection('sets');
+                ->toMediaCollection('photo');
         }
-        return redirect()->route('set.index')->with('message', 'успешно изменено!!!');
+
+        return redirect()->route('set.index')->with('message', 'Комплект изменен.');
     }
 
     /**
@@ -163,7 +125,6 @@ class SetController extends Controller
     {
         $set->delete();
 
-
-        return redirect()->route('set.index')->with('message', 'успешно удалено!!!');
+        return redirect()->route('set.index')->with('message', 'Комплект удален.');
     }
 }

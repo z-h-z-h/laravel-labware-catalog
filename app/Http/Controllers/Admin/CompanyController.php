@@ -9,7 +9,6 @@ use App\Models\Company;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CompanyController extends Controller
@@ -21,10 +20,9 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');;
-        $companies = Company::
-        when($search, function ($query, $search) {
-            return $query->where('title', 'LIKE', '%' . $search . '%');
+        $search = $request->input('search');
+        $companies = Company::when($search, function ($query, $search) {
+            $query->search($search);
         })
             ->paginate();
 
@@ -49,33 +47,22 @@ class CompanyController extends Controller
      */
     public function store(StoreCompany $request)
     {
-        $company = $request->validated();
-        if (empty($request->slug)) {
-            $slug = Str::slug($request->title);
-            $company = array_merge($company, ['slug' => $slug]);
+        $data = $request->validated();
+        $company = new Company($data);
+        if (empty($data['slug'])) {
+            $company->slug = Str::slug($data['title']);
         }
-        $company = Company::create($company);
-        if (!empty($request->file('image'))) {
+        $company->save();
+        if ($request->hasFile('image')) {
             $company
                 ->addMediaFromRequest('image')
                 ->preservingOriginal()
-                ->toMediaCollection('companies');
+                ->toMediaCollection('photo');
         }
 
-
-        return redirect()->route('company.index')->with('message', 'компания успешно добавлена');
+        return redirect()->route('company.index')->with('message', 'Компания добавлена.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -85,15 +72,10 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        $image = $company->getFirstMedia('companies');
-        if (!empty($company->getFirstMedia('companies'))) {
-            $image = $image->getUrl();
-        } else {
-            $image = Storage::url('0/no_photo.png');
-        }
         return view('admin/company/edit', [
             'company' => $company,
-            'image' => $image]);
+            'image' => $company->getFirstMediaUrl('photo')
+        ]);
     }
 
     /**
@@ -106,24 +88,21 @@ class CompanyController extends Controller
     public function update(StoreCompany $request, Company $company)
     {
         $data = $request->validated();
-        if (empty($request->slug)) {
-            $slug = Str::slug($request->title);
-            $data = array_merge($data, ['slug' => $slug]);
+        $company->fill($data);
+        if (empty($data['slug'])) {
+            $company->slug = Str::slug($data['title']);
         }
+        $company->save();
 
-        $company->update($data);
-        if (!empty($request->file('image'))) {
-            if (!empty($company->getFirstMedia('companies'))) {
-                $company->getFirstMedia('companies')->delete();
-            }
+        if ($request->hasFile('image')) {
+            $company->clearMediaCollection('photo');
             $company
                 ->addMediaFromRequest('image')
                 ->preservingOriginal()
-                ->toMediaCollection('companies');
+                ->toMediaCollection('photo');
         }
 
-
-        return redirect()->route('company.index')->with('message', 'успешно изменено!!!');
+        return redirect()->route('company.index')->with('message', 'Компания изменена.');
     }
 
     /**
@@ -135,12 +114,13 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        if (count($company->categories) == 0) {
+        if ($company->categories()->count() === 0) {
             $company->delete();
-            return redirect()->route('company.index')->with('message', 'успешно удалено!!!');
-        } else {
-            return redirect()->route('company.index')
-                ->with('message', 'Нельзя удалить компанию с существующими категориями, сначала удалите категории');
+            $msg = 'Компания удалена.';
         }
+
+        return redirect()->route('company.index')
+            ->with('message', $msg ?? 'Нельзя удалить компанию с существующими категориями, сначала удалите категории.');
     }
+
 }

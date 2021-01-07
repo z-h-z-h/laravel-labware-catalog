@@ -3,16 +3,12 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-
             <div class="col-md-5">
-
                 <div class="card">
                     <div class="card-header">
                         Коплект
                     </div>
                     <div class="card-body p-0 d-flex justify-content-center">
-
-
                         <img class="card-img-right "
                              src="
                                 @if(!empty($set->getFirstMedia('sets')))
@@ -22,15 +18,10 @@
                              @endif
                                  "
                              style="width: 100%" alt="Card image cap">
-
-
                     </div>
-
                 </div>
             </div>
-
             <div class="col-md-4">
-
                 <div class="card">
                     <div class="card-header">
                         Коплект
@@ -41,16 +32,13 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="card">
                     <div class="card-body d-flex justify-content-center">
                         Код:{{$set->code}}
                     </div>
                 </div>
-
                 <div class="card">
                     <div class="card-body">
-
                         <div class="form-group">
                             <h5 class="card-title">{{$set->title}}</h5>
                         </div>
@@ -60,10 +48,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-
 
 @endsection

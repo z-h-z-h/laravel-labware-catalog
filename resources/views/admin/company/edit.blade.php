@@ -2,11 +2,12 @@
 @section('content')
 
     <div class="container">
-
         <div class="card">
-            <div class="card-header pt-2 pb-2"><h5 class="mt-2 ">Редактирование компании
-                    #{{$company->id}}</h5></div>
-
+            <div class="card-header pt-2 pb-2">
+                <h5 class="mt-2">
+                    Редактирование компании #{{$company->id}}
+                </h5>
+            </div>
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger pb-1">
@@ -17,7 +18,6 @@
                         </ul>
                     </div>
                 @endif
-
                 <form method="post" enctype="multipart/form-data"
                       action="{{route('company.update',$company->id)}}">
                     @method('put')
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                 </form>
-                <form class=" d-flex justify-content-end mt-3" method="post" enctype="multipart/form-data"
+                <form class="d-flex justify-content-end mt-3" method="post" enctype="multipart/form-data"
                       action="{{route('company.destroy', $company->id)}}">
                     @method('DELETE')
                     @csrf
