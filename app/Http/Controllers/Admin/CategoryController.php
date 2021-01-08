@@ -60,9 +60,11 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
         $category = new Category($data);
+
         if (empty($data['slug'])) {
             $category->slug = Str::slug($data['title']);
         }
+
         $category->save();
 
         if ($request->hasFile('image')) {
@@ -106,6 +108,7 @@ class CategoryController extends Controller
         if (empty($data['slug'])) {
             $category->slug = Str::slug($data['title']);
         }
+
         $category->save();
 
         if ($request->hasFile('image')) {

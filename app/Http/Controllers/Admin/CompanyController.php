@@ -49,10 +49,13 @@ class CompanyController extends Controller
     {
         $data = $request->validated();
         $company = new Company($data);
+
         if (empty($data['slug'])) {
             $company->slug = Str::slug($data['title']);
         }
+
         $company->save();
+
         if ($request->hasFile('image')) {
             $company
                 ->addMediaFromRequest('image')
@@ -89,9 +92,11 @@ class CompanyController extends Controller
     {
         $data = $request->validated();
         $company->fill($data);
+
         if (empty($data['slug'])) {
             $company->slug = Str::slug($data['title']);
         }
+
         $company->save();
 
         if ($request->hasFile('image')) {

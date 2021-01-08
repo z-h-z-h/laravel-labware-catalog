@@ -44,10 +44,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Set extends Model implements HasMedia
 {
     use HasFactory;
-
-
     use InteractsWithMedia;
-
 
     protected $fillable = [
         'slug',

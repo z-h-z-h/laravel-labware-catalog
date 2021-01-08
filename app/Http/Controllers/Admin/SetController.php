@@ -23,7 +23,7 @@ class SetController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');;
+        $search = $request->input('search');
         $sets = Set::when($search, function ($query, $search) {
             $query->search($search);
         })
@@ -57,10 +57,13 @@ class SetController extends Controller
     {
         $data = $request->validated();
         $set = new Set($data);
+
         if (empty($data['slug'])) {
             $set->slug = Str::slug($data['code']);
         }
+
         $set->save();
+
         if ($request->hasFile('image')) {
             $set->addMediaFromRequest('image')
                 ->preservingOriginal()
@@ -99,9 +102,11 @@ class SetController extends Controller
     {
         $data = $request->validated();
         $set->fill($data);
+
         if (empty($data['slug'])) {
             $set->slug = Str::slug($data['code']);
         }
+
         $set->save();
 
         if ($request->hasFile('image')) {
