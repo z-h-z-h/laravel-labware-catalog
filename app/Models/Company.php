@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,14 +48,9 @@ class Company extends Model implements HasMedia
         'description'
     ];
 
-    public function scopeSearch($query, string $search)
+    public function scopeSearch($query, string $search): Builder
     {
         return $query->where('title', 'LIKE', '%' . $search . '%');
-    }
-
-    public function scopeCutCompany($query)
-    {
-        return $query->get(['id', 'title']);
     }
 
     public function registerMediaCollections(): void

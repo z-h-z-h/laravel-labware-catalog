@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -56,22 +57,22 @@ class Category extends Model implements HasMedia
         'company_id'
     ];
 
-    public function scopeSearch($query, string $search)
+    public function scopeSearch($query, string $search): Builder
     {
         return $query->where('title', 'LIKE', '%' . $search . '%');
     }
 
-    public function scopeParents($query)
+    public function scopeParents($query): Builder
     {
-        return $query->wherenull('parent_id')->orderBy('company_id');
+        return $query->whereNull('parent_id')->orderBy('company_id');
     }
 
-    public function scopeNested($query)
+    public function scopeNested($query): Builder
     {
-        return $query->whereNotnull('parent_id')->orderBy('company_id');
+        return $query->whereNotNull('parent_id')->orderBy('company_id');
     }
 
-    public function scopeForCompany($query, int $companyId)
+    public function scopeForCompany($query, int $companyId): Builder
     {
         return $query->where('company_id', $companyId);
     }

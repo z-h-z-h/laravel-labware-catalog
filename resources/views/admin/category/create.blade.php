@@ -3,7 +3,9 @@
 
     <div class="container">
         <div class="card">
+
             <div class="card-header pt-2 pb-2"><h5 class="mt-2">Создание категории</h5></div>
+
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger pb-1">
@@ -14,8 +16,10 @@
                         </ul>
                     </div>
                 @endif
+
                 <form method="post" enctype="multipart/form-data" action="{{route('category.store')}}">
                     @csrf
+
                     <div class="form-row">
                         <div class="col-md-4 pr-3">
 
@@ -25,6 +29,7 @@
                                      src="{{'/img/no_photo.png'}}" alt=""
                                      style="width: 100%">
                             </div>
+
                             <div class="form-group custom-file">
                                 <label class="custom-file-label" for="image">Добавить
                                     изображение категории</label>
@@ -33,7 +38,9 @@
                             </div>
 
                         </div>
+
                         <div class="col-md-8">
+
                             <div class="form-group">
                                 <label for="title" class="col-form-label">Название</label>
 
@@ -49,6 +56,7 @@
                             </div>
 
                             <div class="form-group">
+
                                 <label for="company_id"
                                        class="col-form-label">Компания</label>
 
@@ -59,8 +67,8 @@
                                     <option hidden>
                                         Выберите компанию
                                     </option>
-                                    @foreach($companies as $company)
 
+                                    @foreach($companies as $company)
                                         <option value="{{ $company->id }}"
                                                 @if(old('company_id') == $company->id)
                                                 selected
@@ -69,6 +77,7 @@
                                             {{ $company->title }}</option>
 
                                     @endforeach
+
                                 </select>
 
                             </div>
@@ -95,7 +104,6 @@
 
                             <div class="form-group">
                                 <label for="parent-id" class="col-form-label">Родительcкая категория</label>
-
                                 <select name="parent_id"
                                         class="category form-control">
                                     <option value="">Родительская</option>
@@ -115,12 +123,14 @@
                                     @endif
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="description" class="col-form-label">Описание категории</label>
                                 <textarea type="text" class="form-control" rows="6" name="description">
                                         {{ old('description') }}
                                 </textarea>
                             </div>
+
                             <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-outline-primary">
                                         Сохранить

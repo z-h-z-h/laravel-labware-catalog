@@ -3,6 +3,7 @@
 @section('content')
     <div class="container">
         <div class="card">
+
             <div class="card-header row m-0 p-2">
                 <div class="col-5 d-flex align-items-end"><h5>Категории</h5></div>
 
@@ -11,7 +12,9 @@
                     Добавить
                 </a>
             </div>
+
             <div class="card-body">
+
                 <form class="form-inline mb-3" action="{{route('category.index')}}">
                     <input class="form-control form-control-sm col" name="search" type="text" value="{{$search}}"
                            placeholder="Поиск" autofocus>
@@ -19,18 +22,22 @@
                         Искать
                     </button>
                 </form>
+
                 <table class="table table-hover table-sm table-borderless">
+
                     @if(!empty($search))
                         <div class="alert alert-info mr-1 pb-0 pt-0" role="alert">
                             {{'По запросу  ' . '"' . $search . '" ' . App\Helpers::quantity($categories->count(),['найдена ', 'найдено ', 'найдено ']).
                               $categories->count() . App\Helpers::quantity($categories->count(),[' запись', ' записи', ' записей'])}}
                         </div>
                     @endif
+
                     @if(!empty(session ('message')))
                         <div class="alert alert-success mr-1 pb-0 pt-0" role="alert">
                             {{ session ('message') }}
                         </div>
                     @endif
+
                     <thead>
                     <tr>
                         <th>#</th>
@@ -43,7 +50,9 @@
                         <th>Дата обновления</th>
                     </tr>
                     </thead>
+
                     <tbody>
+
                     @foreach($categories as $category)
                         <tr>
                             <td class="text-muted" style="width: 3%">{{$category->id}}</td>
@@ -66,7 +75,6 @@
                             <td style="width: 18%" class="text-muted">
                                 {{ $category->created_at->format('Y-m-d') }}
                             </td>
-
                             <td style="width: 22%" class="text-muted">
                                 {{ $category->updated_at->format('Y-m-d') }}
                             </td>
@@ -121,17 +129,13 @@
                     </tbody>
                 </table>
             </div>
-
-
         </div>
     </div>
 
 
     <div class="container">
         <div class=mt-3>
-
             <div class="pagination">{{ $categories->withQueryString()->links() }}</div>
-
         </div>
     </div>
 

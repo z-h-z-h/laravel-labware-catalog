@@ -45,8 +45,8 @@ class CategoryController extends Controller
     public function create()
     {
         return view('admin/category/create', [
-            'parentCategories' => Category::parents()->get(['id', 'title', 'company_id']),
-            'companies' => Company::cutCompany()
+            'parentCategories' => Category::parents()->get(),
+            'companies' => Company::all()
         ]);
     }
 
@@ -87,7 +87,7 @@ class CategoryController extends Controller
     {
         return view('admin/category/edit', [
             'category' => $category,
-            'parentCategories' => Category::forCompany($category->company_id)->parents()->get(['id', 'title', 'company_id']),
+            'parentCategories' => Category::forCompany($category->company_id)->parents()->get(),
             'image' => $category->getFirstMediaUrl('photo')
         ]);
     }

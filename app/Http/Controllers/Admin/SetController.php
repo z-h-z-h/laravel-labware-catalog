@@ -37,13 +37,13 @@ class SetController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Response
-     */
+     *
     public function create()
     {
         return view('admin/set/create', [
             'nestedCategories' => Category::nested()->get(),
             'parentCategories' => Category::parents()->get(),
-            'companies' => Company::CutCompany()
+            'companies' => Company::all()
         ]);
     }
 
@@ -84,7 +84,7 @@ class SetController extends Controller
     {
         return view('admin/set/edit', [
             'set' => $set,
-            'companies' => Company::cutCompany(),
+            'companies' => Company::all(),
             'parentCategories' => Category::parents()->with('nestedCategories')->get(),
             'nestedCategories' => Category::nested()->get(),
             'image' => $set->getFirstMediaUrl('photo')

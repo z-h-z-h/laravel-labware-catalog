@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -68,9 +69,12 @@ class Set extends Model implements HasMedia
             });
     }
 
-    public function scopeSearch($query, string $search)
+    public function scopeSearch($query, string $search): Builder
     {
-        return $query->where('title', 'LIKE', '%' . $search . '%')->orWhere('code', 'LIKE', '%' . $search . '%');
+        return $query->where('title', 'LIKE', '%' . $search . '%')
+            ->orWhere(function ($query) use ($search) {
+                $query->where('code', 'LIKE', '%' . $search . '%');
+            });
     }
 
     public function company(): HasOneThrough

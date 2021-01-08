@@ -5,7 +5,6 @@ class Helpers
 {
     public static function quantity($number, $word)
     {
-
         $divideForHundredNumber = $number % 100;
 
         if ($divideForHundredNumber >= 11 && $divideForHundredNumber <= 14) {
@@ -19,7 +18,6 @@ class Helpers
             } elseif ($divideForTenNumber > 1 && $divideForTenNumber < 5) {
                 $index = 1;
             }
-
         }
 
         return $word[$index];

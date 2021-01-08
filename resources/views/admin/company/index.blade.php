@@ -3,14 +3,19 @@
 @section('content')
     <div class="container">
         <div class="card">
+
             <div class="card-header row m-0 p-2">
+
                 <div class="col-5 d-flex align-items-end"><h5>Компании</h5></div>
+
                 <a class="btn btn-outline-primary d-flex ml-auto mr-3" role="button"
                    href="{{route('company.create')}}">
                     Добавить
                 </a>
             </div>
+
             <div class="card-body">
+
                 <form class="form-inline mb-3" action="{{route('company.index')}}">
                     <input class="form-control form-control-sm col" name="search" type="text" value="{{"$search"}}"
                            placeholder="Поиск" autofocus>
@@ -18,6 +23,7 @@
                         Искать
                     </button>
                 </form>
+
                 <table class="table table-hover table-sm table-borderless">
                     @if(!empty($search))
                         <div class="alert alert-info mr-1 pb-0 pt-0" role="alert">
@@ -30,6 +36,7 @@
                             {{ session ('message') }}
                         </div>
                     @endif
+
                     <thead>
                     <tr>
                         <th>#</th>
@@ -38,6 +45,7 @@
                         <th>Дата обновления</th>
                     </tr>
                     </thead>
+
                     <tbody>
                     @foreach($companies as $company)
                         <tr>
@@ -68,13 +76,16 @@
                         </tr>
                     @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
+
     </div>
     <div class="container">
         <div class="mt-3">
             <div class="pagination">{{ $companies->withQueryString()->links() }}</div>
         </div>
     </div>
+
 @endsection
