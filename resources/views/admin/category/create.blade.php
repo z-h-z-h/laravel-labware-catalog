@@ -11,7 +11,7 @@
                     <div class="alert alert-danger pb-1">
                         <ul class="list-unstyled mb-1 mt-n1">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>{{$error}}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -69,12 +69,12 @@
                                     </option>
 
                                     @foreach($companies as $company)
-                                        <option value="{{ $company->id }}"
+                                        <option value="{{$company->id}}"
                                                 @if(old('company_id') == $company->id)
                                                 selected
                                             @endif
                                         >
-                                            {{ $company->title }}</option>
+                                            {{$company->title}}</option>
 
                                     @endforeach
 

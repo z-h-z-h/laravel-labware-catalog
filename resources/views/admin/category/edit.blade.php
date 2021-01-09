@@ -17,7 +17,7 @@
                     <div class="alert alert-danger pb-1">
                         <ul class="list-unstyled mb-1 mt-n1">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>{{$error}}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -90,7 +90,7 @@
                                         @if($parentCategory->id !== $category->id)
 
                                             <option value="{{$parentCategory->id}}"
-                                                    @if(($parentCategory->id == old('parent_id'))||($parentCategory->id == $category->parent_id))
+                                                    @if((old('parent_id') && $parentCategory->id == old('parent_id')) || (old('parent_id', false) === false && $parentCategory->id === $category->parent_id))
                                                         selected
                                                     @endif
                                             >

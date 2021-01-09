@@ -71,10 +71,7 @@ class Set extends Model implements HasMedia
 
     public function scopeSearch($query, string $search): Builder
     {
-        return $query->where('title', 'LIKE', '%' . $search . '%')
-            ->orWhere(function ($query) use ($search) {
-                $query->where('code', 'LIKE', '%' . $search . '%');
-            });
+        return $query->where('title', 'LIKE', '%' . $search . '%')->orWhere('code', 'LIKE', '%' . $search . '%');
     }
 
     public function company(): HasOneThrough

@@ -22,7 +22,11 @@ class CatalogController extends Controller
     public function nestedCategory(Company $company, Category $category, Category $nestedCategory)
     {
         return view('public/category/nestedIndex', [
-            'company' => $company, 'category' => $category, 'nestedCategory' => $nestedCategory, 'sets' => $nestedCategory->sets]);
+            'company' => $company,
+            'category' => $category,
+            'nestedCategory' => $nestedCategory,
+            'sets' => $nestedCategory->sets
+        ]);
     }
 
     public function set(Company $company, Category $category, Category $nestedCategory, Set $set)

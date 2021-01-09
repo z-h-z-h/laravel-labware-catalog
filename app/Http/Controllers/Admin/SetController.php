@@ -38,6 +38,7 @@ class SetController extends Controller
      *
      * @return Response
      *
+     */
     public function create()
     {
         return view('admin/set/create', [

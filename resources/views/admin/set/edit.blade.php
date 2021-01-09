@@ -13,7 +13,7 @@
                     <div class="alert alert-danger pb-1">
                         <ul class="list-unstyled mb-1 mt-n1">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>{{$erro }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -72,8 +72,8 @@
                                         required>
 
                                         @foreach($companies as $company)
-                                            <option value="{{ $company->id }}"
-                                                    @if((old('company_id') && $company->id == old('company_id')) || (!old('company_id') && $company->id == $set->category->company_id))
+                                            <option value="{{$company->id}}"
+                                                    @if((old('company_id') && $company->id === old('company_id')) || (!old('company_id') && $company->id === $set->category->company_id))
                                                         selected
                                                     @endif
                                             >
@@ -115,11 +115,11 @@
                                         required>
                                     @if(old('company_id') && $company = $companies->find(old('company_id')))
                                         @foreach($company->categories as $category)
-                                            @if(($category->parent_id == null))
+                                            @if(($category->parent_id === null))
                                                 <optgroup label="{{$category->title}}"></optgroup>
                                                 @foreach($category->nestedCategories as $nestedCategory)
                                                     <option value="{{$nestedCategory->id}}"
-                                                            @if(old('category_id') == $nestedCategory->id)
+                                                            @if(old('category_id') === $nestedCategory->id)
                                                             selected
                                                         @endif
                                                     >
@@ -130,11 +130,11 @@
                                         @endforeach
                                     @else
                                         @foreach($parentCategories as $parentCategory)
-                                            @if($parentCategory->company_id == $set->category->company_id)
+                                            @if($parentCategory->company_id === $set->category->company_id)
                                                 <optgroup label="{{$parentCategory->title}}"></optgroup>
                                                 @foreach($parentCategory->nestedCategories as $nestedCategory)
                                                     <option value="{{$nestedCategory->id}}"
-                                                            @if($nestedCategory->id == $set->category_id)
+                                                            @if($nestedCategory->id === $set->category_id)
                                                             selected
                                                         @endif
                                                     >
