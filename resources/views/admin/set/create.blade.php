@@ -111,7 +111,7 @@
                                     <option hidden>Выберите категорию</option>
                                         @if(old('company_id') && $company = $companies->find(old('company_id')))
                                             @foreach($company->categories as $category)
-                                                @if($category->parent_id == null )
+                                                @if($category->parent_id === null )
                                                     <optgroup label="{{$category->title}}"></optgroup>
                                                 @else
                                                     <option value="{{$category->id}}"

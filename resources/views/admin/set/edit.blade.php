@@ -13,7 +13,7 @@
                     <div class="alert alert-danger pb-1">
                         <ul class="list-unstyled mb-1 mt-n1">
                             @foreach ($errors->all() as $error)
-                                <li>{{$erro }}</li>
+                                <li>{{$error}}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -73,7 +73,7 @@
 
                                         @foreach($companies as $company)
                                             <option value="{{$company->id}}"
-                                                    @if((old('company_id') && $company->id === old('company_id')) || (!old('company_id') && $company->id === $set->category->company_id))
+                                                    @if((old('company_id') && $company->id == old('company_id')) || (!old('company_id') && $company->id === $set->category->company_id))
                                                         selected
                                                     @endif
                                             >
@@ -119,7 +119,7 @@
                                                 <optgroup label="{{$category->title}}"></optgroup>
                                                 @foreach($category->nestedCategories as $nestedCategory)
                                                     <option value="{{$nestedCategory->id}}"
-                                                            @if(old('category_id') === $nestedCategory->id)
+                                                            @if(old('category_id') == $nestedCategory->id)
                                                             selected
                                                         @endif
                                                     >
