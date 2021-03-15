@@ -90,7 +90,7 @@
                                         @if($parentCategory->id !== $category->id)
 
                                             <option value="{{$parentCategory->id}}"
-                                                    @if((old('parent_id') && $parentCategory->id == old('parent_id')) || (old('parent_id', false) === false && $parentCategory->id === $category->parent_id))
+                                                    @if(($parentCategory->id == old('parent_id')) || (old('parent_id', false) === false && $parentCategory->id === $category->parent_id))
                                                         selected
                                                     @endif
                                             >

@@ -41,6 +41,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @mixin \Eloquent
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
  * @property-read int|null $media_count
+ * @method static Builder|Set search($search)
  */
 class Set extends Model implements HasMedia
 {
@@ -71,12 +72,7 @@ class Set extends Model implements HasMedia
 
     public function scopeSearch($query, string $search): Builder
     {
-        return $query->where('title', 'LIKE', '%' . $search . '%')->orWhere('code', 'LIKE', '%' . $search . '%');
-    }
-
-    public function company(): HasOneThrough
-    {
-        return $this->hasOneThrough(Company::class, Category::class);
+        return $query->where('sets.title', 'LIKE', '%' . $search . '%')->orWhere('code', 'LIKE', '%' . $search . '%');
     }
 
     public function category(): BelongsTo

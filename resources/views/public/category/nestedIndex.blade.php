@@ -1,67 +1,53 @@
 @extends('public.layouts.publicApp')
 
 @section('content')
+
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header row mr-0 ml-0">
-                        <div class="col-5">Категории</div>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{route('public.company.index', [$company->slug])}}">{{$company->title}}</a></li>
+                <li class="breadcrumb-item"><a href="{{route('public.category.index', [$company->slug, $category->slug])}}">{{$category->title}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{$nestedCategory->title}}</li>
+            </ol>
+        </nav>
+
+        <div class="mx-auto">
+            <div class="nestedCategory my-4">
+                <h5 class="text-uppercase">{{$nestedCategory->title}}</h5>
+                <div class="row">
+                    <div class="col-12 col-sm-3 col-md-2 col-lg-1 mr-lg-3">
+                        <img class=""
+                             src="{{$nestedCategory->getFirstMediaUrl('photo') ?? url('/img/no_photo.png')}}"
+                             style="max-width: 100px" alt="{{$nestedCategory->title}}">
                     </div>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>название категории</th>
-                            <th>описание категории</th>
-                            <th>комплекты категории</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="w-25 ml-4 pl-4 text-left font-weight-bold">
-                                {{$nestedCategory->title }}
-                                <img class="card-img-right " src="
-                                         @if(!empty($category->getFirstMedia('categories')))
-                                {{$category->getFirstMedia('categories')->getUrl('thumb')}}
-                                @else
-                                {{ Storage::url('0/no_photo.png')}}
-                                @endif
-                                    "
-                                     style="width: 100%">
-                            </td>
-                            <td class="w-25 text-left">
-                                {{$nestedCategory->description }}
-                            </td>
-                            <td class="w-50 table-hover">
-                                <table class="w-100">
-                                    @foreach($sets as $set)
-                                        <tr>
-                                            <td>
-                                                <div class=" ml-3 mr-4 pr-4 text-left">
-                                                    <a class=""
-                                                       href="{{route('public.set.index', [$company->slug, $category->slug, $nestedCategory->slug, $set->slug])}}">
-                                                        {{$set->title}}</a>
-                                                </div>
-                                            </td>
-                                            @if(!empty($set->getFirstMedia('sets')))
-                                                <td class="ml-4 mr-0 pr-0  d-flex justify-content-end">
-                                                    <img class="card-img-right "
-                                                         src="{{$set->getFirstMedia('sets')->getUrl('thumb')}}"
-                                                         style="width: 100%">
-                                                </td>
-                                            @endif
-                                        </tr>
-                                    @endforeach
-                                </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="col-12 col-md-6 ml-lg-3 ml-xl-2">
+                        {{$nestedCategory->description}}
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
+            <div class="sets my-4">
+                <h5 class="text-uppercase">Учебное лабораторное оборудование {{$nestedCategory->title}}</h5>
+
+                @foreach($sets as $set)
+                    <div class="row">
+                        <img class="col-12 col-md-8 col-lg-5 col-xl-4"
+                             src="{{$set->getFirstMediaUrl('photo') ?? url('/img/no_photo.png')}}"
+                        >
+                        <h5 class="col-12">
+                            <a href="{{route('public.set.index', [$company->slug, $category->slug, $nestedCategory->slug, $set->slug])}}">
+                                {{$set->title}}
+                            </a>
+                        </h5>
+                    </div>
+
+                @endforeach
+
+            </div>
+        </div>
+
+    </div>
 
 @endsection
 

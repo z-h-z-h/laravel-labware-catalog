@@ -33,4 +33,5 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::get('/{company:slug}', [\App\Http\Controllers\CatalogController::class, 'company'])->name('public.company.index');
 
 Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('main.index');
+Route::post('/search', [\App\Http\Controllers\CatalogController::class, 'search'])->name('search.index');
 

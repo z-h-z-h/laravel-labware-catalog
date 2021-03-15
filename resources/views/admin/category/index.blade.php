@@ -27,8 +27,8 @@
 
                     @if(!empty($search))
                         <div class="alert alert-info mr-1 pb-0 pt-0" role="alert">
-                            {{'По запросу  ' . '"' . $search . '" ' . App\Helpers::quantity($categories->count(),['найдена ', 'найдено ', 'найдено ']).
-                              $categories->count() . App\Helpers::quantity($categories->count(),[' запись', ' записи', ' записей'])}}
+                            {{'По запросу  ' . '"' . $search . '" ' . App\Helpers::quantity($categories->total(),['найдена ', 'найдено ', 'найдено ']).
+                              $categories->total() . App\Helpers::quantity($categories->total(),[' запись', ' записи', ' записей'])}}
                         </div>
                     @endif
 

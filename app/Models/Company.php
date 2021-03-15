@@ -36,6 +36,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @mixin \Eloquent
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
+ * @method static Builder|Company search($search)
  */
 class Company extends Model implements HasMedia
 {

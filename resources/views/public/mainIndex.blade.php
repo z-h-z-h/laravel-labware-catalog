@@ -2,53 +2,59 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header row m-0 p-2">
-                        <div class="col-6 d-flex align-items-end"><h5>Все компании</h5></div>
-                        <form class="form-inline col-6 d-flex justify-content-end" action="{{route('main.index')}}">
-                            <input class="form-control" name="search" type="text" value="" placeholder="Поиск"
-                                   autofocus>
-                            <button class="ml-1 btn btn-outline-primary" type="submit">Искать</button>
-                        </form>
-                    </div>
-                    <div class="card-body">
-                        <table class="table-hover">
-                            <div class="table-info text-center">
-                                @isset($search)
-                                    {{ 'по запросу  '.$search.'  найдено  '.$companies->total().'  записей' }}
-                                @endisset
-                            </div>
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Название компании</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($companies as $company)
-                                <tr>
-                                    <td class="text-muted" style="width: 3%">
-                                        {{$company->id}}
-                                    </td>
-                                    <td class="w-75">
-                                        <a href="{{route('public.company.index', [$company->slug])}}">{{$company->title}}</a>
-                                    </td>
-                                </tr>
+            <div class="table-info text-center">
+                @isset($search)
+                    {{ 'по запросу  '.$search.'  найдено  '.$companies->total().'  записей' }}
+                @endisset
+            </div>
+            <div class="companies">
+                <h5 class="text-uppercase">Производители</h5>
+                <div class="row">
+                    <div class="col-12 col-md-3 my-2 my-md-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach($companies->where('id', '<=', 4) as $company)
+
+                                <li class="list-group-item">
+                                    <a href="{{route('public.company.index', [$company->slug])}}">{{$company->title}}</a>
+                                    <p style="font-size: small" class="text-muted my-0" >
+                                        {{$company->sets->count().' '.\App\Helpers::quantity($company->sets->count(),['позиция','позиции','позиций'])}}
+                                    </p>
+                                </li>
+
                             @endforeach
-                            </tbody>
-                        </table>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-3 my-2 my-md-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach($companies->where('id', '>', 4)->where('id', '<=', 8) as $company)
+
+                                <li class="list-group-item">
+                                    <a href="{{route('public.company.index', [$company->slug])}}">{{$company->title}}</a>
+                                    <p style="font-size: small" class="text-muted my-0" >
+                                        {{$company->sets->count().' '.\App\Helpers::quantity($company->sets->count(),['позиция','позиции','позиций'])}}
+                                    </p>
+                                </li>
+
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-3 my-2 my-md-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach($companies->where('id', '>', 8)->where('id', '<=', 12) as $company)
+
+                                <li class="list-group-item">
+                                    <a href="{{route('public.company.index', [$company->slug])}}">{{$company->title}}</a>
+                                    <p style="font-size: small" class="text-muted my-0" >
+                                        {{$company->sets->count().' '.\App\Helpers::quantity($company->sets->count(),['позиция','позиции','позиций'])}}
+                                    </p>
+                                </li>
+
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="pagination">{{ $companies->withQueryString()->links() }}</div>
-        </div>
-    </div>
 
+    </div>
 @endsection
 

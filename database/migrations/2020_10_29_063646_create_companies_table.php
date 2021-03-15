@@ -18,6 +18,7 @@ class CreateCompaniesTable extends Migration
 
             $table->string('slug');
             $table->string('title');
+            $table->string('url');
             $table->text('description');
 
             $table->timestamps();

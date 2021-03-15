@@ -43,6 +43,10 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read Category|null $parentCategory
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Set[] $sets
  * @property-read int|null $sets_count
+ * @method static Builder|Category forCompany($companyId)
+ * @method static Builder|Category nested()
+ * @method static Builder|Category parents()
+ * @method static Builder|Category search($search)
  */
 class Category extends Model implements HasMedia
 {

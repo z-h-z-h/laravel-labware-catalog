@@ -73,11 +73,12 @@
 
                                         @foreach($companies as $company)
                                             <option value="{{$company->id}}"
-                                                    @if((old('company_id') && $company->id == old('company_id')) || (!old('company_id') && $company->id === $set->category->company_id))
+                                                    @if ($company->id == old('company_id') || (!old('company_id') && $company->id === $set->category->company_id))
+
                                                         selected
                                                     @endif
                                             >
-                                                {{ $company->title }}
+                                                {{$company->title}}
                                             </option>
                                         @endforeach
 

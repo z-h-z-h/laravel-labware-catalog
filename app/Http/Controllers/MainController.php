@@ -14,7 +14,8 @@ class MainController extends Controller
            $query->search($search);
         })
             ->paginate();
-
+//        $data = $request->session()->all();
+//        dd($data);
         return view('public/mainIndex', ['companies' => $companies, 'search' => $search]);
     }
 }
